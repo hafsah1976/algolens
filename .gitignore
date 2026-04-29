@@ -10,3 +10,7 @@ coverage/
 *.log
 server/data/*.json
 .env
+server/.env
+client/.env
+client/dist/
+server/data/dev-progress.json
