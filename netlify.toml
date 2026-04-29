@@ -1,0 +1,20 @@
+[build]
+  command = "npm run build:client"
+  functions = "netlify/functions"
+  publish = "client/dist"
+
+[functions]
+  external_node_modules = ["express", "mongoose", "serverless-http"]
+  included_files = ["server/src/**"]
+  node_bundler = "esbuild"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AlgoLens - Learn Smarter</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#93000a",
+                        "primary-container": "#008378",
+                        "inverse-primary": "#6bd8cb",
+                        "surface-container-low": "#f2f4f6",
+                        "tertiary-fixed": "#ffdbce",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#e0e3e5",
+                        "on-error": "#ffffff",
+                        "inverse-surface": "#2d3133",
+                        "tertiary": "#924628",
+                        "error": "#ba1a1a",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "surface-dim": "#d8dadc",
+                        "outline": "#6d7a77",
+                        "background": "#f7f9fb",
+                        "on-tertiary": "#ffffff",
+                        "on-background": "#191c1e",
+                        "inverse-on-surface": "#eff1f3",
+                        "tertiary-container": "#b05e3d",
+                        "surface-container-high": "#e6e8ea",
+                        "surface": "#f7f9fb",
+                        "surface-tint": "#006a61",
+                        "surface-container": "#eceef0",
+                        "on-primary-container": "#f4fffc",
+                        "secondary-container": "#d0e1fb",
+                        "on-surface-variant": "#3d4947",
+                        "on-primary": "#ffffff",
+                        "surface-container-highest": "#e0e3e5",
+                        "on-surface": "#191c1e",
+                        "tertiary-fixed-dim": "#ffb59a",
+                        "error-container": "#ffdad6",
+                        "primary-fixed-dim": "#6bd8cb",
+                        "on-secondary-container": "#54647a",
+                        "on-primary-fixed": "#00201d",
+                        "secondary-fixed": "#d3e4fe",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed-variant": "#005049",
+                        "secondary": "#505f76",
+                        "on-tertiary-container": "#fffbff",
+                        "on-tertiary-fixed": "#370e00",
+                        "on-secondary-fixed": "#0b1c30",
+                        "primary": "#00685f",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "outline-variant": "#bcc9c6",
+                        "primary-fixed": "#89f5e7",
+                        "on-tertiary-fixed-variant": "#773215",
+                        "surface-bright": "#f7f9fb"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "12px",
+                        "container-max": "1100px",
+                        "base": "8px",
+                        "md": "24px",
+                        "lg": "48px",
+                        "xl": "80px",
+                        "xs": "4px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "code-md": ["monospace"],
+                        "h1": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "h2": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "code-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "h1": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "h2": ["24px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface font-body-md text-body-md antialiased min-h-screen flex flex-col">
+<!-- TopNavBar (Shared Component) -->
+<nav class="sticky top-0 z-50 docked full-width border-b shadow-sm bg-white/80 border-zinc-200 backdrop-blur-md">
+<div class="flex justify-between items-center h-16 px-8 max-w-7xl mx-auto w-full">
+<div class="text-xl font-bold tracking-tighter text-zinc-900">AlgoLens</div>
+<div class="hidden md:flex space-x-md">
+<a class="font-inter text-sm font-medium tracking-wide text-zinc-500 hover:text-zinc-900 transition-colors hover:bg-zinc-50 duration-200 px-base py-xs rounded" href="#">Dashboard</a>
+<a class="font-inter text-sm font-medium tracking-wide text-zinc-500 hover:text-zinc-900 transition-colors hover:bg-zinc-50 duration-200 px-base py-xs rounded" href="#">Progress</a>
+<a class="font-inter text-sm font-medium tracking-wide text-zinc-500 hover:text-zinc-900 transition-colors hover:bg-zinc-50 duration-200 px-base py-xs rounded" href="#">Library</a>
+</div>
+<div class="flex space-x-sm items-center">
+<button class="p-xs hover:bg-zinc-50 rounded transition-all duration-200 active:scale-95">
+<span class="material-symbols-outlined text-teal-600">settings</span>
+</button>
+<button class="p-xs hover:bg-zinc-50 rounded transition-all duration-200 active:scale-95">
+<span class="material-symbols-outlined text-teal-600">account_circle</span>
+</button>
+</div>
+</div>
+</nav>
+<main class="flex-grow flex flex-col items-center">
+<!-- Hero Section -->
+<section class="w-full max-w-container-max mx-auto px-gutter py-xl flex flex-col lg:flex-row items-center gap-xl">
+<!-- Hero Copy -->
+<div class="flex-1 flex flex-col items-start gap-md">
+<div class="inline-flex items-center gap-xs bg-surface-container-highest px-sm py-xs rounded-full border border-surface-variant">
+<span class="material-symbols-outlined text-primary" style="font-size: 16px;">visibility</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">INTRODUCING TRACE MODE</span>
+</div>
+<h1 class="font-h1 text-h1 text-on-surface max-w-lg">
+                    Learn smarter, not longer.
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg">
+                    Achieve intellectual calm. Step through complex algorithms line-by-line with deep, interactive visualizers designed for profound understanding.
+                </p>
+<button class="mt-base bg-primary text-on-primary px-md py-sm rounded border-b-2 border-primary-fixed-variant hover:bg-on-primary-fixed-variant transition-colors font-label-sm text-label-sm active:translate-y-[1px] active:border-b-0 shadow-sm">
+                    Start Learning
+                </button>
+</div>
+<!-- Hero Visualizer (The Lens) -->
+<div class="flex-1 w-full relative">
+<!-- Ambient Glow behind Lens -->
+<div class="absolute inset-0 bg-secondary-fixed-dim rounded-xl blur-[60px] opacity-20 -z-10"></div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm p-md flex flex-col gap-md">
+<div class="flex items-center justify-between border-b border-surface-container pb-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Merge Sort · Step 14</span>
+<div class="flex gap-xs">
+<button class="p-xs bg-surface-container rounded hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined" style="font-size: 18px;">chevron_left</span></button>
+<button class="p-xs bg-primary text-on-primary rounded hover:bg-on-primary-fixed-variant transition-colors"><span class="material-symbols-outlined" style="font-size: 18px;">play_arrow</span></button>
+<button class="p-xs bg-surface-container rounded hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined" style="font-size: 18px;">chevron_right</span></button>
+</div>
+</div>
+<!-- Visual Array Representation -->
+<div class="py-lg flex justify-center gap-sm">
+<div class="w-12 h-12 flex items-center justify-center border border-surface-container-highest rounded bg-surface-container-lowest font-code-md text-code-md text-on-surface shadow-sm">2</div>
+<div class="w-12 h-12 flex items-center justify-center border border-surface-container-highest rounded bg-surface-container-lowest font-code-md text-code-md text-on-surface shadow-sm">4</div>
+<!-- Active Node Highlight -->
+<div class="w-12 h-12 flex items-center justify-center border-2 border-tertiary-container rounded bg-tertiary-fixed font-code-md text-code-md text-on-tertiary-container shadow-sm relative -top-1">
+                            7
+                            <span class="absolute -bottom-6 text-[10px] font-label-sm text-tertiary-container">i</span>
+</div>
+<div class="w-12 h-12 flex items-center justify-center border border-surface-container-highest rounded bg-surface-container-lowest font-code-md text-code-md text-on-surface shadow-sm">1</div>
+<div class="w-12 h-12 flex items-center justify-center border border-surface-container-highest rounded bg-surface-container-lowest font-code-md text-code-md text-on-surface shadow-sm">9</div>
+</div>
+<!-- Code Snippet -->
+<div class="bg-surface-container rounded p-sm border border-surface-variant">
+<pre class="font-code-md text-code-md text-on-surface-variant m-0"><code><span class="text-primary">if</span> (left[i] &lt; right[j]) {
+    arr[k] = left[i];
+    <span class="bg-tertiary-fixed text-on-tertiary-container px-1 rounded">i++;</span>
+}</code></pre>
+</div>
+</div>
+</div>
+</section>
+<!-- Features (Paths) Section -->
+<section class="w-full bg-surface-container-low border-t border-surface-variant py-xl mt-lg">
+<div class="max-w-container-max mx-auto px-gutter">
+<div class="text-center mb-xl">
+<h2 class="font-h2 text-h2 text-on-surface">Structured Paths</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-sm max-w-2xl mx-auto">Master the core disciplines of computer science through our curated, visual-first curriculum.</p>
+</div>
+<!-- Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-md">
+<div class="bg-surface-container-lowest p-md rounded-lg border border-surface-variant shadow-sm flex flex-col gap-sm hover:shadow-md transition-shadow">
+<span class="material-symbols-outlined text-primary text-2xl">data_array</span>
+<h3 class="font-body-lg text-body-lg font-semibold text-on-surface mt-xs">Arrays &amp; Strings</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">The foundation of contiguous memory manipulation.</p>
+</div>
+<div class="bg-surface-container-lowest p-md rounded-lg border border-surface-variant shadow-sm flex flex-col gap-sm hover:shadow-md transition-shadow">
+<span class="material-symbols-outlined text-tertiary text-2xl">account_tree</span>
+<h3 class="font-body-lg text-body-lg font-semibold text-on-surface mt-xs">Trees &amp; Graphs</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Navigate hierarchical data and complex networks.</p>
+</div>
+<div class="bg-surface-container-lowest p-md rounded-lg border border-surface-variant shadow-sm flex flex-col gap-sm hover:shadow-md transition-shadow">
+<span class="material-symbols-outlined text-primary text-2xl">sort</span>
+<h3 class="font-body-lg text-body-lg font-semibold text-on-surface mt-xs">Sorting &amp; Searching</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Optimize retrieval and organization of data sets.</p>
+</div>
+<div class="bg-surface-container-lowest p-md rounded-lg border border-surface-variant shadow-sm flex flex-col gap-sm hover:shadow-md transition-shadow md:col-span-2 lg:col-span-1">
+<span class="material-symbols-outlined text-primary text-2xl">memory</span>
+<h3 class="font-body-lg text-body-lg font-semibold text-on-surface mt-xs">Dynamic Prog.</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Solve complex problems by breaking them into overlapping subproblems.</p>
+</div>
+<div class="bg-surface-container-lowest p-md rounded-lg border border-surface-variant shadow-sm flex flex-col gap-sm hover:shadow-md transition-shadow lg:col-span-2">
+<span class="material-symbols-outlined text-tertiary text-2xl">route</span>
+<h3 class="font-body-lg text-body-lg font-semibold text-on-surface mt-xs">Advanced Algorithms</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Tackle specialized topics like Tries, Disjoint Sets, and complex heuristics.</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+</body></html>

@@ -1,0 +1,193 @@
+@import "tailwindcss";
+
+:root {
+  --canvas: #f3f5ef;
+  --surface: rgba(255, 255, 255, 0.72);
+  --surface-strong: #fcfcf8;
+  --warm: #ede8dc;
+  --ink: #152019;
+  --muted: #5b6a61;
+  --accent: #2e6a4a;
+  --line: rgba(21, 32, 25, 0.12);
+  --font-display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  --font-sans: "Avenir Next", "Segoe UI", sans-serif;
+}
+
+:root[data-theme='focus'] {
+  --canvas: #0d1410;
+  --surface: rgba(20, 31, 24, 0.86);
+  --surface-strong: #121b15;
+  --warm: rgba(232, 221, 198, 0.1);
+  --ink: #edf3e9;
+  --muted: #aab8ad;
+  --accent: #8fc89d;
+  --line: rgba(237, 243, 233, 0.14);
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-strong: var(--surface-strong);
+  --color-warm: var(--warm);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-line: var(--line);
+  --font-display: var(--font-display);
+  --font-sans: var(--font-sans);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at top left, rgba(46, 106, 74, 0.14), transparent 30%),
+      radial-gradient(circle at right center, rgba(214, 201, 176, 0.45), transparent 28%),
+      linear-gradient(180deg, #f8faf4 0%, var(--canvas) 52%, #eef1e7 100%);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+  }
+
+  [data-theme='focus'] body {
+    background:
+      radial-gradient(circle at top left, rgba(143, 200, 157, 0.16), transparent 28%),
+      radial-gradient(circle at right center, rgba(232, 221, 198, 0.1), transparent 30%),
+      linear-gradient(180deg, #0a100c 0%, var(--canvas) 58%, #111911 100%);
+  }
+
+  * {
+    border-color: var(--line);
+  }
+
+  ::selection {
+    background: rgba(46, 106, 74, 0.18);
+  }
+
+  @keyframes lens-float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+}
+
+@layer components {
+  .app-panel {
+    @apply rounded-[1.75rem] border border-line/80 bg-surface/85 shadow-[0_24px_70px_rgba(20,34,23,0.06)] backdrop-blur-xl;
+  }
+
+  .app-panel-soft {
+    @apply rounded-[1.5rem] border border-line/70 bg-white/65;
+  }
+
+  .sidebar-link {
+    @apply flex items-center justify-between rounded-[1.1rem] px-3 py-2.5 text-sm text-muted transition duration-150;
+  }
+
+  .sidebar-link:hover {
+    @apply bg-white/70 text-ink;
+  }
+
+  .orb {
+    position: absolute;
+    z-index: -1;
+    border-radius: 999px;
+    filter: blur(40px);
+    opacity: 0.9;
+    pointer-events: none;
+  }
+
+  .orb--left {
+    top: 4rem;
+    left: -5rem;
+    height: 15rem;
+    width: 15rem;
+    background: rgba(95, 143, 112, 0.18);
+  }
+
+  .orb--right {
+    top: 11rem;
+    right: -6rem;
+    height: 18rem;
+    width: 18rem;
+    background: rgba(225, 216, 196, 0.75);
+  }
+
+  [data-theme='focus'] .orb {
+    opacity: 0.35;
+  }
+
+  [data-theme='focus'] .bg-white\/55,
+  [data-theme='focus'] .bg-white\/60,
+  [data-theme='focus'] .bg-white\/65,
+  [data-theme='focus'] .bg-white\/70,
+  [data-theme='focus'] .bg-white\/75 {
+    background-color: rgba(19, 29, 23, 0.72);
+  }
+
+  [data-theme='focus'] .shadow-\[0_4px_36px_rgba\(15\2c 23\2c 18\2c 0\.035\)\],
+  [data-theme='focus'] .shadow-\[0_4px_40px_rgba\(15\2c 23\2c 18\2c 0\.035\)\],
+  [data-theme='focus'] .shadow-\[0_24px_70px_rgba\(20\2c 34\2c 23\2c 0\.06\)\] {
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.22);
+  }
+
+  .landing-lens {
+    animation: lens-float 7s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .landing-lens {
+      animation: none;
+    }
+  }
+
+  @media print {
+    @page {
+      margin: 0.5in;
+    }
+
+    body {
+      background: #ffffff !important;
+      color: #111812 !important;
+    }
+
+    body * {
+      visibility: hidden;
+    }
+
+    .study-sheet-printable,
+    .study-sheet-printable * {
+      visibility: visible;
+    }
+
+    .study-sheet-printable {
+      position: absolute;
+      inset: 0;
+      border: 0 !important;
+      background: #ffffff !important;
+      box-shadow: none !important;
+      color: #111812 !important;
+    }
+
+    .study-sheet-printable .bg-white\/70 {
+      background: #ffffff !important;
+    }
+
+    .study-sheet-printable .text-ink {
+      color: #111812 !important;
+    }
+
+    .study-sheet-printable .text-muted {
+      color: #4f5b52 !important;
+    }
+  }
+}

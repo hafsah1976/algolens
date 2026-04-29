@@ -1,0 +1,14 @@
+{
+  "name": "algolens-server",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/index.js",
+    "seed:dsa": "node src/scripts/seedDsaContent.js",
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "express": "^5.0.0",
+    "mongoose": "^8.18.0"
+  }
+}
