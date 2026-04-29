@@ -3,6 +3,10 @@
   functions = "netlify/functions"
   publish = "client/dist"
 
+[build.environment]
+  NODE_VERSION = "22"
+  NPM_FLAGS = "--include=dev"
+
 [functions]
   external_node_modules = ["express", "mongoose", "serverless-http"]
   included_files = ["server/src/**"]
