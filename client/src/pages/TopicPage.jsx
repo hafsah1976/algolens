@@ -180,7 +180,7 @@ export function TopicPage() {
 
       {catalogState.isLoading ? (
         <div className="app-panel-soft p-4 text-sm leading-6 text-muted">
-          Checking the published topic catalog...
+          Checking the published topic catalog…
         </div>
       ) : null}
 

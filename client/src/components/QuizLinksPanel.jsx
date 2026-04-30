@@ -63,7 +63,7 @@ export function QuizLinksPanel({ topicId, topicTitle }) {
     return (
       <div className="app-panel p-6">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Concept quiz</p>
-        <p className="mt-3 text-sm leading-6 text-muted">Checking for saved quizzes...</p>
+        <p className="mt-3 text-sm leading-6 text-muted">Checking for saved quizzes…</p>
       </div>
     );
   }

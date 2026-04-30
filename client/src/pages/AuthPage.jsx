@@ -311,7 +311,7 @@ export function AuthPage() {
               disabled={isSubmitting}
               type="submit"
             >
-              {isSubmitting ? 'Working...' : isSignup ? 'Create account' : 'Log in'}
+              {isSubmitting ? 'Working…' : isSignup ? 'Create account' : 'Log in'}
             </button>
           </form>
 

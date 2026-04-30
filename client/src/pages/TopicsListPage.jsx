@@ -24,7 +24,7 @@ function CatalogStatus({ error, isLoading, source }) {
   if (isLoading) {
     return (
       <div className="app-panel-soft p-4 text-sm leading-6 text-muted">
-        Loading the published topic catalog...
+        Loading the published topic catalog…
       </div>
     );
   }

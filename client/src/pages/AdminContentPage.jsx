@@ -491,7 +491,7 @@ export function AdminTopicsPage() {
           />
           <div className="flex flex-wrap gap-3">
             <SubmitButton disabled={submitState.isSubmitting}>
-              {submitState.isSubmitting ? 'Saving...' : editingTopicId ? 'Update topic' : 'Create topic'}
+              {submitState.isSubmitting ? 'Saving…' : editingTopicId ? 'Update topic' : 'Create topic'}
             </SubmitButton>
             {editingTopicId ? (
               <button
@@ -511,7 +511,7 @@ export function AdminTopicsPage() {
         <div className="app-panel p-6">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">All topics</p>
           <div className="mt-4 space-y-3">
-            {state.isLoading ? <p className="text-sm text-muted">Loading topics...</p> : null}
+            {state.isLoading ? <p className="text-sm text-muted">Loading topics…</p> : null}
             {topics.map((topic) => (
               <AdminListItem
                 actions={
@@ -701,7 +701,7 @@ export function AdminLessonsPage() {
           />
           <div className="flex flex-wrap gap-3">
             <SubmitButton disabled={submitState.isSubmitting}>
-              {submitState.isSubmitting ? 'Saving...' : editingLessonId ? 'Update lesson' : 'Create lesson'}
+              {submitState.isSubmitting ? 'Saving…' : editingLessonId ? 'Update lesson' : 'Create lesson'}
             </SubmitButton>
             {editingLessonId ? (
               <button
@@ -721,7 +721,7 @@ export function AdminLessonsPage() {
         <div className="app-panel p-6">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">All lessons</p>
           <div className="mt-4 space-y-3">
-            {state.isLoading ? <p className="text-sm text-muted">Loading lessons...</p> : null}
+            {state.isLoading ? <p className="text-sm text-muted">Loading lessons…</p> : null}
             {lessons.map((lesson) => (
               <AdminListItem
                 actions={
@@ -856,14 +856,14 @@ export function AdminQuizzesPage() {
             onChange={(isPublished) => setForm((current) => ({ ...current, isPublished }))}
           />
           <SubmitButton disabled={submitState.isSubmitting}>
-            {submitState.isSubmitting ? 'Saving...' : 'Create quiz'}
+            {submitState.isSubmitting ? 'Saving…' : 'Create quiz'}
           </SubmitButton>
         </form>
 
         <div className="app-panel p-6">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">All quizzes</p>
           <div className="mt-4 space-y-3">
-            {state.isLoading ? <p className="text-sm text-muted">Loading quizzes...</p> : null}
+            {state.isLoading ? <p className="text-sm text-muted">Loading quizzes…</p> : null}
             {quizzes.map((quiz) => (
               <AdminListItem isPublished={quiz.isPublished} key={quiz.id} title={quiz.title}>
                 <span className="rounded-full border border-line/80 bg-white/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-muted">
@@ -1012,14 +1012,14 @@ export function AdminProblemsPage() {
             onChange={(isPublished) => setForm((current) => ({ ...current, isPublished }))}
           />
           <SubmitButton disabled={submitState.isSubmitting}>
-            {submitState.isSubmitting ? 'Saving...' : 'Create problem'}
+            {submitState.isSubmitting ? 'Saving…' : 'Create problem'}
           </SubmitButton>
         </form>
 
         <div className="app-panel p-6">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">All problems</p>
           <div className="mt-4 space-y-3">
-            {state.isLoading ? <p className="text-sm text-muted">Loading problems...</p> : null}
+            {state.isLoading ? <p className="text-sm text-muted">Loading problems…</p> : null}
             {problems.map((problem) => (
               <AdminListItem isPublished={problem.isPublished} key={problem.id} title={problem.title}>
                 <span className="rounded-full border border-line/80 bg-white/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-muted">

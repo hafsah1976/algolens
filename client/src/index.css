@@ -22,6 +22,7 @@
   --muted: #aab8ad;
   --accent: #8fc89d;
   --line: rgba(237, 243, 233, 0.14);
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -62,6 +63,40 @@
 
   * {
     border-color: var(--line);
+  }
+
+  a,
+  button,
+  input,
+  select,
+  summary,
+  textarea {
+    touch-action: manipulation;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  summary:focus-visible,
+  textarea:focus-visible {
+    outline: 3px solid rgba(46, 106, 74, 0.35) !important;
+    outline-offset: 3px;
+  }
+
+  [data-theme='focus'] a:focus-visible,
+  [data-theme='focus'] button:focus-visible,
+  [data-theme='focus'] input:focus-visible,
+  [data-theme='focus'] select:focus-visible,
+  [data-theme='focus'] summary:focus-visible,
+  [data-theme='focus'] textarea:focus-visible {
+    outline-color: rgba(143, 200, 157, 0.5) !important;
+  }
+
+  summary::marker,
+  summary::-webkit-details-marker {
+    display: none;
+    content: '';
   }
 
   ::selection {

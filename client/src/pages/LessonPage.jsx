@@ -92,7 +92,7 @@ export function LessonPage() {
       <div className="app-panel p-6">
         <p className="text-sm text-muted">
           {apiLessonState.isLoading
-            ? 'Loading lesson...'
+            ? 'Loading lesson…'
             : apiLessonState.error ?? 'This lesson could not be found.'}
         </p>
       </div>
@@ -221,7 +221,7 @@ export function LessonPage() {
               onClick={handleMarkComplete}
               type="button"
             >
-              {isSaving ? 'Saving...' : 'Mark complete'}
+              {isSaving ? 'Saving…' : 'Mark complete'}
             </button>
           </>
         }

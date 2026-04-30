@@ -149,7 +149,7 @@ export function PracticeProblemPage() {
   if (problemState.isLoading) {
     return (
       <div className="app-panel p-6">
-        <p className="text-sm text-muted">Loading practice problem...</p>
+        <p className="text-sm text-muted">Loading practice problem…</p>
       </div>
     );
   }
@@ -252,7 +252,7 @@ export function PracticeProblemPage() {
                 onClick={handleSubmit}
                 type="button"
               >
-                {submissionState.isSubmitting ? 'Submitting...' : 'Submit code'}
+                {submissionState.isSubmitting ? 'Submitting…' : 'Submit code'}
               </button>
             </div>
           </div>

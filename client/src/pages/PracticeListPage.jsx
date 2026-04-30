@@ -140,7 +140,7 @@ export function PracticeListPage() {
 
       {problemState.isLoading ? (
         <div className="app-panel p-6">
-          <p className="text-sm text-muted">Loading practice problems...</p>
+          <p className="text-sm text-muted">Loading practice problems…</p>
         </div>
       ) : null}
 

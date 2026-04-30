@@ -61,7 +61,7 @@ function ProgressRing({ percent }) {
           strokeWidth="3"
         />
         <path
-          className="text-accent transition-all duration-500"
+          className="text-accent transition-[stroke-dasharray] duration-500"
           d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
           fill="none"
           stroke="currentColor"
@@ -372,12 +372,12 @@ export function DashboardPage() {
   const { lesson: resumeLesson } = resumeMatch;
   const learnerName = user?.name ?? dashboardSnapshot.learnerName;
   const statusMessage = isLoading
-    ? 'Loading saved progress...'
+    ? 'Loading saved progress…'
     : storageMode === 'mongo'
       ? `Progress syncing through MongoDB${database?.state ? ` (${database.state})` : ''}.`
       : 'Progress is being saved locally while the fallback store is active.';
   const dashboardStatus = dashboardState.isLoading
-    ? 'Loading dashboard activity...'
+    ? 'Loading dashboard activity…'
     : dashboardState.error;
 
   return (

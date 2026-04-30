@@ -49,7 +49,7 @@ export function ProgressOverview({
 
         <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-muted">
           <span className="rounded-full border border-line/80 bg-white/70 px-3 py-2">
-            {isLoading ? 'Loading saved progress...' : getStorageMessage(storageMode)}
+            {isLoading ? 'Loading saved progress…' : getStorageMessage(storageMode)}
           </span>
           <span className="rounded-full border border-line/80 bg-white/70 px-3 py-2">
             Database: {database?.state ?? 'unknown'}

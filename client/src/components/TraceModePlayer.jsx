@@ -387,7 +387,7 @@ function ArrayCell({ index, isMatch, markers, maxValue, value, visualMode }) {
         >
           <div className="flex h-full items-end justify-center rounded-xl bg-white/45 px-2 py-2">
             <div
-              className="w-full max-w-8 rounded-t-full bg-current opacity-80 transition-all duration-300"
+              className="w-full max-w-8 rounded-t-full bg-current opacity-80 transition-[height] duration-300"
               style={{ height: barHeight ?? '20%' }}
             />
           </div>
@@ -533,7 +533,7 @@ export function TraceModePlayer({
     : storageMode === 'sandbox'
       ? 'Sandbox practice stays on this page and does not change saved progress.'
       : isSaving
-        ? 'Saving your place...'
+        ? 'Saving your place…'
         : savedStatus === 'completed'
           ? `Lesson complete and saved ${storageMode === 'mongo' ? 'to MongoDB.' : 'locally.'}`
           : `Your current step is saved ${storageMode === 'mongo' ? 'to MongoDB.' : 'locally.'}`;
@@ -740,7 +740,7 @@ export function TraceModePlayer({
                 onClick={handlePrimaryAction}
                 type="button"
               >
-                {isLastFrame ? (isSaving ? 'Saving...' : 'Finish lesson') : primaryLabel}
+                {isLastFrame ? (isSaving ? 'Saving…' : 'Finish lesson') : primaryLabel}
               </button>
             </div>
 

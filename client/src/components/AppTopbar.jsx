@@ -22,8 +22,13 @@ const titleMap = [
   { match: '/app/lesson/', title: 'Trace Mode lesson', detail: 'Step through the algorithm and save your place.' },
 ];
 
+const fallbackHeading = {
+  title: 'AlgoLens',
+  detail: 'Choose a focused path, trace an algorithm, or continue your saved progress.',
+};
+
 function getHeading(pathname) {
-  return titleMap.find((item) => pathname.startsWith(item.match)) ?? titleMap[0];
+  return titleMap.find((item) => pathname.startsWith(item.match)) ?? fallbackHeading;
 }
 
 export function AppTopbar({ focusMode, onOpenMenu, onToggleFocusMode }) {
@@ -74,14 +79,14 @@ export function AppTopbar({ focusMode, onOpenMenu, onToggleFocusMode }) {
               Sign out
             </button>
           </>
-        ) : (
+        ) : !isAuthenticated ? (
           <Link
             className="inline-flex items-center rounded-full border border-line/80 bg-white/70 px-4 py-2 text-sm font-medium text-ink transition hover:border-accent/40"
             to="/auth"
           >
             Sign in
           </Link>
-        )}
+        ) : null}
         <Link
           className="inline-flex items-center rounded-full border border-line/80 bg-white/70 px-4 py-2 text-sm font-medium text-ink transition hover:border-accent/40"
           to="/app/dashboard"

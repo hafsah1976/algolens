@@ -206,7 +206,7 @@ export function QuizPage() {
   if (quizState.isLoading) {
     return (
       <div className="app-panel p-6">
-        <p className="text-sm text-muted">Loading quiz...</p>
+        <p className="text-sm text-muted">Loading quiz…</p>
       </div>
     );
   }
@@ -272,7 +272,7 @@ export function QuizPage() {
               onClick={handleSubmit}
               type="button"
             >
-              {submitState.isSubmitting ? 'Submitting...' : 'Submit quiz'}
+              {submitState.isSubmitting ? 'Submitting…' : 'Submit quiz'}
             </button>
           )}
         </div>
