@@ -10,6 +10,38 @@ const traceSteps = [
   'Stop with a recap.',
 ];
 
+const landingStats = [
+  { value: '5', label: 'Core paths' },
+  { value: '15', label: 'Trace lessons' },
+  { value: '20', label: 'Seeded lessons' },
+];
+
+const studyLoopSteps = [
+  {
+    title: 'Choose one path',
+    detail: 'Start with a focused DSA pattern instead of a noisy course catalog.',
+  },
+  {
+    title: 'Build the mental model',
+    detail: 'Read beginner-friendly explanations that name what is changing and why.',
+  },
+  {
+    title: 'Trace the algorithm',
+    detail: 'Move forward and backward through pointers, variables, stacks, queues, or nodes.',
+  },
+  {
+    title: 'Save progress and stop',
+    detail: 'Finish with a recap so the session ends with one clear concept, not another feed.',
+  },
+];
+
+const productProofs = [
+  'Authenticated student progress',
+  'MongoDB-backed dashboard data',
+  'Trace Mode, Challenge Mode, and Sandbox',
+  'Quizzes, practice problems, and admin content tools',
+];
+
 const previewCells = [
   { index: 0, label: 'left', value: 2, tone: 'primary' },
   { index: 1, value: 4 },
@@ -37,6 +69,9 @@ function LandingNav() {
         <nav className="hidden items-center gap-2 md:flex">
           <a className="rounded-full px-4 py-2 text-sm font-medium text-muted transition hover:bg-warm/60 hover:text-ink" href="#trace-mode">
             Trace Mode
+          </a>
+          <a className="rounded-full px-4 py-2 text-sm font-medium text-muted transition hover:bg-warm/60 hover:text-ink" href="#study-loop">
+            Study loop
           </a>
           <a className="rounded-full px-4 py-2 text-sm font-medium text-muted transition hover:bg-warm/60 hover:text-ink" href="#paths">
             Paths
@@ -70,11 +105,14 @@ function TraceHeroVisual() {
     <div className="relative w-full" id="trace-mode">
       <div className="absolute inset-8 -z-10 rounded-[2rem] bg-accent/15 blur-3xl" />
 
-      <section className="landing-lens rounded-[1.75rem] border border-line/80 bg-white/90 p-5 shadow-[0_24px_80px_rgba(20,34,23,0.1)] backdrop-blur-xl sm:p-6">
+      <section
+        aria-label="Trace Mode preview"
+        className="landing-lens rounded-[1.75rem] border border-line/80 bg-white/90 p-5 shadow-[0_24px_80px_rgba(20,34,23,0.1)] backdrop-blur-xl sm:p-6"
+      >
         <div className="flex items-center justify-between gap-4 border-b border-line/70 pb-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Trace Mode</p>
-            <p className="mt-1 text-sm font-semibold text-ink">Pair Sum / Step 2</p>
+            <p className="mt-1 text-sm font-semibold text-ink">Pair Sum / Live frame</p>
           </div>
           <div className="flex gap-2">
             <span className="h-8 w-8 rounded-xl border border-line/80 bg-warm/50" />
@@ -145,7 +183,7 @@ function PathCard({ track }) {
   return (
     <Link
       className="group rounded-2xl border border-line/80 bg-white/80 p-5 shadow-[0_8px_30px_rgba(20,34,23,0.04)] transition duration-200 hover:-translate-y-1 hover:border-accent/45 hover:bg-white"
-                to={getCanonicalTopicPath(track.slug)}
+      to={getCanonicalTopicPath(track.slug)}
     >
       <div className="flex items-center gap-3">
         <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-accent/10 text-sm font-bold text-accent transition group-hover:bg-accent group-hover:text-white">
@@ -161,67 +199,108 @@ function PathCard({ track }) {
   );
 }
 
+function StudyLoopSection() {
+  return (
+    <section className="border-y border-line/70 bg-white/55 py-16" id="study-loop">
+      <div className="mx-auto grid w-full max-w-7xl gap-10 px-5 sm:px-8 lg:grid-cols-[0.75fr_1fr] lg:items-start">
+        <div className="max-w-xl reveal-up">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted">A calmer study loop</p>
+          <h2 className="mt-3 font-display text-4xl tracking-[-0.05em] text-ink sm:text-5xl">
+            Learn one idea well, then leave with it.
+          </h2>
+          <p className="mt-5 text-base leading-7 text-muted">
+            AlgoLens is intentionally anti-doom-scroll. Each session is designed to move from
+            concept, to trace, to saved progress, to a clear stopping point.
+          </p>
+        </div>
+
+        <div className="reveal-up reveal-up-delay-1 overflow-hidden rounded-[1.5rem] border border-line/80 bg-surface-strong/90">
+          {studyLoopSteps.map((step, index) => (
+            <div
+              className="grid gap-4 border-b border-line/70 p-5 last:border-b-0 sm:grid-cols-[5rem_1fr]"
+              key={step.title}
+            >
+              <span className="font-display text-4xl tracking-[-0.06em] text-accent">
+                0{index + 1}
+              </span>
+              <div>
+                <h3 className="text-lg font-semibold tracking-[-0.03em] text-ink">{step.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-muted">{step.detail}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export function LandingPage() {
   return (
     <div className="min-h-screen bg-[#f7f9fb] text-ink">
       <LandingNav />
 
       <main>
-        <section className="mx-auto grid w-full max-w-7xl gap-12 px-5 py-16 sm:px-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(420px,1fr)] lg:items-center lg:py-24">
-          <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-line/80 bg-white/80 px-4 py-2 shadow-[0_8px_30px_rgba(20,34,23,0.04)]">
-              <span className="h-2.5 w-2.5 rounded-full bg-accent" />
-              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">
-                Introducing Trace Mode
-              </span>
+        <section className="relative overflow-hidden px-5 py-16 sm:px-8 lg:py-24">
+          <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-48 bg-gradient-to-b from-white/80 to-transparent" />
+          <div className="mx-auto grid w-full max-w-7xl gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(420px,1fr)] lg:items-center">
+            <div className="max-w-2xl reveal-up">
+              <div className="inline-flex items-center gap-2 rounded-full border border-line/80 bg-white/80 px-4 py-2 shadow-[0_8px_30px_rgba(20,34,23,0.04)]">
+                <span className="h-2.5 w-2.5 rounded-full bg-accent" />
+                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">
+                  Visual DSA learning platform
+                </span>
+              </div>
+
+              <p className="mt-7 font-display text-6xl leading-[0.9] tracking-[-0.07em] text-ink sm:text-7xl lg:text-8xl">
+                AlgoLens
+              </p>
+              <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-[0.98] tracking-[-0.06em] text-ink sm:text-5xl lg:text-6xl">
+                Learn smarter, not longer.
+              </h1>
+              <p className="mt-6 max-w-xl text-lg leading-8 text-muted sm:text-xl">
+                A calm learning workspace where beginners watch algorithms change state one
+                step at a time, then save progress under their own account.
+              </p>
+
+              <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+                <Link
+                  className="inline-flex justify-center rounded-full bg-accent px-6 py-3 text-sm font-semibold text-white shadow-[0_16px_40px_rgba(46,106,74,0.18)] transition hover:bg-ink"
+                  to={`${getCanonicalLessonPath('pair-sum-trace')}?fresh=1`}
+                >
+                  Start a trace
+                </Link>
+                <Link
+                  className="inline-flex justify-center rounded-full border border-line/80 bg-white/75 px-6 py-3 text-sm font-semibold text-ink transition hover:border-accent/45"
+                  to="/auth"
+                >
+                  Create account
+                </Link>
+              </div>
+
+              <dl className="mt-10 grid max-w-xl grid-cols-3 gap-4 border-t border-line/70 pt-6">
+                {landingStats.map((stat) => (
+                  <div key={stat.label}>
+                    <dt className="text-2xl font-semibold tracking-[-0.04em] text-ink">{stat.value}</dt>
+                    <dd className="mt-1 text-xs font-semibold uppercase tracking-[0.16em] text-muted">
+                      {stat.label}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
             </div>
 
-            <h1 className="mt-7 max-w-3xl text-5xl font-semibold leading-[0.95] tracking-[-0.06em] text-ink sm:text-6xl lg:text-7xl">
-              Learn smarter, not longer.
-            </h1>
-            <p className="mt-6 max-w-xl text-lg leading-8 text-muted sm:text-xl">
-              AlgoLens helps beginners understand data structures and algorithms by watching
-              variables, pointers, and memory change one step at a time, then challenging
-              themselves before each move.
-            </p>
-
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <Link
-                className="inline-flex justify-center rounded-full bg-accent px-6 py-3 text-sm font-semibold text-white shadow-[0_16px_40px_rgba(46,106,74,0.18)] transition hover:bg-ink"
-            to={`${getCanonicalLessonPath('pair-sum-trace')}?fresh=1`}
-              >
-                Start a trace
-              </Link>
-              <Link
-                className="inline-flex justify-center rounded-full border border-line/80 bg-white/75 px-6 py-3 text-sm font-semibold text-ink transition hover:border-accent/45"
-                to="/app/dashboard"
-              >
-                View dashboard
-              </Link>
-            </div>
-
-            <dl className="mt-10 grid max-w-xl grid-cols-3 gap-4 border-t border-line/70 pt-6">
-              <div>
-                <dt className="text-2xl font-semibold tracking-[-0.04em] text-ink">5</dt>
-                <dd className="mt-1 text-xs font-semibold uppercase tracking-[0.16em] text-muted">Paths</dd>
-              </div>
-              <div>
-                <dt className="text-2xl font-semibold tracking-[-0.04em] text-ink">15</dt>
-                <dd className="mt-1 text-xs font-semibold uppercase tracking-[0.16em] text-muted">Live traces</dd>
-              </div>
-              <div>
-                <dt className="text-2xl font-semibold tracking-[-0.04em] text-ink">15</dt>
-                <dd className="mt-1 text-xs font-semibold uppercase tracking-[0.16em] text-muted">Lessons</dd>
-              </div>
-            </dl>
+          <div className="reveal-up reveal-up-delay-1">
+            <TraceHeroVisual />
           </div>
-
-          <TraceHeroVisual />
+          </div>
         </section>
 
-        <section className="border-y border-line/70 bg-white/55 py-16" id="paths">
+        <StudyLoopSection />
+
+        <section className="py-16" id="paths">
           <div className="mx-auto w-full max-w-7xl px-5 sm:px-8">
-            <div className="mx-auto max-w-3xl text-center">
+            <div className="mx-auto max-w-3xl text-center reveal-up">
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted">Structured paths</p>
               <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-ink sm:text-4xl">
                 A focused curriculum for the patterns students actually need first.
@@ -241,24 +320,32 @@ export function LandingPage() {
         </section>
 
         <section className="mx-auto grid w-full max-w-7xl gap-8 px-5 py-16 sm:px-8 lg:grid-cols-[minmax(0,0.85fr)_minmax(320px,0.45fr)] lg:items-center" id="submission">
-          <div>
+          <div className="reveal-up">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted">Contest demo ready</p>
             <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-ink sm:text-4xl">
               A working product with a clear signature feature.
             </h2>
             <p className="mt-4 max-w-2xl text-base leading-7 text-muted">
-              Auth, MongoDB progress, dashboard navigation, Trace Mode lessons, and completion
-              recaps are already wired. The next depth step is polishing the guided learner flow.
+              The deployed MVP includes real accounts, saved progress, seeded curriculum,
+              Trace Mode lessons, quizzes, practice submissions, and admin content tools.
             </p>
+            <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              {productProofs.map((proof) => (
+                <div className="flex items-center gap-3 text-sm font-medium text-ink" key={proof}>
+                  <span className="h-2 w-2 rounded-full bg-accent" />
+                  <span>{proof}</span>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <div className="rounded-[1.5rem] border border-line/80 bg-ink p-6 text-white shadow-[0_24px_70px_rgba(20,34,23,0.12)]">
+          <div className="reveal-up reveal-up-delay-1 rounded-[1.5rem] border border-line/80 bg-ink p-6 text-white shadow-[0_24px_70px_rgba(20,34,23,0.12)]">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/55">Best demo path</p>
             <ol className="mt-5 space-y-3 text-sm leading-6 text-white/75">
-              <li>1. Sign in or use demo progress.</li>
+              <li>1. Create a student account.</li>
               <li>2. Open a topic path.</li>
               <li>3. Complete a Trace Mode lesson.</li>
-              <li>4. Show the saved recap.</li>
+              <li>4. Show the dashboard update after refresh.</li>
             </ol>
             <Link
               className="mt-6 inline-flex rounded-full bg-white px-5 py-3 text-sm font-semibold text-ink transition hover:bg-accent hover:text-white"

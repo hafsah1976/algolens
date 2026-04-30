@@ -78,6 +78,18 @@
       transform: translateY(-8px);
     }
   }
+
+  @keyframes reveal-up {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
 
 @layer components {
@@ -144,8 +156,18 @@
     animation: lens-float 7s ease-in-out infinite;
   }
 
+  .reveal-up {
+    animation: reveal-up 700ms ease both;
+  }
+
+  .reveal-up-delay-1 {
+    animation-delay: 120ms;
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .landing-lens {
+    .landing-lens,
+    .reveal-up,
+    .reveal-up-delay-1 {
       animation: none;
     }
   }

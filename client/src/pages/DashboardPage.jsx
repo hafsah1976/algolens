@@ -385,10 +385,12 @@ export function DashboardPage() {
       <section className="rounded-xl border border-line/80 bg-surface-strong/95 p-6 shadow-[0_4px_40px_rgba(15,23,18,0.035)] sm:p-7">
         <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
           <div className="max-w-2xl">
-            <h1 className="font-display text-4xl tracking-[-0.04em] text-ink">Focus and Flow.</h1>
+            <h1 className="font-display text-4xl tracking-[-0.04em] text-ink">
+              Today's study session
+            </h1>
             <p className="mt-4 text-base leading-7 text-muted sm:text-lg">
-              {learnerName}, you are building a calm mental model of core data structures.
-              One clear Trace Mode lesson at a time is enough.
+              {learnerName}, this is your saved DSA progress, recommended next lesson,
+              recent quiz work, and coding practice activity in one focused place.
             </p>
           </div>
 
@@ -399,7 +401,7 @@ export function DashboardPage() {
                 {overallProgress.completed} / {overallProgress.total}
               </p>
               <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted">
-                Lessons Mastered
+                Lessons complete
               </p>
             </div>
           </div>
