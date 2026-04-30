@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import { ConceptPrimer } from '../components/ConceptPrimer.jsx';
+import { LearningLoopPanel } from '../components/LearningLoopPanel.jsx';
 import { MiniExamples } from '../components/MiniExamples.jsx';
 import { QuizLinksPanel } from '../components/QuizLinksPanel.jsx';
 import { SectionHeading } from '../components/SectionHeading.jsx';
@@ -219,18 +220,14 @@ export function TopicPage() {
         </div>
 
         <div className="space-y-4">
-          <QuizLinksPanel topicId={track.id} topicTitle={track.title} />
+          <LearningLoopPanel
+            actionLabel={launchActionLabel}
+            launchLesson={launchLesson}
+            progress={progress}
+            track={track}
+          />
 
-          <div className="app-panel p-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Saved progress</p>
-            <p className="mt-3 text-4xl font-semibold tracking-[-0.04em] text-ink">{progress.percent}%</p>
-            <p className="mt-3 text-sm leading-6 text-muted">
-              {progress.completed} of {progress.total} lessons are completed for the current learner state.
-            </p>
-            <div className="mt-5 h-2 overflow-hidden rounded-full bg-warm">
-              <div className="h-full rounded-full bg-accent" style={{ width: `${progress.percent}%` }} />
-            </div>
-          </div>
+          <QuizLinksPanel topicId={track.id} topicTitle={track.title} />
 
           <div className="app-panel p-6">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Linked concepts</p>
