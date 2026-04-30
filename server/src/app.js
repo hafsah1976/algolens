@@ -33,12 +33,44 @@ function applyCorsHeaders(request, response, next) {
   next();
 }
 
+function shouldParseTextBody(request) {
+  if (!['POST', 'PUT', 'PATCH'].includes(request.method)) {
+    return false;
+  }
+
+  return !request.is('application/json') && !request.is('application/*+json');
+}
+
+export function normalizeJsonBody(request, _response, next) {
+  if (typeof request.body !== 'string') {
+    next();
+    return;
+  }
+
+  const trimmedBody = request.body.trim();
+
+  if (!trimmedBody || !['{', '['].includes(trimmedBody[0])) {
+    next();
+    return;
+  }
+
+  try {
+    request.body = JSON.parse(trimmedBody);
+  } catch (_error) {
+    // Leave invalid JSON untouched so route-level validation can respond safely.
+  }
+
+  next();
+}
+
 export function createApp() {
   const app = express();
 
   app.disable('x-powered-by');
   app.use(applyCorsHeaders);
   app.use(express.json());
+  app.use(express.text({ type: shouldParseTextBody }));
+  app.use(normalizeJsonBody);
 
   app.get('/', (_request, response) => {
     response.json({

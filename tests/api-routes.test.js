@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { createApp } from '../server/src/app.js';
+import { createApp, normalizeJsonBody } from '../server/src/app.js';
 
 async function withTestServer(callback) {
   const previousStorageMode = process.env.PROGRESS_STORAGE_MODE;
@@ -35,6 +35,24 @@ async function withTestServer(callback) {
 async function readJson(response) {
   return response.json().catch(() => null);
 }
+
+test('serverless JSON body fallback parses raw JSON strings before routes run', () => {
+  const request = {
+    body: '{"email":"testuser@example.com","name":"Lucas","password":"12345678A"}',
+  };
+  let continued = false;
+
+  normalizeJsonBody(request, null, () => {
+    continued = true;
+  });
+
+  assert.equal(continued, true);
+  assert.deepEqual(request.body, {
+    email: 'testuser@example.com',
+    name: 'Lucas',
+    password: '12345678A',
+  });
+});
 
 test('API root advertises topic, lesson, quiz, dashboard, problem, and protected progress routes', async () => {
   await withTestServer(async (baseUrl) => {
