@@ -76,6 +76,19 @@ function TeachingNote({ body, label }) {
   );
 }
 
+function GuidedViewingPanel() {
+  return (
+    <div className="rounded-[1.35rem] border border-accent/20 bg-accent/8 p-4">
+      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Look here first</p>
+      <ol className="mt-3 space-y-2 text-sm leading-6 text-ink">
+        <li>1. Read the current focus.</li>
+        <li>2. Look for the highlighted values in the visual.</li>
+        <li>3. Try the prediction before moving on.</li>
+      </ol>
+    </div>
+  );
+}
+
 function TraceTutorPanel({ challengeMode }) {
   return (
     <details className="group rounded-[1.35rem] border border-accent/20 bg-accent/8 p-4">
@@ -426,8 +439,8 @@ function MemoryPanel({ memory }) {
   }
 
   return (
-    <div className="rounded-[1.4rem] border border-line/80 bg-white/70 p-4">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+    <details className="rounded-[1.4rem] border border-line/80 bg-white/70 p-4">
+      <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-3">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">{memory.label}</p>
           <p className="mt-2 text-sm leading-6 text-ink">{memory.description}</p>
@@ -435,7 +448,7 @@ function MemoryPanel({ memory }) {
         <span className="rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-accent">
           {memory.entries.length} {memory.countLabel ?? 'saved'}
         </span>
-      </div>
+      </summary>
 
       <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
         {memory.entries.length > 0 ? (
@@ -454,7 +467,7 @@ function MemoryPanel({ memory }) {
           </p>
         )}
       </div>
-    </div>
+    </details>
   );
 }
 
@@ -681,6 +694,8 @@ export function TraceModePlayer({
               <p className="mt-4 text-base leading-7 text-muted">{traceLesson.summary}</p>
             </div>
 
+            <GuidedViewingPanel />
+
             <div className="rounded-[1.35rem] border border-line/80 bg-warm/45 p-4">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">Current focus</p>
               <p className="mt-2 text-lg font-semibold tracking-[-0.02em] text-ink">{frame.title}</p>
@@ -696,27 +711,33 @@ export function TraceModePlayer({
 
             <CodeSyncPanel activeLineIds={activeCodeLineIds} code={traceLesson.code} />
 
-            <div className="space-y-3">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">Algorithm path</p>
-              {traceLesson.algorithmSteps.map((step, index) => (
-                <TraceStep
-                  key={step.id}
-                  active={step.id === frame.activeStepId}
-                  detail={step.detail}
-                  index={index + 1}
-                  label={step.label}
-                />
-              ))}
-            </div>
+            <details className="rounded-[1.35rem] border border-line/80 bg-white/65 p-4">
+              <summary className="cursor-pointer list-none text-xs font-semibold uppercase tracking-[0.18em] text-muted">
+                Show full algorithm path
+              </summary>
+              <div className="mt-4 space-y-3">
+                {traceLesson.algorithmSteps.map((step, index) => (
+                  <TraceStep
+                    key={step.id}
+                    active={step.id === frame.activeStepId}
+                    detail={step.detail}
+                    index={index + 1}
+                    label={step.label}
+                  />
+                ))}
+              </div>
+            </details>
 
-            <div className="rounded-[1.35rem] border border-line/80 bg-white/70 p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">Learning goals</p>
+            <details className="rounded-[1.35rem] border border-line/80 bg-white/70 p-4">
+              <summary className="cursor-pointer list-none text-xs font-semibold uppercase tracking-[0.18em] text-muted">
+                Show learning goals
+              </summary>
               <ul className="mt-3 space-y-2 text-sm leading-6 text-ink">
                 {lesson.goals.map((goal) => (
                   <li key={goal}>{goal}</li>
                 ))}
               </ul>
-            </div>
+            </details>
           </div>
 
           <div className="border-t border-line/70 bg-white/80 p-5 backdrop-blur-xl lg:p-6">
@@ -763,7 +784,9 @@ export function TraceModePlayer({
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">
                 Canvas state: {activeStep?.label ?? frame.activeStepId}
               </p>
-              <p className="mt-1 text-sm leading-6 text-muted">Watch data change before reading the next line.</p>
+              <p className="mt-1 text-sm leading-6 text-muted">
+                First, find the highlighted values. Then read the prediction question below.
+              </p>
             </div>
             {hasTarget ? (
               <div className="rounded-full border border-line/80 bg-white/80 px-4 py-2 font-mono text-sm text-muted">
@@ -805,17 +828,22 @@ export function TraceModePlayer({
               ))}
             </div>
 
-            <div className="mt-5 grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(260px,0.8fr)]">
-              <div className="rounded-[1.4rem] border border-line/80 bg-white/75 p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">Why this step matters</p>
-                <p className="mt-3 text-sm leading-7 text-ink">{frame.decision}</p>
-                <p className="mt-3 rounded-2xl bg-accent/10 px-4 py-3 text-sm font-medium text-accent">
-                  {frame.comparisonText}
-                </p>
-              </div>
+            <details className="mt-5 rounded-[1.4rem] border border-line/80 bg-white/75 p-4">
+              <summary className="cursor-pointer list-none text-xs font-semibold uppercase tracking-[0.18em] text-muted">
+                Explain this step in plain English
+              </summary>
+              <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(260px,0.8fr)]">
+                <div className="rounded-[1.2rem] border border-line/70 bg-white/75 p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">Why it matters</p>
+                  <p className="mt-3 text-sm leading-7 text-ink">{frame.decision}</p>
+                  <p className="mt-3 rounded-2xl bg-accent/10 px-4 py-3 text-sm font-medium text-accent">
+                    {frame.comparisonText}
+                  </p>
+                </div>
 
-              <TeachingNote body={frame.teaching?.beginnerNote} label="Beginner note" />
-            </div>
+                <TeachingNote body={frame.teaching?.beginnerNote} label="Beginner note" />
+              </div>
+            </details>
 
             <div className="mt-5 space-y-4">
               <PredictionPanel
@@ -828,10 +856,15 @@ export function TraceModePlayer({
               <MemoryPanel memory={frame.memory} />
             </div>
 
-            <div className="mt-5 grid gap-4 lg:grid-cols-2">
-              <TeachingNote body={frame.teaching?.whyAllowed} label="Why this is allowed" />
-              <TeachingNote body={frame.teaching?.watchFor} label="Watch for" />
-            </div>
+            <details className="mt-5 rounded-[1.4rem] border border-line/80 bg-white/65 p-4">
+              <summary className="cursor-pointer list-none text-xs font-semibold uppercase tracking-[0.18em] text-muted">
+                Extra notes
+              </summary>
+              <div className="mt-4 grid gap-4 lg:grid-cols-2">
+                <TeachingNote body={frame.teaching?.whyAllowed} label="Why this is allowed" />
+                <TeachingNote body={frame.teaching?.watchFor} label="Watch for" />
+              </div>
+            </details>
           </div>
         </div>
       </div>

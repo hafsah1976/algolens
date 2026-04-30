@@ -454,11 +454,11 @@ export function DashboardPage() {
         <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
           <div className="max-w-2xl">
             <h1 className="font-display text-4xl tracking-[-0.04em] text-ink">
-              Today's study session
+              Start with one lesson.
             </h1>
             <p className="mt-4 text-base leading-7 text-muted sm:text-lg">
-              {learnerName}, this is your saved DSA progress, recommended next lesson,
-              recent quiz work, and coding practice activity in one focused place.
+              {learnerName}, if you are new, use the green button first. The rest of the dashboard is
+              just context you can check after one walkthrough.
             </p>
           </div>
 
@@ -481,22 +481,22 @@ export function DashboardPage() {
           </p>
           <div className="flex flex-wrap gap-3">
             <Link
+              className="inline-flex items-center rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:bg-ink"
+              to={getCanonicalLessonPath(resumeLesson.id)}
+            >
+              Start here: {resumeLesson.title}
+            </Link>
+            <Link
               className="inline-flex items-center rounded-full border border-line/80 bg-white/70 px-4 py-2 text-sm font-medium text-ink transition hover:border-accent/40"
               to="/app/traces"
             >
-              Open step-by-step examples
+              Browse examples
             </Link>
             <Link
               className="inline-flex items-center rounded-full border border-line/80 bg-white/70 px-4 py-2 text-sm font-medium text-ink transition hover:border-accent/40"
               to="/app/sandbox"
             >
-              Run a walkthrough
-            </Link>
-            <Link
-              className="inline-flex items-center rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:bg-ink"
-              to={getCanonicalLessonPath(resumeLesson.id)}
-            >
-              Resume {resumeLesson.title}
+              Try your own input
             </Link>
           </div>
         </div>

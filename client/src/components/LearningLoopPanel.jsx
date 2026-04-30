@@ -4,29 +4,19 @@ import { getCanonicalLessonPath } from '../lib/contentCatalog.js';
 
 const loopSteps = [
   {
-    label: 'Understand',
-    body: 'Read the plain-language primer before opening a lesson.',
+    label: 'Start with one idea',
+    body: 'Read the short explanation at the top of the path.',
     status: 'Start here',
   },
   {
-    label: 'Walk through',
-    body: 'Run one step-by-step example and watch the state change.',
-    status: 'Core step',
+    label: 'Run the walkthrough',
+    body: 'Use next and previous until the visual change makes sense.',
+    status: 'Main step',
   },
   {
-    label: 'Check',
-    body: 'Use the concept quiz to catch misunderstandings early.',
-    status: 'After lesson',
-  },
-  {
-    label: 'Practice',
-    body: 'Try one small coding problem only after the idea feels clear.',
-    status: 'When ready',
-  },
-  {
-    label: 'Recap',
-    body: 'Pause with one takeaway before choosing another lesson.',
-    status: 'Close calmly',
+    label: 'Stop or check yourself',
+    body: 'End with one takeaway, then use a quiz only if you want to confirm it.',
+    status: 'Finish',
   },
 ];
 
@@ -74,6 +64,16 @@ export function LearningLoopPanel({ actionLabel, launchLesson, progress, track }
           </li>
         ))}
       </ol>
+
+      <details className="mt-4 rounded-[1.1rem] border border-line/70 bg-white/55 p-4">
+        <summary className="cursor-pointer list-none text-sm font-semibold text-ink">
+          What happens after this?
+        </summary>
+        <p className="mt-2 text-sm leading-6 text-muted">
+          After one lesson, take the topic quiz or try one small practice problem. You do not need to
+          complete everything on this page in one sitting.
+        </p>
+      </details>
 
       <Link
         className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-accent px-4 py-3 text-sm font-semibold text-white transition hover:bg-ink"

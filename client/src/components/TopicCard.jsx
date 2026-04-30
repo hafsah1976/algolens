@@ -53,7 +53,7 @@ export function TopicCard({
         </div>
 
         <div className="app-panel-soft p-4">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">Best next lesson</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">Start with this lesson</p>
           <p className="mt-3 text-base font-semibold text-ink">{nextLesson.title}</p>
           <p className="mt-2 text-sm leading-6 text-muted">{nextLesson.duration} / {nextLessonStageLabel}</p>
         </div>
@@ -70,7 +70,7 @@ export function TopicCard({
           className="inline-flex items-center rounded-full border border-line/80 bg-white/70 px-4 py-2 text-sm font-medium text-ink transition hover:border-accent/40"
           to={lessonHref}
         >
-          Preview lesson
+          Open lesson
         </Link>
       </div>
     </article>

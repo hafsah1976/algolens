@@ -13,15 +13,14 @@ import {
   getStaticTopic,
   mergeApiTopicDetail,
 } from '../lib/contentCatalog.js';
-import { getLessonMode, getLessonStats, getTrackReadiness } from '../lib/lessonMeta.js';
+import { getLessonMode, getTrackReadiness } from '../lib/lessonMeta.js';
 import { getLessonStageLabel, getTrackProgressSnapshot } from '../lib/progressSummary.js';
 
 function LessonRow({ lesson, stageLabel }) {
   const mode = getLessonMode(lesson);
-  const stats = getLessonStats(lesson);
   const readinessCopy = mode.isInteractive
-    ? `${stats.frames} frames / ${stats.predictions} predictions / ${stats.mistakes} mistake lenses`
-    : 'Walkthrough authoring planned after the core interactive library is complete';
+    ? 'Includes a guided visual walkthrough.'
+    : 'Start with the concept first; a guided walkthrough can be added later.';
 
   return (
     <div className="rounded-2xl border border-line/70 bg-white/70 p-4 transition hover:border-accent/35 hover:bg-white/90 sm:p-5">
@@ -158,10 +157,10 @@ export function TopicPage() {
   const concepts = track.concepts ?? [];
   const miniExamples = track.miniExamples ?? [];
   const launchActionLabel = pathComplete
-    ? 'Review first lesson'
+    ? 'Review this path'
     : progress.activeLesson
-      ? 'Resume current lesson'
-      : 'Open best next lesson';
+      ? 'Continue where you left off'
+      : 'Start here';
 
   return (
     <div className="space-y-6">
@@ -178,6 +177,24 @@ export function TopicPage() {
         eyebrow="Topic path"
         title={track.title}
       />
+
+      <section className="rounded-xl border border-accent/20 bg-accent/8 p-5">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">How to use this page</p>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-ink">
+              This is a learning path, not a feed. Start with the highlighted lesson, finish one idea,
+              then decide whether to stop or continue.
+            </p>
+          </div>
+          <Link
+            className="inline-flex w-full items-center justify-center rounded-full bg-accent px-5 py-3 text-sm font-semibold text-white transition hover:bg-ink lg:w-auto"
+            to={getCanonicalLessonPath(launchLesson.id)}
+          >
+            {launchActionLabel}
+          </Link>
+        </div>
+      </section>
 
       {catalogState.isLoading ? (
         <div className="app-panel-soft p-4 text-sm leading-6 text-muted">
@@ -205,7 +222,7 @@ export function TopicPage() {
               </h2>
             </div>
             <p className="text-sm leading-6 text-muted">
-              {readiness.interactive} interactive / {readiness.planned} planned
+              {readiness.interactive} guided lessons ready
             </p>
           </div>
           <div className="mt-5 space-y-3">
