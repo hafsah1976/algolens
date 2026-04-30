@@ -9,6 +9,21 @@ import {
 
 const CHALLENGE_MODE_KEY = 'algolens.challengeMode';
 
+const traceTutorSteps = [
+  {
+    title: 'Read the frame',
+    detail: 'Start with the highlighted data and current variables before looking for the next move.',
+  },
+  {
+    title: 'Predict first',
+    detail: 'Choose what should happen next so the lesson checks your mental model, not just your clicks.',
+  },
+  {
+    title: 'Step and explain',
+    detail: 'Move forward only after the visual state, code line, and beginner note agree with each other.',
+  },
+];
+
 function readStoredChallengeMode() {
   if (typeof window === 'undefined') {
     return false;
@@ -57,6 +72,39 @@ function TeachingNote({ body, label }) {
     <div className="rounded-2xl border border-line/70 bg-white/70 px-4 py-4">
       <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">{label}</p>
       <p className="mt-3 text-sm leading-7 text-ink">{body}</p>
+    </div>
+  );
+}
+
+function TraceTutorPanel({ challengeMode }) {
+  return (
+    <div className="rounded-[1.35rem] border border-accent/20 bg-accent/8 p-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">How to use this trace</p>
+          <p className="mt-2 text-sm leading-6 text-ink">
+            Treat each frame like a small debugging moment. Read what changed, predict the next
+            state, then move one step.
+          </p>
+        </div>
+        <span className="rounded-full bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-muted">
+          {challengeMode ? 'Challenge locked' : 'Guided mode'}
+        </span>
+      </div>
+
+      <div className="mt-4 grid gap-3">
+        {traceTutorSteps.map((step, index) => (
+          <div className="grid grid-cols-[2rem_1fr] gap-3 rounded-2xl bg-white/70 px-3 py-3" key={step.title}>
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-accent/10 text-xs font-semibold text-accent">
+              {index + 1}
+            </span>
+            <div>
+              <p className="text-sm font-semibold text-ink">{step.title}</p>
+              <p className="mt-1 text-xs leading-5 text-muted">{step.detail}</p>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -371,7 +419,14 @@ function MemoryPanel({ memory }) {
 
 function ProgressStepper({ currentStep, totalSteps }) {
   return (
-    <div className="flex w-full max-w-xs items-center gap-2">
+    <div
+      aria-label={`Trace progress: step ${currentStep + 1} of ${totalSteps}`}
+      className="flex w-full max-w-xs items-center gap-2"
+      role="progressbar"
+      aria-valuemax={totalSteps}
+      aria-valuemin={1}
+      aria-valuenow={currentStep + 1}
+    >
       {Array.from({ length: totalSteps }).map((_, index) => (
         <div
           className={`h-1.5 flex-1 rounded-full transition ${
@@ -597,6 +652,8 @@ export function TraceModePlayer({
               </h1>
               <p className="mt-4 text-base leading-7 text-muted">{traceLesson.summary}</p>
             </div>
+
+            <TraceTutorPanel challengeMode={challengeMode} />
 
             <div className="rounded-[1.35rem] border border-line/80 bg-warm/45 p-4">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">Current focus</p>
