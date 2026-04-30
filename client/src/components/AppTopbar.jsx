@@ -15,7 +15,7 @@ const titleMap = [
   { match: '/app/sandbox', title: 'Algo-Sandbox', detail: 'Test a pattern with your own input.' },
   { match: '/app/practice/', title: 'Practice problem', detail: 'Write code after the concept clicks.' },
   { match: '/app/practice', title: 'Coding practice', detail: 'Browse beginner DSA problems.' },
-  { match: '/app/completed', title: 'Lesson recap', detail: 'Close the loop with one clear takeaway.' },
+  { match: '/app/completed', title: 'Recap', detail: 'Use one clear takeaway before you move on.' },
   { match: '/app/quizzes/', title: 'Concept quiz', detail: 'Check understanding before coding practice.' },
   { match: '/app/topic/', title: 'Topic path', detail: 'Follow linked concepts, not isolated facts.' },
   { match: '/app/lessons/', title: 'Step-by-step lesson', detail: 'Walk through the algorithm and save your place.' },

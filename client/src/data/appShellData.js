@@ -544,12 +544,12 @@ export const dashboardSnapshot = {
 };
 
 export const completionConcept = {
-  title: 'You finished a clean study loop.',
-  body: 'AlgoLens should help students leave with one solid insight, not bait them into another hour of scrolling.',
+  title: 'Use a recap when a lesson is done.',
+  body: 'After a lesson, pause for one clear takeaway before choosing whether to continue or stop.',
   takeaways: [
-    'You tracked how pointer movement changes the search space.',
-    'You connected the algorithm step to the visual state.',
-    'You now have one clear next lesson instead of a noisy feed.',
+    'Name the idea you practiced.',
+    'Connect one algorithm step to what changed visually.',
+    'Choose one next lesson, or stop while the idea is still clear.',
   ],
 };
 

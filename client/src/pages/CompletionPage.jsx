@@ -138,8 +138,8 @@ function TraceRecapScreen({
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Recommended next step</p>
           <h3 className="mt-3 font-display text-3xl tracking-[-0.04em] text-ink">Stop here, then continue intentionally.</h3>
           <p className="mt-3 text-sm leading-7 text-muted">
-            AlgoLens does not need an endless feed. If you are done, close the loop here.
-            If you want one more, use the next unfinished lesson instead of wandering.
+            AlgoLens does not need an endless feed. If you are done, stop here.
+            If you want one more lesson, choose the next unfinished one instead of wandering.
           </p>
           {nextTrace ? (
             <div className="mt-5 rounded-[1.15rem] border border-line/80 bg-white/70 p-4">
@@ -215,7 +215,7 @@ export function CompletionPage() {
   const earnedMilestones = getMilestonesForLesson(learningTracks, lessonProgress, completionMatch);
   const completionDescription = completionMatch
     ? `You completed ${completionMatch.lesson.title}, saved the result, and updated the ${completionMatch.track.title} progress path.`
-    : 'End a lesson with reflection, a clear win, and permission to stop.';
+    : 'When a lesson is complete, use this page to name one takeaway and decide your next step.';
   const nextTrace = completionMatch ? getNextTraceRecommendation(completionMatch, lessonProgress) : null;
 
   return (
@@ -239,8 +239,8 @@ export function CompletionPage() {
           </>
         }
         description={completionDescription}
-        eyebrow="Completion"
-        title={traceLesson ? 'Walkthrough complete. Let it settle.' : 'End the session on purpose'}
+        eyebrow={traceLesson ? 'Completion' : 'Recap'}
+        title={traceLesson ? 'Walkthrough complete. Let it settle.' : 'A calm place to pause'}
       />
 
       {completionMatch && trackProgress && traceLesson?.completionRecap ? (

@@ -103,7 +103,7 @@ export function AppSidebar({ focusMode, onNavigate }) {
       <div className="mt-auto app-panel-soft p-4">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Study path</p>
         <p className="mt-2 text-sm leading-6 text-muted">
-          Open a step-by-step example, complete one visual lesson, then end on a calm recap.
+          Open a step-by-step example, try one visual lesson, then use a calm recap before moving on.
         </p>
         <p className="mt-4 rounded-full border border-line/70 bg-white/60 px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted">
           {getFocusModeStatus(focusMode)}
