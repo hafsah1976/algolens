@@ -8,6 +8,7 @@ import { AuthPage } from './pages/AuthPage.jsx';
 import { CompletionPage } from './pages/CompletionPage.jsx';
 import { DashboardPage } from './pages/DashboardPage.jsx';
 import { LandingPage } from './pages/LandingPage.jsx';
+import { PrivacyPage, SupportPage, TermsPage } from './pages/LegalPages.jsx';
 import { LessonPage } from './pages/LessonPage.jsx';
 import { NotFoundPage } from './pages/NotFoundPage.jsx';
 import { PracticeListPage } from './pages/PracticeListPage.jsx';
@@ -87,6 +88,9 @@ function Root() {
       <Routes>
         <Route element={<LandingPage />} path="/" />
         <Route element={<AuthPage />} path="/auth" />
+        <Route element={<PrivacyPage />} path="/privacy" />
+        <Route element={<TermsPage />} path="/terms" />
+        <Route element={<SupportPage />} path="/support" />
         <Route element={<Navigate replace to="/app/dashboard" />} path="/dashboard" />
         <Route element={<Navigate replace to="/app/topics" />} path="/topics" />
         <Route element={<TopicAliasRedirect />} path="/topics/:topicSlug" />

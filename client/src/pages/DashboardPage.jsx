@@ -385,7 +385,7 @@ export function DashboardPage() {
     ? 'Loading saved progress…'
     : storageMode === 'mongo'
       ? 'Your progress is saved to your account.'
-      : 'Your progress is saved on this device for the demo.';
+      : 'Your progress is saved locally until account storage reconnects.';
   const dashboardStatus = dashboardState.isLoading
     ? 'Loading dashboard activity…'
     : dashboardState.error;

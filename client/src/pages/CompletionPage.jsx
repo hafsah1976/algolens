@@ -102,7 +102,7 @@ function TraceRecapScreen({
             <div className="mt-6 rounded-[1.15rem] bg-white/10 p-4">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/55">Progress saved</p>
               <p className="mt-2 text-sm leading-6 text-white/80">
-                {storageMode === 'mongo' ? 'Saved to your account.' : 'Saved on this device for the demo.'}
+                {storageMode === 'mongo' ? 'Saved to your account.' : 'Saved locally until account storage reconnects.'}
               </p>
             </div>
             <div className="mt-4">

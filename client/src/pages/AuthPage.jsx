@@ -294,6 +294,16 @@ export function AuthPage() {
               value={form.password}
             />
 
+            {!isSignup ? (
+              <p className="text-sm leading-6 text-muted">
+                Need account help? Password reset by email is not enabled yet. Visit{' '}
+                <Link className="font-semibold text-accent underline-offset-4 hover:underline" to="/support">
+                  support
+                </Link>
+                .
+              </p>
+            ) : null}
+
             {isSignup ? (
               <p className="text-sm leading-6 text-muted">
                 Use at least 8 characters, including one letter and one number.
@@ -318,6 +328,17 @@ export function AuthPage() {
           <p className="mt-5 text-sm leading-6 text-muted">
             Your account keeps lesson progress, step-by-step checkpoints, quiz attempts, and coding
             practice activity connected to your learning profile.
+          </p>
+          <p className="mt-3 text-xs leading-5 text-muted">
+            By continuing, you agree to the{' '}
+            <Link className="font-semibold text-accent underline-offset-4 hover:underline" to="/terms">
+              Terms
+            </Link>{' '}
+            and acknowledge the{' '}
+            <Link className="font-semibold text-accent underline-offset-4 hover:underline" to="/privacy">
+              Privacy Policy
+            </Link>
+            .
           </p>
         </section>
       </div>

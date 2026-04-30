@@ -4,7 +4,7 @@ function getStorageMessage(storageMode) {
   }
 
   if (storageMode === 'file' || storageMode === 'file-fallback') {
-    return 'Progress is saved on this device for the demo.';
+    return 'Progress is saved locally until account storage reconnects.';
   }
 
   return 'Checking saved progress.';

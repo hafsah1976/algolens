@@ -69,6 +69,9 @@ function LandingNav() {
           <a className="rounded-full px-4 py-2 text-sm font-medium text-muted transition hover:bg-warm/60 hover:text-ink" href="#paths">
             Paths
           </a>
+          <Link className="rounded-full px-4 py-2 text-sm font-medium text-muted transition hover:bg-warm/60 hover:text-ink" to="/support">
+            Support
+          </Link>
         </nav>
 
         <div className="flex items-center gap-2">
@@ -87,6 +90,27 @@ function LandingNav() {
         </div>
       </div>
     </header>
+  );
+}
+
+function LandingFooter() {
+  return (
+    <footer className="border-t border-line/70 bg-white/70 px-5 py-8 sm:px-8">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
+        <p>AlgoLens helps learners build algorithm understanding one step at a time.</p>
+        <nav className="flex flex-wrap gap-4">
+          <Link className="font-medium transition hover:text-accent" to="/privacy">
+            Privacy
+          </Link>
+          <Link className="font-medium transition hover:text-accent" to="/terms">
+            Terms
+          </Link>
+          <Link className="font-medium transition hover:text-accent" to="/support">
+            Support
+          </Link>
+        </nav>
+      </div>
+    </footer>
   );
 }
 
@@ -309,6 +333,7 @@ export function LandingPage() {
           </div>
         </section>
       </main>
+      <LandingFooter />
     </div>
   );
 }

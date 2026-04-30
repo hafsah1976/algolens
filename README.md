@@ -222,6 +222,7 @@ There is no separate frontend unit-test framework installed yet; the current fro
 - [Deploy and submit guide](docs/DEPLOY_AND_SUBMIT.md)
 - [Demo script](docs/DEMO_SCRIPT.md)
 - [QA checklist](docs/QA_CHECKLIST.md)
+- [Commercial launch checklist](docs/COMMERCIAL_LAUNCH_CHECKLIST.md)
 - [Deployment guide](docs/DEPLOYMENT.md)
 - [Content guide](docs/CONTENT_GUIDE.md)
 

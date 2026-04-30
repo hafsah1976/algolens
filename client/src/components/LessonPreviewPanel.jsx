@@ -38,7 +38,7 @@ export function LessonPreviewPanel({ lesson, track }) {
     },
     {
       title: 'Use a complete walkthrough now',
-      note: 'For a polished demo, open the step-by-step examples that are already fully interactive.',
+      note: 'For the best experience, open the step-by-step examples that are already fully interactive.',
     },
   ];
   const statusTitle = hasInlineVisualization

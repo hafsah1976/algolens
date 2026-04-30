@@ -32,7 +32,7 @@ function CatalogStatus({ error, isLoading, source }) {
   if (error) {
     return (
       <div className="app-panel-soft border-amber-400/35 bg-amber-50/60 p-4 text-sm leading-6 text-amber-800">
-        {error} The student view is using the in-app curriculum fallback so the demo remains browseable.
+        {error} The student view is using the in-app curriculum fallback so topics remain browseable.
       </div>
     );
   }

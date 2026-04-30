@@ -45,7 +45,9 @@ Use this before recording a demo or submitting the project.
 
 - No `.env` file is committed.
 - `server/.env.example` and `client/.env.example` are up to date.
+- Public `/privacy`, `/terms`, and `/support` pages load.
 - Unknown frontend routes show a not-found screen.
 - Unknown API routes return JSON errors.
 - Judge0 settings are documented and optional.
 - Hidden coding test cases are not exposed to the frontend.
+- Run the commercial launch checklist in `docs/COMMERCIAL_LAUNCH_CHECKLIST.md`.
