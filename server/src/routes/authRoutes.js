@@ -60,7 +60,8 @@ async function requireDatabase(response) {
 
   if (!connected) {
     response.status(503).json({
-      error: 'MongoDB is required for accounts. Start MongoDB and try again.',
+      error:
+        'MongoDB is required for accounts. Check MONGODB_URI and database network access, then try again.',
       database: getDatabaseStatus(),
     });
     return false;
