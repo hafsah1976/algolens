@@ -236,7 +236,7 @@ export function AuthPage() {
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-8 text-muted">
             Sign in before a lesson and AlgoLens will load your saved frames, completed lessons,
-            and topic progress from MongoDB.
+            and topic progress across sessions.
           </p>
           {sessionError ? (
             <div className="mt-6 max-w-xl rounded-[1rem] border border-rose-200 bg-rose-50/90 px-4 py-3 text-sm leading-6 text-rose-700">
@@ -316,8 +316,8 @@ export function AuthPage() {
           </form>
 
           <p className="mt-5 text-sm leading-6 text-muted">
-            This is a lightweight account system for saved learning progress. We can upgrade
-            to managed auth later if the submission needs production-grade account features.
+            Your account keeps lesson progress, Trace Mode checkpoints, quiz attempts, and coding
+            practice activity connected to your learning profile.
           </p>
         </section>
       </div>

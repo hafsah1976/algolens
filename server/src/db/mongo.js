@@ -37,8 +37,12 @@ export async function connectToDatabase() {
     return mongoose.connection;
   }
 
-  if (connectionPromise) {
+  if (mongoose.connection.readyState === 2 && connectionPromise) {
     return connectionPromise;
+  }
+
+  if (mongoose.connection.readyState === 0 && connectionPromise) {
+    connectionPromise = null;
   }
 
   const now = Date.now();
@@ -60,6 +64,7 @@ export async function connectToDatabase() {
     })
     .then((connection) => {
       lastConnectionError = null;
+      connectionPromise = null;
       return connection.connection;
     })
     .catch((error) => {

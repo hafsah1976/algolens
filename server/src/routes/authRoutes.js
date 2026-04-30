@@ -60,8 +60,8 @@ async function requireDatabase(response) {
 
   if (!connected) {
     response.status(503).json({
-      error:
-        'MongoDB is required for accounts. Check MONGODB_URI and database network access, then try again.',
+      code: 'ACCOUNT_STORAGE_UNAVAILABLE',
+      error: 'Account storage is temporarily unavailable. Please try again in a moment.',
       database: getDatabaseStatus(),
     });
     return false;
