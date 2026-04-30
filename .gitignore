@@ -14,3 +14,4 @@ server/.env
 client/.env
 client/dist/
 server/data/dev-progress.json
+server/.env.example
