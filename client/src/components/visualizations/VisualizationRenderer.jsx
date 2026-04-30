@@ -1,19 +1,27 @@
+import { lazy, Suspense } from 'react';
+
 import { isRenderableVisualizationType } from '../../lib/visualizationTypes.js';
-import { BFSVisualization } from './BFSVisualization.jsx';
-import { BinarySearchVisualization } from './BinarySearchVisualization.jsx';
-import { BubbleSortVisualization } from './BubbleSortVisualization.jsx';
-import { DFSVisualization } from './DFSVisualization.jsx';
-import { QueueVisualization } from './QueueVisualization.jsx';
-import { StackVisualization } from './StackVisualization.jsx';
+
+function loadVisualization(importer, exportName) {
+  return lazy(() => importer().then((module) => ({ default: module[exportName] })));
+}
 
 const visualizationComponents = {
-  bfs: BFSVisualization,
-  binary_search: BinarySearchVisualization,
-  bubble_sort: BubbleSortVisualization,
-  dfs: DFSVisualization,
-  queue: QueueVisualization,
-  stack: StackVisualization,
+  bfs: loadVisualization(() => import('./BFSVisualization.jsx'), 'BFSVisualization'),
+  binary_search: loadVisualization(() => import('./BinarySearchVisualization.jsx'), 'BinarySearchVisualization'),
+  bubble_sort: loadVisualization(() => import('./BubbleSortVisualization.jsx'), 'BubbleSortVisualization'),
+  dfs: loadVisualization(() => import('./DFSVisualization.jsx'), 'DFSVisualization'),
+  queue: loadVisualization(() => import('./QueueVisualization.jsx'), 'QueueVisualization'),
+  stack: loadVisualization(() => import('./StackVisualization.jsx'), 'StackVisualization'),
 };
+
+function VisualizationLoading() {
+  return (
+    <div className="app-panel-soft p-4 text-sm leading-6 text-muted">
+      Loading the visual example…
+    </div>
+  );
+}
 
 export function VisualizationRenderer({ visualizationType }) {
   if (!visualizationType || visualizationType === 'none' || visualizationType === 'trace') {
@@ -35,7 +43,9 @@ export function VisualizationRenderer({ visualizationType }) {
 
   return (
     <section className="app-panel p-6 sm:p-7">
-      <SelectedVisualization />
+      <Suspense fallback={<VisualizationLoading />}>
+        <SelectedVisualization />
+      </Suspense>
     </section>
   );
 }

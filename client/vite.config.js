@@ -10,6 +10,16 @@ export default defineConfig({
         manualChunks(id) {
           const normalizedId = id.replace(/\\/g, '/');
 
+          if (
+            normalizedId.includes('node_modules/@xyflow') ||
+            normalizedId.includes('node_modules/classcat') ||
+            normalizedId.includes('node_modules/d3-') ||
+            normalizedId.includes('node_modules/use-sync-external-store') ||
+            normalizedId.includes('node_modules/zustand')
+          ) {
+            return 'graph-vendor';
+          }
+
           if (normalizedId.includes('node_modules')) {
             return 'react-vendor';
           }
