@@ -177,8 +177,28 @@
   [data-theme='focus'] .bg-white\/60,
   [data-theme='focus'] .bg-white\/65,
   [data-theme='focus'] .bg-white\/70,
-  [data-theme='focus'] .bg-white\/75 {
-    background-color: rgba(19, 29, 23, 0.72);
+  [data-theme='focus'] .bg-white\/75,
+  [data-theme='focus'] .bg-white\/80,
+  [data-theme='focus'] .bg-white\/85,
+  [data-theme='focus'] .bg-white\/90,
+  [data-theme='focus'] .bg-white\/95,
+  [data-theme='focus'] .bg-white,
+  [data-theme='focus'] .hover\:bg-white:hover,
+  [data-theme='focus'] .hover\:bg-white\/85:hover,
+  [data-theme='focus'] .hover\:bg-white\/90:hover {
+    background-color: rgba(19, 29, 23, 0.72) !important;
+  }
+
+  [data-theme='focus'] input,
+  [data-theme='focus'] select,
+  [data-theme='focus'] textarea {
+    background-color: rgba(19, 29, 23, 0.78) !important;
+    color: var(--ink) !important;
+  }
+
+  [data-theme='focus'] input::placeholder,
+  [data-theme='focus'] textarea::placeholder {
+    color: var(--muted);
   }
 
   [data-theme='focus'] .shadow-\[0_4px_36px_rgba\(15\2c 23\2c 18\2c 0\.035\)\],
