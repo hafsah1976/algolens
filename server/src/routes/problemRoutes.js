@@ -15,7 +15,7 @@ export const problemRouter = Router();
 
 function sendDatabaseUnavailable(response) {
   response.status(503).json({
-    error: 'MongoDB is not connected. Start MongoDB and try again.',
+    error: 'Practice problems are temporarily unavailable. Please try again in a moment.',
     database: getDatabaseStatus(),
   });
 }

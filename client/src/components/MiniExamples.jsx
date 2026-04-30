@@ -38,10 +38,6 @@ export function MiniExamples({ examples, title }) {
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted">Mini examples</p>
           <h3 className="mt-3 font-display text-3xl text-ink">See {title} in smaller moments</h3>
         </div>
-        <p className="max-w-xl text-sm leading-7 text-muted">
-          These examples are intentionally small. They help learners recognize the pattern before
-          opening a full lesson.
-        </p>
       </div>
 
       <div className="mt-7 grid gap-7 xl:grid-cols-3">

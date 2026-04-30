@@ -10,6 +10,7 @@ import { QuizAttempt } from '../models/QuizAttempt.js';
 import { Submission } from '../models/Submission.js';
 import { Topic } from '../models/Topic.js';
 import { TopicProgress } from '../models/TopicProgress.js';
+import { resolveRoleForEmail } from '../utils/adminEmails.js';
 import {
   calculateAverageQuizScore,
   countDistinctStrings,
@@ -21,7 +22,7 @@ export const dashboardRouter = Router();
 
 function sendDatabaseUnavailable(response) {
   response.status(503).json({
-    error: 'MongoDB is not connected. Start MongoDB and try again.',
+    error: 'Your learning dashboard is temporarily unavailable. Please try again in a moment.',
     database: getDatabaseStatus(),
   });
 }
@@ -31,7 +32,7 @@ function toUserPayload(user) {
     id: user.id,
     email: user.email,
     name: user.name,
-    role: user.role,
+    role: resolveRoleForEmail(user.email),
   };
 }
 

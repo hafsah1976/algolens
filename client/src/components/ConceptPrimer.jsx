@@ -105,9 +105,6 @@ export function ConceptPrimer({ primer, title }) {
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted">Vocabulary</p>
             <h4 className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-ink">Small words that unlock the topic</h4>
           </div>
-          <p className="max-w-md text-sm leading-6 text-muted">
-            These are the terms learners will keep seeing across lessons, walkthroughs, and explanations.
-          </p>
         </div>
 
         <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">

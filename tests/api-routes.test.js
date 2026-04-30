@@ -227,7 +227,7 @@ test('public content, quiz, and problem routes fail gracefully when MongoDB is u
       const payload = await readJson(response);
 
       assert.equal(response.status, 503);
-      assert.equal(payload.error, 'MongoDB is not connected. Start MongoDB and try again.');
+      assert.match(payload.error, /temporarily unavailable/i);
     }
   });
 });

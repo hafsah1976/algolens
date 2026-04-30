@@ -110,7 +110,9 @@ test('admin middleware rejects authenticated non-admin users', async () => {
   assert.equal(response.payload.error, 'Admin access is required.');
 });
 
-test('admin middleware allows authenticated admin users', async () => {
+test('admin middleware allows configured admin users', async () => {
+  const previousAdminEmails = process.env.ADMIN_EMAILS;
+  process.env.ADMIN_EMAILS = 'admin@example.com';
   let nextCalled = false;
   const response = {
     json() {},
@@ -119,18 +121,68 @@ test('admin middleware allows authenticated admin users', async () => {
     },
   };
 
-  await requireAdmin(
-    {
-      authUser: {
-        email: 'admin@example.com',
-        role: 'admin',
+  try {
+    await requireAdmin(
+      {
+        authUser: {
+          email: 'admin@example.com',
+          role: 'admin',
+        },
       },
-    },
-    response,
-    () => {
-      nextCalled = true;
-    },
-  );
+      response,
+      () => {
+        nextCalled = true;
+      },
+    );
+  } finally {
+    if (previousAdminEmails === undefined) {
+      delete process.env.ADMIN_EMAILS;
+    } else {
+      process.env.ADMIN_EMAILS = previousAdminEmails;
+    }
+  }
 
   assert.equal(nextCalled, true);
+});
+
+test('admin middleware rejects stored admin role when email is not configured', async () => {
+  const previousAdminEmails = process.env.ADMIN_EMAILS;
+  delete process.env.ADMIN_EMAILS;
+  let nextCalled = false;
+  const response = {
+    payload: null,
+    statusCode: null,
+    json(payload) {
+      this.payload = payload;
+    },
+    status(statusCode) {
+      this.statusCode = statusCode;
+      return this;
+    },
+  };
+
+  try {
+    await requireAdmin(
+      {
+        authUser: {
+          email: 'old-admin@example.com',
+          role: 'admin',
+        },
+      },
+      response,
+      () => {
+        nextCalled = true;
+      },
+    );
+  } finally {
+    if (previousAdminEmails === undefined) {
+      delete process.env.ADMIN_EMAILS;
+    } else {
+      process.env.ADMIN_EMAILS = previousAdminEmails;
+    }
+  }
+
+  assert.equal(nextCalled, false);
+  assert.equal(response.statusCode, 403);
+  assert.equal(response.payload.error, 'Admin access is required.');
 });

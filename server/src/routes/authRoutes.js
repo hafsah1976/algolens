@@ -51,7 +51,7 @@ function toAuthUser(user) {
     id: user.id,
     email: user.email,
     name: user.name,
-    role: user.role ?? resolveRoleForEmail(user.email),
+    role: resolveRoleForEmail(user.email),
   };
 }
 

@@ -296,8 +296,8 @@ export function LandingPage() {
                 A focused curriculum for the patterns students actually need first.
               </h2>
               <p className="mt-4 text-base leading-7 text-muted">
-                The app stays intentionally small: clear visual explanations, beginner vocabulary,
-                and one calm study loop instead of endless scrolling.
+                Each path uses clear visual explanations, beginner vocabulary, and one calm study loop
+                instead of endless scrolling.
               </p>
             </div>
 

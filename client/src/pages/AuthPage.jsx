@@ -235,8 +235,8 @@ export function AuthPage() {
             Keep your step-by-step progress attached to you.
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-8 text-muted">
-            Sign in before a lesson and AlgoLens will load your saved frames, completed lessons,
-            and topic progress across sessions.
+            Sign in before a lesson and AlgoLens will remember your place, completed lessons,
+            and practice activity across sessions.
           </p>
           {sessionError ? (
             <div className="mt-6 max-w-xl rounded-[1rem] border border-rose-200 bg-rose-50/90 px-4 py-3 text-sm leading-6 text-rose-700">

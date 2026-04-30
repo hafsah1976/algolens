@@ -36,7 +36,6 @@ export function TopicCard({
 
         <div className="min-w-[180px]">
           <p className="text-3xl font-semibold tracking-[-0.04em] text-ink">{progress.percent}%</p>
-          <p className="mt-2 text-sm leading-6 text-muted">Live topic progress pulled from the current learner state.</p>
         </div>
       </div>
 

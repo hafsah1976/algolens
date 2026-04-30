@@ -1,6 +1,6 @@
 import { ensureDatabaseConnection } from '../db/mongo.js';
 import { User } from '../models/User.js';
-import { promoteConfiguredAdmin } from '../utils/adminEmails.js';
+import { isConfiguredAdminEmail, promoteConfiguredAdmin } from '../utils/adminEmails.js';
 import { verifySessionToken } from '../utils/sessionToken.js';
 
 function readBearerToken(request) {
@@ -32,7 +32,7 @@ export async function optionalAuth(request, response, next) {
   const connected = await ensureDatabaseConnection();
 
   if (!connected) {
-    response.status(503).json({ error: 'MongoDB is required for signed-in progress.' });
+    response.status(503).json({ error: 'Learning progress is temporarily unavailable. Please try again in a moment.' });
     return;
   }
 
@@ -62,7 +62,7 @@ export async function requireAdmin(request, response, next) {
   const continueIfAdmin = async () => {
     await promoteConfiguredAdmin(request.authUser);
 
-    if (request.authUser.role !== 'admin') {
+    if (request.authUser.role !== 'admin' || !isConfiguredAdminEmail(request.authUser.email)) {
       response.status(403).json({ error: 'Admin access is required.' });
       return;
     }

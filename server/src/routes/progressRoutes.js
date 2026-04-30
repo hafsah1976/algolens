@@ -43,7 +43,7 @@ function toTopicProgressPayload(document) {
 
 function sendDatabaseUnavailable(response) {
   response.status(503).json({
-    error: 'MongoDB is not connected. Start MongoDB and try again.',
+    error: 'Learning progress is temporarily unavailable. Please try again in a moment.',
     database: getDatabaseStatus(),
   });
 }
