@@ -54,6 +54,22 @@ test('serverless JSON body fallback parses raw JSON strings before routes run', 
   });
 });
 
+test('serverless JSON body fallback parses saved raw bodies when adapters drop parsed fields', () => {
+  const request = {
+    body: {},
+    rawBody: '{"email":"rawbody@example.com","name":"Raw Body","password":"12345678A"}',
+  };
+  let continued = false;
+
+  normalizeJsonBody(request, null, () => {
+    continued = true;
+  });
+
+  assert.equal(continued, true);
+  assert.equal(request.body.email, 'rawbody@example.com');
+  assert.equal(request.body.name, 'Raw Body');
+});
+
 test('API root advertises topic, lesson, quiz, dashboard, problem, and protected progress routes', async () => {
   await withTestServer(async (baseUrl) => {
     const response = await fetch(`${baseUrl}/`);

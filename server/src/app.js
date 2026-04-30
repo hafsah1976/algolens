@@ -33,6 +33,12 @@ function applyCorsHeaders(request, response, next) {
   next();
 }
 
+function rememberRawBody(request, _response, buffer) {
+  if (buffer?.length) {
+    request.rawBody = buffer.toString('utf8');
+  }
+}
+
 function shouldParseTextBody(request) {
   if (!['POST', 'PUT', 'PATCH'].includes(request.method)) {
     return false;
@@ -41,23 +47,34 @@ function shouldParseTextBody(request) {
   return !request.is('application/json') && !request.is('application/*+json');
 }
 
-export function normalizeJsonBody(request, _response, next) {
-  if (typeof request.body !== 'string') {
-    next();
-    return;
+function parseJsonCandidate(candidate) {
+  if (typeof candidate !== 'string') {
+    return null;
   }
 
-  const trimmedBody = request.body.trim();
+  const trimmedBody = candidate.trim();
 
   if (!trimmedBody || !['{', '['].includes(trimmedBody[0])) {
-    next();
-    return;
+    return null;
   }
 
   try {
-    request.body = JSON.parse(trimmedBody);
+    return JSON.parse(trimmedBody);
   } catch (_error) {
-    // Leave invalid JSON untouched so route-level validation can respond safely.
+    return null;
+  }
+}
+
+export function normalizeJsonBody(request, _response, next) {
+  const parsedBody =
+    parseJsonCandidate(request.body) ||
+    parseJsonCandidate(request.rawBody) ||
+    parseJsonCandidate(request.body?.body);
+
+  if (parsedBody) {
+    request.body = parsedBody;
+    next();
+    return;
   }
 
   next();
@@ -68,8 +85,9 @@ export function createApp() {
 
   app.disable('x-powered-by');
   app.use(applyCorsHeaders);
-  app.use(express.json());
-  app.use(express.text({ type: shouldParseTextBody }));
+  app.use(express.json({ verify: rememberRawBody }));
+  app.use(express.urlencoded({ extended: false, verify: rememberRawBody }));
+  app.use(express.text({ type: shouldParseTextBody, verify: rememberRawBody }));
   app.use(normalizeJsonBody);
 
   app.get('/', (_request, response) => {
