@@ -94,6 +94,10 @@ test('API root advertises topic, lesson, quiz, dashboard, problem, and protected
     const payload = await readJson(response);
 
     assert.equal(response.status, 200);
+    assert.equal(response.headers.get('x-content-type-options'), 'nosniff');
+    assert.equal(response.headers.get('x-frame-options'), 'DENY');
+    assert.equal(response.headers.get('referrer-policy'), 'strict-origin-when-cross-origin');
+    assert.equal(response.headers.get('cache-control'), 'no-store');
     assert.ok(payload.routes.includes('/api/dashboard/me'));
     assert.ok(payload.routes.includes('/api/admin/topics'));
     assert.ok(payload.routes.includes('/api/admin/lessons'));
@@ -109,6 +113,20 @@ test('API root advertises topic, lesson, quiz, dashboard, problem, and protected
     assert.ok(payload.routes.includes('/api/quizzes/:quizId'));
     assert.ok(payload.routes.includes('/api/quizzes/:quizId/submit'));
     assert.ok(payload.routes.includes('/api/progress/me'));
+  });
+});
+
+test('invalid JSON requests return a safe JSON error', async () => {
+  await withTestServer(async (baseUrl) => {
+    const response = await fetch(`${baseUrl}/api/auth/signup`, {
+      body: '{"email":',
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+    });
+    const payload = await readJson(response);
+
+    assert.equal(response.status, 400);
+    assert.equal(payload.error, 'Request body must be valid JSON.');
   });
 });
 

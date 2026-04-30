@@ -10,6 +10,7 @@ import {
   buildJudge0FailureResult,
   runProblemWithJudge0,
 } from '../services/judge0Service.js';
+import { validateSubmissionInput } from '../utils/submissionValidation.js';
 
 export const problemRouter = Router();
 
@@ -138,10 +139,10 @@ problemRouter.get('/problems/:slug', async (request, response) => {
 
 problemRouter.post('/problems/:slug/submit', requireAuth, async (request, response) => {
   const slug = normalizeFilter(request.params.slug);
-  const { code, language } = request.body ?? {};
+  const { data, error } = validateSubmissionInput(request.body);
 
-  if (!language || !code) {
-    response.status(400).json({ error: 'language and code are required.' });
+  if (error) {
+    response.status(400).json({ error });
     return;
   }
 
@@ -168,8 +169,8 @@ problemRouter.post('/problems/:slug/submit', requireAuth, async (request, respon
 
   try {
     executionResult = await runProblemWithJudge0({
-      code,
-      language,
+      code: data.code,
+      language: data.language,
       problemSlug: problem.slug,
       testCases: problem.testCases,
     });
@@ -178,8 +179,8 @@ problemRouter.post('/problems/:slug/submit', requireAuth, async (request, respon
   }
 
   const submission = await Submission.create({
-    code,
-    language,
+    code: data.code,
+    language: data.language,
     problemId: problem._id,
     memory: executionResult.memory,
     result: executionResult,

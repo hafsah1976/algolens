@@ -33,6 +33,16 @@ function applyCorsHeaders(request, response, next) {
   next();
 }
 
+function applySecurityHeaders(_request, response, next) {
+  response.setHeader('X-Content-Type-Options', 'nosniff');
+  response.setHeader('X-Frame-Options', 'DENY');
+  response.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  response.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=()');
+  response.setHeader('Cross-Origin-Resource-Policy', 'same-origin');
+  response.setHeader('Cache-Control', 'no-store');
+  next();
+}
+
 function rememberRawBody(request, _response, buffer) {
   if (buffer?.length) {
     request.rawBody = buffer.toString('utf8');
@@ -82,14 +92,35 @@ export function normalizeJsonBody(request, _response, next) {
   next();
 }
 
+function handleBodyParserError(error, _request, response, next) {
+  if (!error) {
+    next();
+    return;
+  }
+
+  if (error.type === 'entity.too.large') {
+    response.status(413).json({ error: 'Request body is too large.' });
+    return;
+  }
+
+  if (error instanceof SyntaxError && 'body' in error) {
+    response.status(400).json({ error: 'Request body must be valid JSON.' });
+    return;
+  }
+
+  next(error);
+}
+
 export function createApp() {
   const app = express();
 
   app.disable('x-powered-by');
+  app.use(applySecurityHeaders);
   app.use(applyCorsHeaders);
-  app.use(express.json({ verify: rememberRawBody }));
-  app.use(express.urlencoded({ extended: false, verify: rememberRawBody }));
-  app.use(express.text({ type: shouldParseTextBody, verify: rememberRawBody }));
+  app.use(express.json({ limit: '128kb', verify: rememberRawBody }));
+  app.use(express.urlencoded({ extended: false, limit: '64kb', verify: rememberRawBody }));
+  app.use(express.text({ limit: '128kb', type: shouldParseTextBody, verify: rememberRawBody }));
+  app.use(handleBodyParserError);
   app.use(normalizeJsonBody);
 
   app.get('/', (_request, response) => {

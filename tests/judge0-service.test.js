@@ -5,6 +5,10 @@ import {
   buildJudge0FailureResult,
   buildJudge0Source,
 } from '../server/src/services/judge0Service.js';
+import {
+  MAX_SUBMISSION_CODE_LENGTH,
+  validateSubmissionInput,
+} from '../server/src/utils/submissionValidation.js';
 
 test('Judge0 source builder wraps JavaScript functions with stdin and JSON output', () => {
   const source = buildJudge0Source({
@@ -37,6 +41,31 @@ test('Judge0 failure result is safe to save and return without hidden case data'
   assert.equal(result.passed, 0);
   assert.equal(result.failed, 3);
   assert.equal(result.totalTests, 3);
-  assert.equal(result.error, 'Judge0 timed out');
+  assert.equal(result.error, 'Code runner is temporarily unavailable. Please try again later.');
   assert.deepEqual(result.testResults, []);
+});
+
+test('submission validation allows only supported languages and bounded code', () => {
+  const valid = validateSubmissionInput({
+    code: 'function findMax(nums) { return Math.max(...nums); }',
+    language: ' JavaScript ',
+  });
+  const unsupported = validateSubmissionInput({
+    code: 'puts 1',
+    language: 'ruby',
+  });
+  const emptyCode = validateSubmissionInput({
+    code: '   ',
+    language: 'python',
+  });
+  const hugeCode = validateSubmissionInput({
+    code: 'x'.repeat(MAX_SUBMISSION_CODE_LENGTH + 1),
+    language: 'javascript',
+  });
+
+  assert.equal(valid.error, null);
+  assert.equal(valid.data.language, 'javascript');
+  assert.match(unsupported.error, /supported language/i);
+  assert.match(emptyCode.error, /required/i);
+  assert.match(hugeCode.error, /characters or fewer/i);
 });

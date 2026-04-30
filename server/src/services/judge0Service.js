@@ -3,6 +3,8 @@ const DEFAULT_LANGUAGE_IDS = {
   python: 71,
 };
 
+const SAFE_JUDGE0_ERROR = 'Code runner is temporarily unavailable. Please try again later.';
+
 const JUDGE0_FIELDS = [
   'stdout',
   'stderr',
@@ -338,7 +340,7 @@ export async function runProblemWithJudge0({ code, language, problemSlug, testCa
 
 export function buildJudge0FailureResult(error, totalTests) {
   return {
-    error: error.message || 'Judge0 execution failed.',
+    error: SAFE_JUDGE0_ERROR,
     failed: totalTests,
     memory: null,
     passed: 0,
