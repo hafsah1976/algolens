@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { BrowserRouter, Navigate, Route, Routes, useLocation, useParams } from 'react-router-dom';
 
 import { RequireAdmin } from './components/RequireAdmin.jsx';
@@ -23,6 +23,10 @@ import { SandboxPage } from './pages/SandboxPage.jsx';
 import { TraceLibraryPage } from './pages/TraceLibraryPage.jsx';
 import { TopicPage } from './pages/TopicPage.jsx';
 import { TopicsListPage } from './pages/TopicsListPage.jsx';
+
+const GraphExplorerPage = lazy(() =>
+  import('./pages/GraphExplorerPage.jsx').then((module) => ({ default: module.GraphExplorerPage })),
+);
 
 function ScrollToTop() {
   const { pathname, search } = useLocation();
@@ -58,6 +62,14 @@ function PracticeAliasRedirect() {
   return <Navigate replace to={problemSlug ? `/app/practice/${problemSlug}` : '/app/practice'} />;
 }
 
+function LazyPageFallback() {
+  return (
+    <div className="app-panel-soft p-4 text-sm leading-6 text-muted">
+      Loading this learning tool...
+    </div>
+  );
+}
+
 function Root() {
   return (
     <BrowserRouter>
@@ -87,6 +99,14 @@ function Root() {
           <Route element={<TopicPage />} path="topics/:topicSlug" />
           <Route element={<TraceLibraryPage />} path="traces" />
           <Route element={<SandboxPage />} path="sandbox" />
+          <Route
+            element={
+              <Suspense fallback={<LazyPageFallback />}>
+                <GraphExplorerPage />
+              </Suspense>
+            }
+            path="graphs"
+          />
           <Route element={<QuizPage />} path="quizzes/:quizId" />
           <Route element={<PracticeListPage />} path="practice" />
           <Route element={<PracticeProblemPage />} path="practice/:problemSlug" />

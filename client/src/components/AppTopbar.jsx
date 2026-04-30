@@ -13,6 +13,7 @@ const titleMap = [
   { match: '/app/topics', title: 'Topics', detail: 'Choose a DSA path and inspect your progress.' },
   { match: '/app/traces', title: 'Step-by-step examples', detail: 'Browse visual algorithm walkthroughs.' },
   { match: '/app/sandbox', title: 'Algo-Sandbox', detail: 'Test a pattern with your own input.' },
+  { match: '/app/graphs', title: 'Graph Explorer', detail: 'Compare BFS and DFS on one connected graph.' },
   { match: '/app/practice/', title: 'Practice problem', detail: 'Write code after the concept clicks.' },
   { match: '/app/practice', title: 'Coding practice', detail: 'Browse beginner DSA problems.' },
   { match: '/app/completed', title: 'Recap', detail: 'Use one clear takeaway before you move on.' },

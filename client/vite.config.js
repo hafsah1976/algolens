@@ -10,6 +10,10 @@ export default defineConfig({
         manualChunks(id) {
           const normalizedId = id.replace(/\\/g, '/');
 
+          if (normalizedId.includes('node_modules/cytoscape')) {
+            return 'cytoscape-vendor';
+          }
+
           if (
             normalizedId.includes('node_modules/@xyflow') ||
             normalizedId.includes('node_modules/classcat') ||

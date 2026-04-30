@@ -10,6 +10,7 @@ const primaryLinks = [
   { to: '/app/topics', label: 'Topics', hint: 'Paths' },
   { to: '/app/traces', label: 'Step-by-step examples', hint: 'Visuals' },
   { to: '/app/sandbox', label: 'Algo-Sandbox', hint: 'Lab' },
+  { to: '/app/graphs', label: 'Graph Explorer', hint: 'Nodes' },
   { to: '/app/practice', label: 'Practice', hint: 'Code' },
   { to: '/app/completed', label: 'Recap', hint: 'Reflect' },
 ];

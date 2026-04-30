@@ -18,6 +18,13 @@ import {
   writeStoredFocusMode,
 } from '../client/src/lib/focusMode.js';
 import { getAuthReturnPath } from '../client/src/lib/authRouting.js';
+import {
+  buildGraphAdjacency,
+  buildGraphTraversal,
+  graphExplorerEdges,
+  graphExplorerModes,
+  graphExplorerNodes,
+} from '../client/src/lib/graphExplorer.js';
 import { getLessonMode, getLessonStats, getTrackReadiness } from '../client/src/lib/lessonMeta.js';
 import {
   getMilestoneSnapshot,
@@ -514,4 +521,18 @@ test('track readiness and trace stats stay aligned with lesson metadata', () => 
   assert.ok(bfsStats.predictions > 0);
   assert.equal(pathSumStats.frames, 4);
   assert.ok(pathSumStats.predictions > 0);
+});
+
+test('graph explorer traversal logic keeps BFS and DFS distinct', () => {
+  const adjacency = buildGraphAdjacency(graphExplorerNodes, graphExplorerEdges);
+  const bfsFrames = buildGraphTraversal({ mode: 'bfs', startNodeId: 'A' });
+  const dfsFrames = buildGraphTraversal({ mode: 'dfs', startNodeId: 'A' });
+
+  assert.deepEqual(graphExplorerModes.map((mode) => mode.id), ['bfs', 'dfs']);
+  assert.deepEqual(adjacency.get('A'), ['B', 'C']);
+  assert.deepEqual(bfsFrames.map((frame) => frame.currentNodeId), ['A', 'B', 'C', 'D', 'E', 'F', 'G']);
+  assert.deepEqual(dfsFrames.map((frame) => frame.currentNodeId), ['A', 'B', 'D', 'E', 'G', 'C', 'F']);
+  assert.equal(bfsFrames[0].status, 'queue: B -> C');
+  assert.equal(dfsFrames[0].status, 'stack: B -> C');
+  assert.equal(buildGraphTraversal({ mode: 'bfs', startNodeId: 'missing' }).length, 0);
 });
