@@ -78,19 +78,18 @@ function TeachingNote({ body, label }) {
 
 function TraceTutorPanel({ challengeMode }) {
   return (
-    <div className="rounded-[1.35rem] border border-accent/20 bg-accent/8 p-4">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+    <details className="group rounded-[1.35rem] border border-accent/20 bg-accent/8 p-4">
+      <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-3">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">How to use this trace</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">How Trace Mode works</p>
           <p className="mt-2 text-sm leading-6 text-ink">
-            Treat each frame like a small debugging moment. Read what changed, predict the next
-            state, then move one step.
+            Read, predict, then step. Open this if you want the full rhythm.
           </p>
         </div>
         <span className="rounded-full bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-muted">
           {challengeMode ? 'Challenge locked' : 'Guided mode'}
         </span>
-      </div>
+      </summary>
 
       <div className="mt-4 grid gap-3">
         {traceTutorSteps.map((step, index) => (
@@ -105,7 +104,49 @@ function TraceTutorPanel({ challengeMode }) {
           </div>
         ))}
       </div>
-    </div>
+    </details>
+  );
+}
+
+function TraceToolsPanel({ onCopyStepLink, shareStatus }) {
+  return (
+    <details className="rounded-[1.35rem] border border-line/80 bg-white/65 p-4">
+      <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-3">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">Lesson tools</p>
+          <p className="mt-2 text-sm leading-6 text-muted">Secondary actions for sharing or changing traces.</p>
+        </div>
+        <span className="rounded-full border border-line/70 bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-muted">
+          Tools
+        </span>
+      </summary>
+
+      <div className="mt-4 flex flex-wrap gap-2">
+        <button
+          className="rounded-full border border-line/80 bg-white/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted transition hover:border-accent/40 hover:text-ink"
+          onClick={onCopyStepLink}
+          type="button"
+        >
+          Share step
+        </button>
+        <Link
+          className="rounded-full border border-line/80 bg-white/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted transition hover:border-accent/40 hover:text-ink"
+          to="/app/traces"
+        >
+          Trace library
+        </Link>
+      </div>
+
+      {shareStatus !== 'idle' ? (
+        <p className="mt-3 text-xs font-medium text-muted">
+          {shareStatus === 'copied'
+            ? 'Step link copied.'
+            : shareStatus === 'manual'
+              ? 'Copy unavailable. Use the address bar link.'
+              : 'Step link unavailable.'}
+        </p>
+      ) : null}
+    </details>
   );
 }
 
@@ -554,6 +595,15 @@ export function TraceModePlayer({
     onComplete?.(frameIndex);
   }
 
+  function handlePrimaryAction() {
+    if (isLastFrame) {
+      handleComplete();
+      return;
+    }
+
+    handleNext();
+  }
+
   function handlePredictionSelect(optionId) {
     setPredictionAnswers((currentAnswers) => ({
       ...currentAnswers,
@@ -585,7 +635,7 @@ export function TraceModePlayer({
             className="inline-flex items-center rounded-full border border-line/80 bg-white/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-muted transition hover:border-accent/40 hover:text-ink"
             to={getCanonicalTopicPath(track.slug)}
           >
-            Library
+            Topic
           </Link>
           <span className="hidden text-xs font-semibold uppercase tracking-[0.18em] text-muted sm:inline">
             {track.title}
@@ -615,28 +665,6 @@ export function TraceModePlayer({
           >
             Challenge {challengeMode ? 'on' : 'off'}
           </button>
-          <button
-            className="rounded-full border border-line/80 bg-white/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted transition hover:border-accent/40 hover:text-ink"
-            onClick={handleCopyStepLink}
-            type="button"
-          >
-            Copy step link
-          </button>
-          <Link
-            className="rounded-full border border-line/80 bg-white/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted transition hover:border-accent/40 hover:text-ink"
-            to="/app/traces"
-          >
-            All traces
-          </Link>
-          {shareStatus !== 'idle' ? (
-            <span className="w-full text-xs font-medium text-muted lg:text-right">
-              {shareStatus === 'copied'
-                ? 'Step link copied.'
-                : shareStatus === 'manual'
-                  ? 'Copy unavailable. Use the address bar link.'
-                  : 'Step link unavailable.'}
-            </span>
-          ) : null}
         </div>
       </header>
 
@@ -654,6 +682,8 @@ export function TraceModePlayer({
             </div>
 
             <TraceTutorPanel challengeMode={challengeMode} />
+
+            <TraceToolsPanel onCopyStepLink={handleCopyStepLink} shareStatus={shareStatus} />
 
             <div className="rounded-[1.35rem] border border-line/80 bg-warm/45 p-4">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">Current focus</p>
@@ -695,7 +725,7 @@ export function TraceModePlayer({
               <p className={`mt-2 text-sm ${saveError ? 'text-rose-600' : 'text-muted'}`}>{saveStatusCopy}</p>
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className="grid gap-3 sm:grid-cols-[0.85fr_1.15fr]">
               <button
                 className="rounded-full border border-line/80 bg-white px-4 py-3 text-sm font-semibold text-ink transition hover:border-accent/45 disabled:cursor-not-allowed disabled:text-muted"
                 disabled={isFirstFrame}
@@ -706,27 +736,22 @@ export function TraceModePlayer({
               </button>
               <button
                 className="rounded-full bg-accent px-4 py-3 text-sm font-semibold text-white transition hover:bg-ink disabled:cursor-not-allowed disabled:bg-muted"
-                disabled={isLastFrame || !canAdvance}
-                onClick={handleNext}
+                disabled={isLastFrame ? isSaving : !canAdvance}
+                onClick={handlePrimaryAction}
                 type="button"
               >
-                {primaryLabel}
+                {isLastFrame ? (isSaving ? 'Saving...' : 'Finish lesson') : primaryLabel}
               </button>
+            </div>
+
+            <div className="mt-3 flex justify-center">
               <button
-                className="rounded-full border border-line/80 bg-white px-4 py-3 text-sm font-semibold text-ink transition hover:border-accent/45 disabled:cursor-not-allowed disabled:text-muted"
+                className="rounded-full px-4 py-2 text-sm font-semibold text-muted transition hover:bg-white/75 hover:text-ink disabled:cursor-not-allowed disabled:text-muted/50"
                 disabled={isFirstFrame}
                 onClick={handleRestart}
                 type="button"
               >
                 Restart
-              </button>
-              <button
-                className="rounded-full bg-ink px-4 py-3 text-sm font-semibold text-white transition hover:bg-accent disabled:cursor-not-allowed disabled:bg-muted"
-                disabled={!isLastFrame || isSaving}
-                onClick={handleComplete}
-                type="button"
-              >
-                Finish lesson
               </button>
             </div>
           </div>

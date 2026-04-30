@@ -81,18 +81,23 @@ export function AppSidebar({ focusMode, onNavigate }) {
       </div>
 
       {isAdmin ? (
-        <div className="mt-8 space-y-2">
-          <p className="px-3 text-xs font-semibold uppercase tracking-[0.22em] text-muted">Admin</p>
-          {adminLinks.map((link) => (
-            <SidebarLink
-              key={link.to}
-              hint={link.hint}
-              label={link.label}
-              onNavigate={onNavigate}
-              to={link.to}
-            />
-          ))}
-        </div>
+        <details className="mt-8 rounded-[1.1rem] border border-line/70 bg-white/35 p-3">
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-xs font-semibold uppercase tracking-[0.22em] text-muted">
+            <span>Admin</span>
+            <span className="text-[10px] tracking-[0.18em]">Content</span>
+          </summary>
+          <div className="mt-3 space-y-2">
+            {adminLinks.map((link) => (
+              <SidebarLink
+                key={link.to}
+                hint={link.hint}
+                label={link.label}
+                onNavigate={onNavigate}
+                to={link.to}
+              />
+            ))}
+          </div>
+        </details>
       ) : null}
 
       <div className="mt-auto app-panel-soft p-4">

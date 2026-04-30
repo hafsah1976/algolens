@@ -30,6 +30,8 @@ export function AppTopbar({ focusMode, onOpenMenu, onToggleFocusMode }) {
   const location = useLocation();
   const { isAuthenticated, logout, user } = useAuth();
   const heading = getHeading(location.pathname);
+  const isLessonPage =
+    location.pathname.startsWith('/app/lesson/') || location.pathname.startsWith('/app/lessons/');
 
   return (
     <div className="mb-6 flex flex-col gap-4 border-b border-line/70 pb-5 sm:flex-row sm:items-end sm:justify-between">
@@ -59,7 +61,7 @@ export function AppTopbar({ focusMode, onOpenMenu, onToggleFocusMode }) {
         >
           {getFocusModeToggleLabel(focusMode)}
         </button>
-        {isAuthenticated ? (
+        {isAuthenticated && !isLessonPage ? (
           <>
             <span className="inline-flex items-center rounded-full border border-line/80 bg-white/70 px-4 py-2 text-sm font-medium text-ink">
               {user.name}
@@ -84,14 +86,24 @@ export function AppTopbar({ focusMode, onOpenMenu, onToggleFocusMode }) {
           className="inline-flex items-center rounded-full border border-line/80 bg-white/70 px-4 py-2 text-sm font-medium text-ink transition hover:border-accent/40"
           to="/app/dashboard"
         >
-          Resume dashboard
+          {isLessonPage ? 'Dashboard' : 'Resume dashboard'}
         </Link>
-        <Link
-          className="inline-flex items-center rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:bg-ink"
-          to="/app/traces"
-        >
-          Open trace library
-        </Link>
+        {isLessonPage && isAuthenticated ? (
+          <button
+            className="inline-flex items-center rounded-full border border-line/80 bg-white/70 px-4 py-2 text-sm font-medium text-ink transition hover:border-accent/40"
+            onClick={logout}
+            type="button"
+          >
+            Sign out
+          </button>
+        ) : (
+          <Link
+            className="inline-flex items-center rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:bg-ink"
+            to="/app/traces"
+          >
+            Open trace library
+          </Link>
+        )}
       </div>
     </div>
   );
