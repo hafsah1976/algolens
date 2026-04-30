@@ -8,14 +8,9 @@ loadServerEnv();
 
 const app = createApp();
 const expressHandler = serverless(app);
-let databasePromise = null;
 
 async function ensureDatabase() {
-  if (!databasePromise) {
-    databasePromise = connectToDatabase();
-  }
-
-  await databasePromise;
+  await connectToDatabase();
 }
 
 export async function handler(event, context) {

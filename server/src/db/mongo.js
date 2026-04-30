@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const DEFAULT_MONGODB_URI = 'mongodb://127.0.0.1:27017/algolens';
-const DEFAULT_SERVER_SELECTION_TIMEOUT_MS = 1500;
+const DEFAULT_SERVER_SELECTION_TIMEOUT_MS = 8000;
 const DEFAULT_RETRY_DELAY_MS = 10000;
 
 let connectionPromise = null;
@@ -24,6 +24,7 @@ export function getDatabaseStatus() {
     state: READY_STATE_LABELS[mongoose.connection.readyState] ?? 'unknown',
     databaseName: mongoose.connection.name || null,
     lastError: lastConnectionError?.message ?? null,
+    uriConfigured: Boolean(process.env.MONGODB_URI),
   };
 }
 

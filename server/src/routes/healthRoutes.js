@@ -1,11 +1,13 @@
 import { Router } from 'express';
 
-import { getDatabaseStatus } from '../db/mongo.js';
+import { connectToDatabase, getDatabaseStatus } from '../db/mongo.js';
 import { getProgressStorageMode, getProgressStoragePreference } from '../utils/storageMode.js';
 
 export const healthRouter = Router();
 
-healthRouter.get('/health', (_request, response) => {
+healthRouter.get('/health', async (_request, response) => {
+  await connectToDatabase();
+
   const database = getDatabaseStatus();
   response.json({
     status: 'ok',
