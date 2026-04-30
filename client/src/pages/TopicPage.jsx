@@ -1,9 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
-import { ConceptPrimer } from '../components/ConceptPrimer.jsx';
+import { GuidedCardDeck } from '../components/GuidedCardDeck.jsx';
 import { LearningLoopPanel } from '../components/LearningLoopPanel.jsx';
-import { MiniExamples } from '../components/MiniExamples.jsx';
 import { QuizLinksPanel } from '../components/QuizLinksPanel.jsx';
 import { SectionHeading } from '../components/SectionHeading.jsx';
 import { useProgress } from '../context/ProgressContext.jsx';
@@ -66,6 +65,54 @@ function LessonRow({ lesson, stageLabel }) {
       </div>
     </div>
   );
+}
+
+function buildTopicGuideCards(track) {
+  const primer = track.conceptPrimer;
+  const firstExample = track.miniExamples?.[0];
+
+  if (!primer) {
+    return [];
+  }
+
+  return [
+    {
+      body: primer.intro,
+      label: 'Start',
+      title: 'What is the main idea?',
+    },
+    {
+      body: primer.pictureIt,
+      label: 'Picture it',
+      title: 'What should I imagine?',
+    },
+    {
+      body: primer.whyItHelps,
+      label: 'Why it helps',
+      title: 'Why does this pattern save work?',
+    },
+    {
+      body: primer.commonMistake,
+      label: 'Common miss',
+      title: 'What should I avoid?',
+    },
+    primer.tinyExample
+      ? {
+          body: primer.tinyExample.story,
+          label: 'Tiny example',
+          takeaway: primer.tinyExample.takeaway,
+          title: primer.tinyExample.prompt,
+        }
+      : null,
+    firstExample
+      ? {
+          body: firstExample.scenario,
+          label: firstExample.pattern,
+          takeaway: `Look for: ${firstExample.lookFor}`,
+          title: firstExample.title,
+        }
+      : null,
+  ].filter(Boolean);
 }
 
 export function TopicPage() {
@@ -155,7 +202,7 @@ export function TopicPage() {
   const readiness = getTrackReadiness(track);
   const pathComplete = progress.total > 0 && progress.completed === progress.total;
   const concepts = track.concepts ?? [];
-  const miniExamples = track.miniExamples ?? [];
+  const guideCards = buildTopicGuideCards(track);
   const launchActionLabel = pathComplete
     ? 'Review this path'
     : progress.activeLesson
@@ -208,9 +255,14 @@ export function TopicPage() {
         </div>
       ) : null}
 
-      {track.conceptPrimer ? <ConceptPrimer primer={track.conceptPrimer} title={track.title} /> : null}
-
-      {miniExamples.length ? <MiniExamples examples={miniExamples} title={track.title} /> : null}
+      {guideCards.length ? (
+        <GuidedCardDeck
+          cards={guideCards}
+          description={`Move through ${track.title} one card at a time. When the cards make sense, open the first lesson.`}
+          eyebrow="Before the lesson"
+          title="Learn the idea in small steps"
+        />
+      ) : null}
 
       <section className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">
         <div className="app-panel p-6">
