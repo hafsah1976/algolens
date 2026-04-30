@@ -48,7 +48,7 @@ export function ConceptPrimer({ primer, title }) {
             core idea concrete, visual, and beginner-safe.
           </p>
 
-          <div className="mt-6 rounded-[1.5rem] bg-[#eef3e8] px-5 py-5">
+          <div className="mt-6 app-panel-soft px-5 py-5">
             <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted">Start here</p>
             <p className="mt-3 text-sm leading-7 text-ink">{primer.intro}</p>
           </div>

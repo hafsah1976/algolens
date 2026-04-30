@@ -136,6 +136,10 @@
     @apply rounded-[1.5rem] border border-line/70 bg-white/65;
   }
 
+  [data-theme='focus'] .app-panel-soft {
+    background-color: rgba(19, 29, 23, 0.72) !important;
+  }
+
   .sidebar-link {
     @apply flex items-center justify-between rounded-[1.1rem] px-3 py-2.5 text-sm text-muted transition duration-150;
   }
@@ -186,6 +190,12 @@
   [data-theme='focus'] .hover\:bg-white:hover,
   [data-theme='focus'] .hover\:bg-white\/85:hover,
   [data-theme='focus'] .hover\:bg-white\/90:hover {
+    background-color: rgba(19, 29, 23, 0.72) !important;
+  }
+
+  [data-theme='focus'] .bg-\[\#eef3e8\],
+  [data-theme='focus'] .bg-\[\#edf0ea\],
+  [data-theme='focus'] .bg-\[\#fff7e8\] {
     background-color: rgba(19, 29, 23, 0.72) !important;
   }
 
