@@ -1,6 +1,7 @@
 import { ensureDatabaseConnection } from '../db/mongo.js';
 import { User } from '../models/User.js';
 import { isConfiguredAdminEmail, promoteConfiguredAdmin } from '../utils/adminEmails.js';
+import { readSessionCookie } from '../utils/sessionCookie.js';
 import { verifySessionToken } from '../utils/sessionToken.js';
 
 function readBearerToken(request) {
@@ -15,7 +16,7 @@ function readBearerToken(request) {
 }
 
 export async function optionalAuth(request, response, next) {
-  const token = readBearerToken(request);
+  const token = readBearerToken(request) || readSessionCookie(request);
 
   if (!token) {
     next();

@@ -2,7 +2,7 @@ import express from 'express';
 
 import { apiRouter } from './routes/index.js';
 
-function getAllowedOrigins() {
+export function getAllowedOrigins() {
   return new Set(
     (process.env.CLIENT_ORIGINS ||
       process.env.CLIENT_ORIGIN ||
@@ -19,6 +19,7 @@ function applyCorsHeaders(request, response, next) {
 
   if (origin && allowedOrigins.has(origin)) {
     response.setHeader('Access-Control-Allow-Origin', origin);
+    response.setHeader('Access-Control-Allow-Credentials', 'true');
     response.setHeader('Vary', 'Origin');
   }
 
@@ -27,6 +28,26 @@ function applyCorsHeaders(request, response, next) {
 
   if (request.method === 'OPTIONS') {
     response.status(204).send();
+    return;
+  }
+
+  next();
+}
+
+function isStateChangingMethod(method) {
+  return ['DELETE', 'PATCH', 'POST', 'PUT'].includes(method);
+}
+
+function validateStateChangingOrigin(request, response, next) {
+  const origin = request.get('origin');
+
+  if (!origin || !isStateChangingMethod(request.method)) {
+    next();
+    return;
+  }
+
+  if (!getAllowedOrigins().has(origin)) {
+    response.status(403).json({ error: 'This request origin is not allowed.' });
     return;
   }
 
@@ -117,6 +138,7 @@ export function createApp() {
   app.disable('x-powered-by');
   app.use(applySecurityHeaders);
   app.use(applyCorsHeaders);
+  app.use(validateStateChangingOrigin);
   app.use(express.json({ limit: '128kb', verify: rememberRawBody }));
   app.use(express.urlencoded({ extended: false, limit: '64kb', verify: rememberRawBody }));
   app.use(express.text({ limit: '128kb', type: shouldParseTextBody, verify: rememberRawBody }));
@@ -131,6 +153,7 @@ export function createApp() {
         '/api/health',
         '/api/auth/signup',
         '/api/auth/login',
+        '/api/auth/logout',
         '/api/auth/me',
         '/api/dashboard/me',
         '/api/admin/topics',

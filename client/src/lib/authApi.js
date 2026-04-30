@@ -6,6 +6,7 @@ async function requestJson(path, options = {}) {
   try {
     response = await fetch(buildApiUrl(path), {
       ...options,
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
         ...(options.token ? { Authorization: `Bearer ${options.token}` } : {}),
@@ -27,6 +28,12 @@ async function requestJson(path, options = {}) {
 
 export function getCurrentUser(token) {
   return requestJson('/api/auth/me', { token });
+}
+
+export function logoutUser() {
+  return requestJson('/api/auth/logout', {
+    method: 'POST',
+  });
 }
 
 export function loginUser({ email, password }) {

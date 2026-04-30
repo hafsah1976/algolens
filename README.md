@@ -8,7 +8,7 @@ This repository now contains the foundation for the MVP:
 
 - `client/` - React + Vite + Tailwind frontend with the AlgoLens learning platform UI
 - `server/` - Express API with MongoDB-backed auth and progress routes, deployable through Netlify Functions
-- `tests/` - Node test coverage for product content, progress logic, step-by-step behavior, sandbox walkthroughs, and auth token safety
+- `tests/` - Node test coverage for product content, progress logic, step-by-step behavior, sandbox walkthroughs, and session safety
 
 Current standout learning features include authenticated progress, step-by-step lessons, Challenge Mode, shareable walkthrough steps, mental model milestones, Focus Mode, printable study sheets, and Algo-Sandbox.
 Seeded reading lessons can also render lightweight custom visualizations for binary search, stacks, queues, BFS, DFS, and bubble sort. Step by step mode remains the primary visualization experience.
@@ -26,6 +26,8 @@ npm.cmd install
 Create `server/.env` from `server/.env.example` and point `MONGODB_URI` to your local MongoDB instance.
 If MongoDB is not running yet, the API now falls back to a local file store in `server/data/dev-progress.json`.
 Set `AUTH_SECRET` before deploying or running with `NODE_ENV=production`.
+Production startup also requires a hosted `MONGODB_URI`, a configured `CLIENT_ORIGIN` or
+`CLIENT_ORIGINS`, and non-file progress storage.
 Set `ADMIN_EMAILS` to a comma-separated list of trusted account emails if you want those users
 to access the content admin panel after signup/login, for example `ADMIN_EMAILS=you@example.com`.
 For coding execution, set `JUDGE0_API_URL` on the backend. If your Judge0 instance requires a key, set
@@ -88,14 +90,18 @@ Use `server/.env.example` as the source of truth and create a local `server/.env
 Do not commit `server/.env`.
 
 - `MONGODB_URI` - MongoDB database URL. Required for auth, progress, quizzes, submissions, and admin content management.
-- `AUTH_SECRET` - session-token signing secret. Required when `NODE_ENV=production`.
+- `AUTH_SECRET` - session signing secret. Required when `NODE_ENV=production`; use at least 32 random characters.
 - `ADMIN_EMAILS` - comma-separated list of trusted emails that should receive the `admin` role on signup/login.
-- `CLIENT_ORIGIN` - deployed frontend origin allowed to call the backend, for example a Netlify URL.
+- `CLIENT_ORIGIN` - deployed frontend origin allowed to call the backend, for example a Netlify URL. Use `CLIENT_ORIGINS` for a comma-separated allowlist.
 - `DEMO_USER_EMAIL` and `DEMO_USER_NAME` - legacy file-fallback identity values for older progress testing.
 - `PROGRESS_STORAGE_MODE` - `auto`, `mongo`, or `file`; production should use MongoDB.
 - `JUDGE0_API_URL` - optional Judge0 endpoint. If empty, submissions save a safe `judge0_error` result instead of executing code.
 - `JUDGE0_API_KEY`, `JUDGE0_API_KEY_HEADER`, and `JUDGE0_RAPIDAPI_HOST` - optional Judge0 provider credentials and headers.
 - `JUDGE0_LANGUAGE_JAVASCRIPT_ID` and `JUDGE0_LANGUAGE_PYTHON_ID` - Judge0 language ids for the supported starter languages.
+
+Student sessions use an HttpOnly session cookie in normal browser flows. The backend
+still accepts bearer tokens as a backward-compatible fallback for older local sessions
+and API testing.
 
 ## Seed DSA Content
 

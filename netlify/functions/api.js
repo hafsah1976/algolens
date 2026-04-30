@@ -3,8 +3,10 @@ import serverless from 'serverless-http';
 import { createApp } from '../../server/src/app.js';
 import { connectToDatabase } from '../../server/src/db/mongo.js';
 import { loadServerEnv } from '../../server/src/utils/loadEnv.js';
+import { validateProductionConfig } from '../../server/src/utils/productionConfig.js';
 
 loadServerEnv();
+validateProductionConfig();
 
 const app = createApp();
 const expressHandler = serverless(app);

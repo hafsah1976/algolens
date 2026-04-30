@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
-import { getCurrentUser, loginUser, signupUser } from '../lib/authApi.js';
+import { getCurrentUser, loginUser, logoutUser, signupUser } from '../lib/authApi.js';
 
 const AUTH_TOKEN_KEY = 'algolens.authToken';
 const AuthContext = createContext(null);
@@ -30,18 +30,10 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(() => readStoredToken());
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(Boolean(readStoredToken()));
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     let ignore = false;
-
-    if (!token) {
-      setUser(null);
-      setIsLoading(false);
-      return () => {
-        ignore = true;
-      };
-    }
 
     setIsLoading(true);
     getCurrentUser(token)
@@ -61,7 +53,7 @@ export function AuthProvider({ children }) {
         storeToken(null);
         setToken(null);
         setUser(null);
-        setError(authError.message || 'Please sign in again.');
+        setError(token ? authError.message || 'Please sign in again.' : null);
       })
       .finally(() => {
         if (!ignore) {
@@ -77,8 +69,8 @@ export function AuthProvider({ children }) {
   async function login(credentials) {
     const payload = await loginUser(credentials);
 
-    storeToken(payload.token);
-    setToken(payload.token);
+    storeToken(null);
+    setToken(null);
     setUser(payload.user);
     setError(null);
 
@@ -88,8 +80,8 @@ export function AuthProvider({ children }) {
   async function signup(credentials) {
     const payload = await signupUser(credentials);
 
-    storeToken(payload.token);
-    setToken(payload.token);
+    storeToken(null);
+    setToken(null);
     setUser(payload.user);
     setError(null);
 
@@ -97,6 +89,7 @@ export function AuthProvider({ children }) {
   }
 
   function logout() {
+    logoutUser().catch(() => {});
     storeToken(null);
     setToken(null);
     setUser(null);
@@ -107,7 +100,7 @@ export function AuthProvider({ children }) {
     <AuthContext.Provider
       value={{
         error,
-        isAuthenticated: Boolean(user && token),
+        isAuthenticated: Boolean(user),
         isLoading,
         login,
         logout,

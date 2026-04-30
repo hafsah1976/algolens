@@ -3,11 +3,19 @@ import { Router } from 'express';
 import { ensureDatabaseConnection, getDatabaseStatus } from '../db/mongo.js';
 import { User } from '../models/User.js';
 import { requireAuth } from '../middleware/authMiddleware.js';
+import { createRateLimit } from '../middleware/rateLimit.js';
 import { promoteConfiguredAdmin, resolveRoleForEmail } from '../utils/adminEmails.js';
 import { hashPassword, verifyPassword } from '../utils/password.js';
+import { clearSessionCookie, setSessionCookie } from '../utils/sessionCookie.js';
 import { createSessionToken } from '../utils/sessionToken.js';
 
 export const authRouter = Router();
+
+const authRateLimit = createRateLimit({
+  keyPrefix: 'auth',
+  maxRequests: 20,
+  windowMs: 15 * 60 * 1000,
+});
 
 function normalizeEmail(value) {
   return typeof value === 'string' ? value.trim().toLowerCase() : '';
@@ -70,7 +78,7 @@ async function requireDatabase(response) {
   return true;
 }
 
-authRouter.post('/auth/signup', async (request, response) => {
+authRouter.post('/auth/signup', authRateLimit, async (request, response) => {
   if (!(await requireDatabase(response))) {
     return;
   }
@@ -124,6 +132,7 @@ authRouter.post('/auth/signup', async (request, response) => {
     role: resolveRoleForEmail(email),
   });
   const token = createSessionToken(user);
+  setSessionCookie(response, token);
 
   response.status(201).json({
     token,
@@ -131,7 +140,7 @@ authRouter.post('/auth/signup', async (request, response) => {
   });
 });
 
-authRouter.post('/auth/login', async (request, response) => {
+authRouter.post('/auth/login', authRateLimit, async (request, response) => {
   if (!(await requireDatabase(response))) {
     return;
   }
@@ -155,10 +164,18 @@ authRouter.post('/auth/login', async (request, response) => {
   await promoteConfiguredAdmin(user);
   await user.save();
 
+  const token = createSessionToken(user);
+  setSessionCookie(response, token);
+
   response.json({
-    token: createSessionToken(user),
+    token,
     user: toAuthUser(user),
   });
+});
+
+authRouter.post('/auth/logout', (_request, response) => {
+  clearSessionCookie(response);
+  response.json({ ok: true });
 });
 
 authRouter.get('/auth/me', requireAuth, async (request, response) => {

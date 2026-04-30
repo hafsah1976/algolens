@@ -3,6 +3,7 @@ import { Router } from 'express';
 
 import { ensureDatabaseConnection, getDatabaseStatus } from '../db/mongo.js';
 import { requireAuth } from '../middleware/authMiddleware.js';
+import { createRateLimit } from '../middleware/rateLimit.js';
 import { CodingProblem } from '../models/CodingProblem.js';
 import { Submission } from '../models/Submission.js';
 import { Topic } from '../models/Topic.js';
@@ -13,6 +14,13 @@ import {
 import { validateSubmissionInput } from '../utils/submissionValidation.js';
 
 export const problemRouter = Router();
+
+const submissionRateLimit = createRateLimit({
+  keyPrefix: 'submissions',
+  maxRequests: 30,
+  message: 'Too many code submissions. Please pause for a moment and try again.',
+  windowMs: 10 * 60 * 1000,
+});
 
 function sendDatabaseUnavailable(response) {
   response.status(503).json({
@@ -137,7 +145,7 @@ problemRouter.get('/problems/:slug', async (request, response) => {
   });
 });
 
-problemRouter.post('/problems/:slug/submit', requireAuth, async (request, response) => {
+problemRouter.post('/problems/:slug/submit', submissionRateLimit, requireAuth, async (request, response) => {
   const slug = normalizeFilter(request.params.slug);
   const { data, error } = validateSubmissionInput(request.body);
 

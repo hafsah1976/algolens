@@ -6,6 +6,7 @@ async function requestJson(path, options = {}) {
   try {
     response = await fetch(buildApiUrl(path), {
       ...options,
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
         ...(options.token ? { Authorization: `Bearer ${options.token}` } : {}),
@@ -46,10 +47,6 @@ export async function fetchProblem(problemSlug) {
 }
 
 export async function submitProblem(problemSlug, payload, token) {
-  if (!token) {
-    throw new Error('Please sign in to submit code.');
-  }
-
   return requestJson(`/api/problems/${encodeURIComponent(problemSlug)}/submit`, {
     body: JSON.stringify(payload),
     method: 'POST',

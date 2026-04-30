@@ -1,6 +1,6 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
 
-const DEFAULT_SESSION_TTL_SECONDS = 60 * 60 * 24 * 7;
+export const SESSION_TTL_SECONDS = 60 * 60 * 24 * 7;
 const TOKEN_VERSION = 1;
 const LOCAL_DEV_AUTH_SECRET = 'algolens-local-dev-secret-change-me';
 
@@ -47,7 +47,7 @@ export function createSessionToken(user) {
     email: user.email,
     name: user.name,
     iat: now,
-    exp: now + DEFAULT_SESSION_TTL_SECONDS,
+    exp: now + SESSION_TTL_SECONDS,
   };
   const encodedPayload = encodeBase64Url(payload);
   const signature = signPayload(encodedPayload);

@@ -98,6 +98,7 @@ test('API root advertises topic, lesson, quiz, dashboard, problem, and protected
     assert.equal(response.headers.get('x-frame-options'), 'DENY');
     assert.equal(response.headers.get('referrer-policy'), 'strict-origin-when-cross-origin');
     assert.equal(response.headers.get('cache-control'), 'no-store');
+    assert.ok(payload.routes.includes('/api/auth/logout'));
     assert.ok(payload.routes.includes('/api/dashboard/me'));
     assert.ok(payload.routes.includes('/api/admin/topics'));
     assert.ok(payload.routes.includes('/api/admin/lessons'));
@@ -173,7 +174,35 @@ test('API responds to allowed CORS preflight requests', async () => {
 
     assert.equal(response.status, 204);
     assert.equal(response.headers.get('access-control-allow-origin'), 'http://localhost:5173');
+    assert.equal(response.headers.get('access-control-allow-credentials'), 'true');
     assert.ok(response.headers.get('access-control-allow-headers').includes('Authorization'));
+  });
+});
+
+test('API rejects state-changing requests from untrusted browser origins', async () => {
+  await withTestServer(async (baseUrl) => {
+    const response = await fetch(`${baseUrl}/api/auth/logout`, {
+      headers: { Origin: 'https://attacker.example' },
+      method: 'POST',
+    });
+    const payload = await readJson(response);
+
+    assert.equal(response.status, 403);
+    assert.equal(payload.error, 'This request origin is not allowed.');
+  });
+});
+
+test('logout clears the session cookie without requiring an active session', async () => {
+  await withTestServer(async (baseUrl) => {
+    const response = await fetch(`${baseUrl}/api/auth/logout`, {
+      headers: { Origin: 'http://localhost:5173' },
+      method: 'POST',
+    });
+    const payload = await readJson(response);
+
+    assert.equal(response.status, 200);
+    assert.equal(payload.ok, true);
+    assert.match(response.headers.get('set-cookie'), /algolens_session=;/);
   });
 });
 

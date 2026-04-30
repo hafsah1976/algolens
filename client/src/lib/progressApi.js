@@ -6,6 +6,7 @@ async function requestJson(path, options = {}) {
   try {
     response = await fetch(buildApiUrl(path), {
       ...options,
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
         ...(options.token ? { Authorization: `Bearer ${options.token}` } : {}),
@@ -26,18 +27,10 @@ async function requestJson(path, options = {}) {
 }
 
 export async function fetchProgressSnapshot(token = null) {
-  if (!token) {
-    throw new Error('Please sign in to load progress.');
-  }
-
   return requestJson('/api/progress/me', { token });
 }
 
 export async function saveLessonProgress(payload, token = null) {
-  if (!token) {
-    throw new Error('Please sign in to save progress.');
-  }
-
   return requestJson('/api/progress/lesson', {
     body: JSON.stringify(payload),
     method: 'POST',
@@ -46,10 +39,6 @@ export async function saveLessonProgress(payload, token = null) {
 }
 
 export async function saveTopicProgress(payload, token = null) {
-  if (!token) {
-    throw new Error('Please sign in to save progress.');
-  }
-
   return requestJson('/api/progress/topic', {
     body: JSON.stringify(payload),
     method: 'PUT',

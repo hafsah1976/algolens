@@ -1,18 +1,15 @@
 import { buildApiUrl } from './apiBase.js';
 
 async function requestJson(path, options = {}) {
-  if (!options.token) {
-    throw new Error('Please sign in to load your dashboard.');
-  }
-
   let response;
 
   try {
     response = await fetch(buildApiUrl(path), {
       ...options,
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${options.token}`,
+        ...(options.token ? { Authorization: `Bearer ${options.token}` } : {}),
         ...(options.headers ?? {}),
       },
     });

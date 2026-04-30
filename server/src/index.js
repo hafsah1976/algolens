@@ -1,8 +1,10 @@
 import { loadServerEnv } from './utils/loadEnv.js';
 import { createApp } from './app.js';
 import { connectToDatabase, getDatabaseStatus } from './db/mongo.js';
+import { validateProductionConfig } from './utils/productionConfig.js';
 
 loadServerEnv();
+validateProductionConfig();
 
 const port = Number(process.env.PORT) || 3001;
 const app = createApp();

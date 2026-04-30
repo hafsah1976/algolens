@@ -68,12 +68,16 @@ function mergeTopicProgress(current, payload) {
 }
 
 export function ProgressProvider({ children }) {
-  const { isLoading: authIsLoading, token: authToken } = useAuth();
+  const { isAuthenticated, isLoading: authIsLoading, token: authToken } = useAuth();
   const [progressState, setProgressState] = useState(initialProgressState);
   const [pendingWrites, setPendingWrites] = useState(0);
   const progressStateRef = useRef(initialProgressState);
+  const isAuthenticatedRef = useRef(isAuthenticated);
   const authTokenRef = useRef(authToken);
   const writeQueueRef = useRef(Promise.resolve());
+
+  authTokenRef.current = authToken;
+  isAuthenticatedRef.current = isAuthenticated;
 
   function updateProgressState(updater) {
     setProgressState((current) => {
@@ -84,7 +88,7 @@ export function ProgressProvider({ children }) {
   }
 
   async function refreshProgress() {
-    if (authIsLoading || !authTokenRef.current) {
+    if (authIsLoading || !isAuthenticatedRef.current) {
       updateProgressState(signedOutProgressState);
       return null;
     }
@@ -110,17 +114,13 @@ export function ProgressProvider({ children }) {
   }
 
   useEffect(() => {
-    authTokenRef.current = authToken;
-  }, [authToken]);
-
-  useEffect(() => {
     if (authIsLoading) {
       return undefined;
     }
 
     let ignore = false;
 
-    if (!authToken) {
+    if (!isAuthenticated) {
       updateProgressState(signedOutProgressState);
       return () => {
         ignore = true;
@@ -155,7 +155,7 @@ export function ProgressProvider({ children }) {
     return () => {
       ignore = true;
     };
-  }, [authIsLoading, authToken]);
+  }, [authIsLoading, authToken, isAuthenticated]);
 
   function queueWrite(task) {
     const operation = writeQueueRef.current.then(task);
@@ -165,7 +165,7 @@ export function ProgressProvider({ children }) {
 
   async function syncLessonProgress({ currentFrame, lessonId, status, track }) {
     return queueWrite(async () => {
-      if (!authTokenRef.current) {
+      if (!isAuthenticatedRef.current) {
         const error = new Error('Please sign in to save progress.');
         updateProgressState((current) => ({
           ...current,

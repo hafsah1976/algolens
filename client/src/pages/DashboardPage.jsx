@@ -296,7 +296,7 @@ function RecentSubmissions({ submissions }) {
 }
 
 export function DashboardPage() {
-  const { token } = useAuth();
+  const { isAuthenticated, isLoading: authIsLoading, token } = useAuth();
   const {
     error,
     isLoading,
@@ -314,7 +314,18 @@ export function DashboardPage() {
   useEffect(() => {
     let ignore = false;
 
-    if (!token) {
+    if (authIsLoading) {
+      setDashboardState({
+        data: null,
+        error: null,
+        isLoading: true,
+      });
+      return () => {
+        ignore = true;
+      };
+    }
+
+    if (!isAuthenticated) {
       setDashboardState({
         data: null,
         error: 'Please sign in to load your dashboard.',
@@ -358,7 +369,7 @@ export function DashboardPage() {
     return () => {
       ignore = true;
     };
-  }, [token]);
+  }, [authIsLoading, isAuthenticated, token]);
 
   const dashboard = dashboardState.data?.dashboard;
   const metrics = dashboard?.metrics ?? emptyMetrics;

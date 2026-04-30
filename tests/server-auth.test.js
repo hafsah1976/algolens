@@ -3,6 +3,8 @@ import test from 'node:test';
 
 import { requireAdmin } from '../server/src/middleware/authMiddleware.js';
 import { resolveRoleForEmail } from '../server/src/utils/adminEmails.js';
+import { validateProductionConfig } from '../server/src/utils/productionConfig.js';
+import { readSessionCookie, SESSION_COOKIE_NAME } from '../server/src/utils/sessionCookie.js';
 import { createSessionToken, verifySessionToken } from '../server/src/utils/sessionToken.js';
 
 function withEnv(nextEnv, callback) {
@@ -58,6 +60,77 @@ test('production auth refuses to start without AUTH_SECRET', () => {
       /AUTH_SECRET is required/,
     );
   });
+});
+
+test('session cookies can be read from request cookie headers', () => {
+  const request = {
+    get(headerName) {
+      if (headerName === 'cookie') {
+        return `theme=calm; ${SESSION_COOKIE_NAME}=abc.def; other=value`;
+      }
+
+      return '';
+    },
+  };
+
+  assert.equal(readSessionCookie(request), 'abc.def');
+});
+
+test('production configuration rejects unsafe launch settings', () => {
+  withEnv(
+    {
+      AUTH_SECRET: undefined,
+      CLIENT_ORIGIN: undefined,
+      CLIENT_ORIGINS: undefined,
+      JUDGE0_API_KEY: undefined,
+      JUDGE0_API_KEY_HEADER: undefined,
+      MONGODB_URI: 'mongodb://127.0.0.1:27017/algolens',
+      NODE_ENV: 'production',
+      PROGRESS_STORAGE_MODE: 'file',
+    },
+    () => {
+      assert.throws(
+        () => validateProductionConfig(),
+        /AUTH_SECRET must be set.*hosted database.*CLIENT_ORIGIN.*file is not allowed/s,
+      );
+    },
+  );
+});
+
+test('production configuration accepts hosted database and strong secrets', () => {
+  withEnv(
+    {
+      AUTH_SECRET: '1234567890abcdef1234567890abcdef',
+      CLIENT_ORIGIN: 'https://algolens.example',
+      CLIENT_ORIGINS: undefined,
+      JUDGE0_API_KEY: undefined,
+      JUDGE0_API_KEY_HEADER: undefined,
+      MONGODB_URI: 'mongodb+srv://user:pass@cluster0.example.mongodb.net/algolens',
+      NODE_ENV: 'production',
+      PROGRESS_STORAGE_MODE: 'mongo',
+    },
+    () => {
+      assert.doesNotThrow(() => validateProductionConfig());
+    },
+  );
+});
+
+test('production configuration rejects a Judge0 key sent as Content-Type', () => {
+  withEnv(
+    {
+      AUTH_SECRET: '1234567890abcdef1234567890abcdef',
+      CLIENT_ORIGIN: 'https://algolens.example',
+      CLIENT_ORIGINS: undefined,
+      JUDGE0_API_KEY: 'example-key',
+      JUDGE0_API_KEY_HEADER: 'Content-Type',
+      MONGODB_URI: 'mongodb+srv://user:pass@cluster0.example.mongodb.net/algolens',
+      NODE_ENV: 'production',
+      PROGRESS_STORAGE_MODE: 'mongo',
+    },
+    () => {
+      assert.throws(() => validateProductionConfig(), /JUDGE0_API_KEY_HEADER must be an auth header/);
+    },
+  );
 });
 
 test('configured admin emails resolve to admin role', () => {
