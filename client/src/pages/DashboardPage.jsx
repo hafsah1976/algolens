@@ -119,7 +119,7 @@ function StitchTopicCard({ progress, track }) {
           <span className="text-muted">/ {getLessonStageLabel(nextLesson, undefined)}</span>
         </p>
         <p className="text-xs leading-5 text-muted">
-          Ready now: <span className="font-semibold text-ink">{readiness.interactive}</span> Trace Mode lessons.
+          Ready now: <span className="font-semibold text-ink">{readiness.interactive}</span> step-by-step lessons.
           {pathComplete ? ' Path complete.' : ' No previews left.'}
         </p>
       </div>

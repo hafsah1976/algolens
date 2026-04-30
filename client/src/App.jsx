@@ -30,7 +30,7 @@ function App() {
               </p>
 
               <p className="mt-6 max-w-xl text-lg leading-8 text-muted sm:text-xl">
-                AlgoLens helps students understand algorithms through clear visual traces,
+                AlgoLens helps students understand algorithms through clear visual walkthroughs,
                 not dense walls of text. The experience stays focused on five core learning paths
                 and a calm study flow that encourages one good lesson at a time.
               </p>
@@ -40,11 +40,11 @@ function App() {
                   className="inline-flex items-center justify-center rounded-full bg-accent px-6 py-3 text-sm font-semibold text-white transition duration-200 hover:bg-ink"
                   to="/app/traces"
                 >
-                  Start Trace Mode demo
+                  Open step-by-step examples
                 </Link>
 
                 <p className="text-sm leading-6 text-muted">
-                  Five complete visual traces with prediction, code sync, mistakes, and recap.
+                  Five complete walkthroughs with prediction, code sync, mistakes, and recap.
                 </p>
               </div>
             </div>
@@ -94,7 +94,7 @@ function App() {
               <div className="rounded-[1.75rem] border border-line/80 bg-surface-strong/90 p-5">
                 <p className="font-semibold text-ink">Visual first</p>
                 <p className="mt-3 leading-6">
-                  Trace Mode shows how arrays, pointers, maps, and stacks change step by step.
+                  Step by step mode shows how arrays, pointers, maps, and stacks change.
                 </p>
               </div>
               <div className="rounded-[1.75rem] border border-line/80 bg-surface-strong/90 p-5">
@@ -106,7 +106,7 @@ function App() {
               <div className="rounded-[1.75rem] border border-line/80 bg-surface-strong/90 p-5">
                 <p className="font-semibold text-ink">Reusable learning engine</p>
                 <p className="mt-3 leading-6">
-                  The same Trace Mode system powers prediction, code sync, mistakes, and recap.
+                  The same walkthrough system powers prediction, code sync, mistakes, and recap.
                 </p>
               </div>
             </div>

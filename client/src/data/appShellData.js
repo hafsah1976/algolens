@@ -22,7 +22,7 @@ export const learningTracks = [
       commonMistake:
         'A pointer is not a special object here. It is only an index, and the real skill is deciding why one pointer should move while the other stays still.',
       traceMode:
-        'Trace Mode will show both positions, the values they point to, the current sum, and the reason a pointer moves inward.',
+        'Step by step mode will show both positions, the values they point to, the current sum, and the reason a pointer moves inward.',
       useItWhen:
         'Reach for this pattern when the data is already ordered, or when moving one boundary at a time can shrink the problem instead of restarting it.',
       tinyExample: {
@@ -79,7 +79,7 @@ export const learningTracks = [
         id: 'pair-sum-trace',
         title: 'Pair Sum with Two Pointers',
         duration: '12 min',
-        stage: 'Trace Mode',
+        stage: 'Step by step mode',
         summary:
           'Step through a sorted array and see why moving the left or right pointer changes the result.',
         goals: [
@@ -92,7 +92,7 @@ export const learningTracks = [
         id: 'container-window-preview',
         title: 'Read the Window Before It Moves',
         duration: '9 min',
-        stage: 'Trace Mode',
+        stage: 'Step by step mode',
         summary:
           'Practice reading a shrinking search space before deciding which edge should move.',
         goals: [
@@ -104,7 +104,7 @@ export const learningTracks = [
         id: 'remove-duplicates-preview',
         title: 'In-Place Compression',
         duration: '8 min',
-        stage: 'Trace Mode',
+        stage: 'Step by step mode',
         summary:
           'See how one write pointer and one read pointer simplify repeated values in place.',
         goals: [
@@ -137,7 +137,7 @@ export const learningTracks = [
       commonMistake:
         'Beginners often store too much. Usually you only need the smallest helpful fact, such as a count, an index, or a complement you want to match.',
       traceMode:
-        'Trace Mode will show keys appearing, counts changing, and lookups succeeding or failing as the lesson moves forward.',
+        'Step by step mode will show keys appearing, counts changing, and lookups succeeding or failing as the lesson moves forward.',
       useItWhen:
         'Reach for a hash map when a later decision depends on remembering something you saw earlier, such as a count, a partner value, or a saved position.',
       tinyExample: {
@@ -194,7 +194,7 @@ export const learningTracks = [
         id: 'two-sum-map-preview',
         title: 'Two Sum by Memory',
         duration: '10 min',
-        stage: 'Trace Mode',
+        stage: 'Step by step mode',
         summary:
           'Watch the complement table grow as the lesson explains what gets stored and why.',
         goals: ['Understand complements', 'Read the map after each insertion'],
@@ -203,7 +203,7 @@ export const learningTracks = [
         id: 'anagram-buckets-preview',
         title: 'Count What Matters',
         duration: '11 min',
-        stage: 'Trace Mode',
+        stage: 'Step by step mode',
         summary:
           'Compare two strings by watching counts rise and fall instead of reading a dense proof.',
         goals: ['Track count balance', 'Spot when state matches exactly'],
@@ -212,7 +212,7 @@ export const learningTracks = [
         id: 'first-unique-preview',
         title: 'Find the First Unique Value',
         duration: '7 min',
-        stage: 'Trace Mode',
+        stage: 'Step by step mode',
         summary:
           'Combine a pass for memory with a pass for decision making in one clean visual flow.',
         goals: ['Separate recording from checking', 'Use counts to support scanning'],
@@ -242,7 +242,7 @@ export const learningTracks = [
       commonMistake:
         'Beginners often mix up the removal direction. If you forget which side comes out first, the whole algorithm story becomes confusing.',
       traceMode:
-        'Trace Mode will show items entering, leaving, and waiting so the order is visible instead of hidden inside code.',
+        'Step by step mode will show items entering, leaving, and waiting so the order is visible instead of hidden inside code.',
       useItWhen:
         'Reach for a stack when the newest unfinished work should be resolved first. Reach for a queue when work should be handled in arrival order or by layers.',
       tinyExample: {
@@ -299,7 +299,7 @@ export const learningTracks = [
         id: 'valid-parentheses-preview',
         title: 'Match Pairs with a Stack',
         duration: '8 min',
-        stage: 'Trace Mode',
+        stage: 'Step by step mode',
         summary:
           'See opening brackets stack up and collapse when matching closers arrive.',
         goals: ['Recognize stack shape', 'Explain mismatch moments'],
@@ -308,7 +308,7 @@ export const learningTracks = [
         id: 'daily-temperatures-preview',
         title: 'When a Monotonic Stack Helps',
         duration: '12 min',
-        stage: 'Trace Mode',
+        stage: 'Step by step mode',
         summary:
           'Track unresolved days and watch answers fill in only when warmer values appear.',
         goals: ['Read unresolved state', 'Understand deferred answers'],
@@ -317,7 +317,7 @@ export const learningTracks = [
         id: 'level-order-preview',
         title: 'Traverse by Queue Layers',
         duration: '10 min',
-        stage: 'Trace Mode',
+        stage: 'Step by step mode',
         summary:
           'Use a queue to see breadth-first order emerge layer by layer.',
         goals: ['Visualize enqueue and dequeue flow', 'Connect queue order to tree levels'],
@@ -347,7 +347,7 @@ export const learningTracks = [
       commonMistake:
         'Beginners often think the goal is to find the middle value itself. The real goal is to keep correct left and right boundaries after every comparison.',
       traceMode:
-        'Trace Mode will show low, high, mid, the remaining interval, and the exact reason one half disappears.',
+        'Step by step mode will show low, high, mid, the remaining interval, and the exact reason one half disappears.',
       useItWhen:
         'Reach for binary search when the data or the answer space has a consistent left-versus-right rule that lets you safely throw half away.',
       tinyExample: {
@@ -404,7 +404,7 @@ export const learningTracks = [
         id: 'binary-search-basics-preview',
         title: 'Cut the Search Space in Half',
         duration: '9 min',
-        stage: 'Trace Mode',
+        stage: 'Step by step mode',
         summary:
           'See the interval shrink after each midpoint check and notice what never needs checking again.',
         goals: ['Track low, high, and mid', 'Explain why half the array disappears'],
@@ -413,7 +413,7 @@ export const learningTracks = [
         id: 'first-true-preview',
         title: 'Search for the First Valid Answer',
         duration: '10 min',
-        stage: 'Trace Mode',
+        stage: 'Step by step mode',
         summary:
           'Move from searching for a value to searching for a boundary that satisfies a condition.',
         goals: ['Spot monotonic conditions', 'Keep candidate answers visible'],
@@ -422,7 +422,7 @@ export const learningTracks = [
         id: 'search-in-rotated-preview',
         title: 'Read Structure Before Choosing a Half',
         duration: '11 min',
-        stage: 'Trace Mode',
+        stage: 'Step by step mode',
         summary:
           'Use segment structure to decide which half is safe to discard in a rotated array.',
         goals: ['Identify sorted halves', 'Explain conditional branching'],
@@ -452,7 +452,7 @@ export const learningTracks = [
       commonMistake:
         'Beginners often focus on recursion syntax before understanding visit order. The order is the concept; recursion is only one way to express it.',
       traceMode:
-        'Trace Mode will show the active node, the visit order, and whether the algorithm is going deeper or stepping back.',
+        'Step by step mode will show the active node, the visit order, and whether the algorithm is going deeper or stepping back.',
       useItWhen:
         'Reach for tree thinking when information branches into smaller connected parts, and the order you visit those parts changes the meaning of the result.',
       tinyExample: {
@@ -509,7 +509,7 @@ export const learningTracks = [
         id: 'dfs-order-preview',
         title: 'Read a Tree Depth First',
         duration: '11 min',
-        stage: 'Trace Mode',
+        stage: 'Step by step mode',
         summary:
           'Watch the call stack shape the exact order in which nodes appear.',
         goals: ['Differentiate traversal orders', 'Visualize recursive return points'],
@@ -518,7 +518,7 @@ export const learningTracks = [
         id: 'bfs-layers-preview',
         title: 'Visit by Levels',
         duration: '9 min',
-        stage: 'Trace Mode',
+        stage: 'Step by step mode',
         summary:
           'Queue-based traversal turns the tree into visible layers of work.',
         goals: ['Connect queue state to layer order', 'Notice frontier changes'],
@@ -527,7 +527,7 @@ export const learningTracks = [
         id: 'path-sum-preview',
         title: 'Carry Information Down the Tree',
         duration: '10 min',
-        stage: 'Trace Mode',
+        stage: 'Step by step mode',
         summary:
           'See values accumulate as a path travels downward and resets on the way back.',
         goals: ['Track path context', 'Interpret branching decisions'],

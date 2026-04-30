@@ -80,7 +80,7 @@ export function ProgressOverview({
           <div className="app-panel-soft p-4">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">Current learner</p>
             <p className="mt-2 text-sm leading-6 text-ink">
-              {(userName || snapshot.learnerName)} has saved progress across Trace Mode lessons.
+              {(userName || snapshot.learnerName)} has saved progress across step-by-step lessons.
             </p>
           </div>
         </div>

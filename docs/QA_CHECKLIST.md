@@ -21,8 +21,8 @@ Use this before recording a demo or submitting the project.
 - Dashboard shows empty states for new users.
 - `/app/topics` shows topic cards.
 - A topic page opens and shows lessons.
-- A Trace Mode lesson opens.
-- Trace Mode next, previous, restart, challenge mode, and share-step behavior work.
+- A step-by-step lesson opens.
+- Step by step next, previous, restart, challenge mode, and share-step behavior work.
 - Completing a lesson updates dashboard progress.
 - Quiz page loads, submits answers, and shows explanations.
 - Practice list loads.
@@ -49,4 +49,3 @@ Use this before recording a demo or submitting the project.
 - Unknown API routes return JSON errors.
 - Judge0 settings are documented and optional.
 - Hidden coding test cases are not exposed to the frontend.
-

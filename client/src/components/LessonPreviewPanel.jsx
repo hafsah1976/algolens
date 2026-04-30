@@ -31,22 +31,22 @@ export function LessonPreviewPanel({ lesson, track }) {
       note: `${lesson.title} already has goals, examples, and topic context in the ${track.title} path.`,
     },
     {
-      title: hasInlineVisualization ? 'Visual support is ready' : 'Trace data can come next',
+      title: hasInlineVisualization ? 'Visual support is ready' : 'Step-by-step data can come next',
       note: hasInlineVisualization
         ? 'This reading lesson includes a small custom visualization to support the core idea.'
-        : 'This lesson can grow into full Trace Mode with frames, predictions, code sync, Mistake Lens notes, and a recap.',
+        : 'This lesson can grow into step by step mode with frames, predictions, code sync, Mistake Lens notes, and a recap.',
     },
     {
-      title: 'Use a complete trace now',
-      note: 'For the contest demo, use the Trace Library for the lessons that are already fully interactive.',
+      title: 'Use a complete walkthrough now',
+      note: 'For a polished demo, open the step-by-step examples that are already fully interactive.',
     },
   ];
   const statusTitle = hasInlineVisualization
     ? 'Reading lesson with visual support.'
-    : 'Concept ready, trace planned.';
+    : 'Concept ready, walkthrough planned.';
   const statusBody = hasInlineVisualization
-    ? 'This lesson uses a lightweight visual component. Trace Mode remains reserved for complete step-by-step algorithm walkthroughs.'
-    : 'This lesson is part of the curriculum map and has a clear teaching goal. It is not presented as complete Trace Mode until its visual frames are authored.';
+    ? 'This lesson uses a lightweight visual component. Step by step mode is reserved for complete algorithm walkthroughs.'
+    : 'This lesson is part of the curriculum map and has a clear teaching goal. It is not presented as a complete walkthrough until its visual frames are authored.';
 
   return (
     <section className="app-panel overflow-hidden p-6 sm:p-8">
@@ -91,7 +91,7 @@ export function LessonPreviewPanel({ lesson, track }) {
                 className="inline-flex items-center rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:bg-ink"
                 to="/app/traces"
               >
-                Open complete traces
+                Open step-by-step examples
               </Link>
               <Link
                 className="inline-flex items-center rounded-full border border-line/80 bg-white/70 px-4 py-2 text-sm font-medium text-ink transition hover:border-accent/40"

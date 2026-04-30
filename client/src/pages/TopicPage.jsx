@@ -20,7 +20,7 @@ function LessonRow({ lesson, stageLabel }) {
   const stats = getLessonStats(lesson);
   const readinessCopy = mode.isInteractive
     ? `${stats.frames} frames / ${stats.predictions} predictions / ${stats.mistakes} mistake lenses`
-    : 'Trace authoring planned after the core interactive library is complete';
+    : 'Walkthrough authoring planned after the core interactive library is complete';
 
   return (
     <div className="rounded-2xl border border-line/70 bg-white/70 p-4 transition hover:border-accent/35 hover:bg-white/90 sm:p-5">

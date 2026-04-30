@@ -8,7 +8,7 @@ import { getFocusModeStatus } from '../lib/focusMode.js';
 const primaryLinks = [
   { to: '/app/dashboard', label: 'Dashboard', hint: 'Today' },
   { to: '/app/topics', label: 'Topics', hint: 'Paths' },
-  { to: '/app/traces', label: 'Trace Library', hint: 'Visuals' },
+  { to: '/app/traces', label: 'Step-by-step examples', hint: 'Visuals' },
   { to: '/app/sandbox', label: 'Algo-Sandbox', hint: 'Lab' },
   { to: '/app/practice', label: 'Practice', hint: 'Code' },
   { to: '/app/completed', label: 'Recap', hint: 'Reflect' },
@@ -49,7 +49,7 @@ export function AppSidebar({ focusMode, onNavigate }) {
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-muted">AlgoLens</p>
           <h1 className="mt-2 font-display text-3xl tracking-[-0.03em] text-ink">Learn visually.</h1>
           <p className="mt-3 max-w-xs text-sm leading-6 text-muted">
-            A calm workspace for five focused DSA learning paths and a growing Trace Mode library.
+            A calm workspace for five focused DSA learning paths and growing step-by-step examples.
           </p>
         </NavLink>
       </div>
@@ -103,7 +103,7 @@ export function AppSidebar({ focusMode, onNavigate }) {
       <div className="mt-auto app-panel-soft p-4">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Study path</p>
         <p className="mt-2 text-sm leading-6 text-muted">
-          Start at the Trace Library, complete one visual lesson, then end on a calm recap.
+          Open a step-by-step example, complete one visual lesson, then end on a calm recap.
         </p>
         <p className="mt-4 rounded-full border border-line/70 bg-white/60 px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted">
           {getFocusModeStatus(focusMode)}

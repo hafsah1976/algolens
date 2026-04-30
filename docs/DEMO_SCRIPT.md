@@ -20,9 +20,9 @@ Show:
 - Progress metrics
 - Recent quiz/submission empty state or real data
 
-## 0:45 - 1:45 Trace Mode
+## 0:45 - 1:45 Step By Step Mode
 
-"Trace Mode is the signature feature. It breaks an algorithm into frames so students can move forward and backward while watching pointers, variables, highlighted code, and explanations stay in sync."
+"Step by step mode is the signature learning experience. It breaks an algorithm into frames so students can move forward and backward while watching pointers, variables, highlighted code, and explanations stay in sync."
 
 Show:
 
@@ -40,7 +40,7 @@ Show:
 Show:
 
 - Custom input
-- Generated trace
+- Generated walkthrough
 
 ## 2:10 - 2:35 Quiz
 
@@ -74,4 +74,3 @@ Show:
 ## Closing
 
 "AlgoLens is intentionally focused. It does not try to replace every coding platform. It solves one hard beginner problem well: making algorithm state visible, interactive, and memorable."
-

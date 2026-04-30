@@ -82,7 +82,7 @@ export function QuizLinksPanel({ topicId, topicTitle }) {
       <div className="app-panel p-6">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Concept quiz</p>
         <p className="mt-3 text-sm leading-6 text-muted">
-          No quiz is published for {topicTitle} yet. Trace Mode and reading lessons still save
+          No quiz is published for {topicTitle} yet. Step-by-step and reading lessons still save
           progress normally.
         </p>
       </div>

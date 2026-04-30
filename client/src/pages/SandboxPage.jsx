@@ -18,7 +18,7 @@ const sandboxLesson = {
   goals: [
     'Test your own sorted input',
     'Predict pointer movement before the next frame',
-    'Compare custom data with guided Trace Mode behavior',
+    'Compare custom data with guided step-by-step behavior',
   ],
   id: 'sandbox-two-pointers',
   title: 'Two Pointers Lab',
@@ -75,15 +75,15 @@ export function SandboxPage() {
   }
 
   function handleComplete() {
-    setCompletionMessage('Sandbox trace complete. Try one changed number or return to a guided lesson.');
+    setCompletionMessage('Walkthrough complete. Try one changed number or return to a guided lesson.');
   }
 
   return (
     <div className="space-y-6">
       <SectionHeading
-        description="Free-play with the two-pointer pattern. Enter your own data, run the trace, and test whether the mental model still holds."
+        description="Free-play with the two-pointer pattern. Enter your own data, run a walkthrough, and test whether the mental model still holds."
         eyebrow="Algo-Sandbox"
-        title="Experiment without leaving Trace Mode."
+        title="Experiment with step by step mode."
       />
 
       <section className="app-panel p-6 sm:p-7">
@@ -115,7 +115,7 @@ export function SandboxPage() {
               className="w-fit rounded-full bg-accent px-5 py-3 text-sm font-semibold text-white transition hover:bg-ink"
               type="submit"
             >
-              Run custom trace
+              Run a walkthrough
             </button>
           </form>
         </div>

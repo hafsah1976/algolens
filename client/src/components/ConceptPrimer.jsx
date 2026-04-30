@@ -3,7 +3,7 @@ const primerSectionMeta = [
   { key: 'whyItHelps', label: 'Why it helps' },
   { key: 'pictureIt', label: 'How to picture it' },
   { key: 'commonMistake', label: 'Common beginner miss' },
-  { key: 'traceMode', label: 'What Trace Mode will show' },
+  { key: 'traceMode', label: 'What step by step mode will show' },
 ];
 
 function PrimerBlock({ body, label }) {
@@ -106,7 +106,7 @@ export function ConceptPrimer({ primer, title }) {
             <h4 className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-ink">Small words that unlock the topic</h4>
           </div>
           <p className="max-w-md text-sm leading-6 text-muted">
-            These are the terms learners will keep seeing across lessons, traces, and explanations.
+            These are the terms learners will keep seeing across lessons, walkthroughs, and explanations.
           </p>
         </div>
 

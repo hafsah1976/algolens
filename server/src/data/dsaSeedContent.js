@@ -308,7 +308,7 @@ export const initialDsaQuizzes = [
     questions: [
       {
         type: 'mcq',
-        prompt: 'In AlgoLens Trace Mode, what is the difference between an index and a value?',
+        prompt: 'In AlgoLens step by step mode, what is the difference between an index and a value?',
         options: [
           'An index is the position; a value is the data stored there.',
           'An index is always larger than the value.',
@@ -316,7 +316,7 @@ export const initialDsaQuizzes = [
         ],
         correctAnswer: 'An index is the position; a value is the data stored there.',
         explanation:
-          'Trace Mode labels positions and stored values separately because pointer movement changes positions, not the values themselves.',
+          'Step by step mode labels positions and stored values separately because pointer movement changes positions, not the values themselves.',
         difficulty: 'beginner',
       },
       {
@@ -420,7 +420,7 @@ export const initialDsaQuizzes = [
         options: ['The newest item', 'The oldest item', 'A random item'],
         correctAnswer: 'The newest item',
         explanation:
-          'Stacks are last in, first out. Trace Mode stack lessons highlight the top item.',
+          'Stacks are last in, first out. Step by step stack lessons highlight the top item.',
         difficulty: 'beginner',
       },
       {

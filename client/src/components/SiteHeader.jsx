@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 const navItems = [
-  { label: 'Trace Mode', href: '#trace-preview' },
+  { label: 'Step by step mode', href: '#trace-preview' },
   { label: 'Focus Areas', href: '#focus-areas' },
   { label: 'Calm Study Flow', href: '#study-flow' },
 ];
@@ -36,7 +36,7 @@ export function SiteHeader() {
           className="inline-flex items-center whitespace-nowrap rounded-full bg-accent px-4 py-2 font-semibold text-white transition hover:bg-ink"
           to="/app/traces"
         >
-          Open Trace Library
+          Open step-by-step examples
         </Link>
         <Link
           className="inline-flex items-center whitespace-nowrap rounded-full border border-line/70 bg-white/55 px-4 py-2 font-semibold text-ink transition hover:border-accent/40"

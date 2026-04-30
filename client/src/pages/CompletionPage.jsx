@@ -82,7 +82,7 @@ function TraceRecapScreen({
       <section className="app-panel overflow-hidden p-6 sm:p-8">
         <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_320px]">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted">Trace recap</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted">Walkthrough recap</p>
             <h3 className="mt-3 max-w-3xl font-display text-4xl tracking-[-0.04em] text-ink sm:text-5xl">
               {recap.pattern}
             </h3>
@@ -114,7 +114,7 @@ function TraceRecapScreen({
 
       <section className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_340px]">
         <div className="app-panel p-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">What changed during the trace</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">What changed during the walkthrough</p>
           <div className="mt-5 grid gap-4 md:grid-cols-2">
             <div className="app-panel-soft p-4">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">Started</p>
@@ -163,7 +163,7 @@ function TraceRecapScreen({
               className="inline-flex items-center rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:bg-ink"
               to="/app/traces"
             >
-              Back to Trace Library
+              Back to step-by-step examples
             </Link>
             {nextTrace ? (
               <Link
@@ -228,7 +228,7 @@ export function CompletionPage() {
               className="inline-flex items-center rounded-full border border-line/80 bg-white/70 px-4 py-2 text-sm font-medium text-ink transition hover:border-accent/40"
               to="/app/traces"
             >
-              Trace Library
+              Step-by-step examples
             </Link>
             <Link
               className="inline-flex items-center rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:bg-ink"
@@ -240,7 +240,7 @@ export function CompletionPage() {
         }
         description={completionDescription}
         eyebrow="Completion"
-        title={traceLesson ? 'Trace complete. Let it settle.' : 'End the session on purpose'}
+        title={traceLesson ? 'Walkthrough complete. Let it settle.' : 'End the session on purpose'}
       />
 
       {completionMatch && trackProgress && traceLesson?.completionRecap ? (

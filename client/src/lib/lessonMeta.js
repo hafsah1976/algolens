@@ -9,17 +9,17 @@ export function getLessonMode(lesson) {
 
   if (traceLesson) {
     return {
-      actionLabel: 'Start trace',
-      description: 'Interactive Trace Mode lesson with frame-by-frame state changes.',
+      actionLabel: 'Run walkthrough',
+      description: 'Interactive step-by-step lesson with frame-by-frame state changes.',
       isInteractive: true,
-      stageLabel: 'Trace Mode',
+      stageLabel: 'Step by step mode',
       traceLesson,
     };
   }
 
   return {
     actionLabel: 'Preview concept',
-    description: 'Mapped lesson concept. Trace Mode frames still need to be authored.',
+    description: 'Mapped lesson concept. Step-by-step frames still need to be authored.',
     isInteractive: false,
     stageLabel: lesson.stage ?? previewStageLabel,
     traceLesson: null,

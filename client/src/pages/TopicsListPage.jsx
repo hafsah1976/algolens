@@ -121,7 +121,7 @@ export function TopicsListPage() {
             className="inline-flex items-center rounded-full bg-accent px-5 py-2 text-sm font-semibold text-white transition hover:bg-ink"
             to="/app/traces"
           >
-            Browse Trace Mode
+            Open step-by-step examples
           </Link>
         }
         description="Browse the five core DSA paths, see your saved progress, and choose the next beginner-friendly visual lesson."
@@ -142,7 +142,7 @@ export function TopicsListPage() {
             Five paths, one calm curriculum.
           </h2>
           <p className="mt-3 max-w-3xl text-sm leading-7 text-muted sm:text-base">
-            AlgoLens groups lessons by concepts and patterns, then lets Trace Mode show how the
+            AlgoLens groups lessons by concepts and patterns, then lets step by step mode show how the
             data changes one step at a time.
           </p>
         </div>

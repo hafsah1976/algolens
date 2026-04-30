@@ -32,7 +32,7 @@ export function toCatalogLesson(lesson) {
     ],
     id: lesson.slug ?? lesson.id,
     slug: lesson.slug ?? lesson.id,
-    stage: lesson.visualizationType === 'trace' ? 'Trace Mode' : 'Reading Lesson',
+    stage: lesson.visualizationType === 'trace' ? 'Step by step mode' : 'Reading Lesson',
     summary: lesson.summary,
     title: lesson.title,
     visualizationType: lesson.visualizationType ?? 'none',

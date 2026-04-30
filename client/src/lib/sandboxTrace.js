@@ -317,7 +317,7 @@ export function buildTwoPointerSandboxTrace({ target, values }) {
       remember:
         'On sorted data, too small moves left rightward; too large moves right leftward.',
       stop:
-        'The sandbox is for experimentation. One custom trace is enough before returning to the guided lessons.',
+        'The sandbox is for experimentation. One custom walkthrough is enough before returning to the guided lessons.',
     },
     frames,
     lessonId: 'sandbox-two-pointers',

@@ -12,7 +12,7 @@ const traceSteps = [
 
 const landingStats = [
   { value: '5', label: 'Core paths' },
-  { value: '15', label: 'Trace lessons' },
+  { value: '15', label: 'Walkthroughs' },
   { value: '20', label: 'Seeded lessons' },
 ];
 
@@ -26,7 +26,7 @@ const studyLoopSteps = [
     detail: 'Read beginner-friendly explanations that name what is changing and why.',
   },
   {
-    title: 'Trace the algorithm',
+    title: 'Walk through the algorithm',
     detail: 'Move forward and backward through pointers, variables, stacks, queues, or nodes.',
   },
   {
@@ -61,7 +61,7 @@ function LandingNav() {
 
         <nav className="hidden items-center gap-2 md:flex">
           <a className="rounded-full px-4 py-2 text-sm font-medium text-muted transition hover:bg-warm/60 hover:text-ink" href="#trace-mode">
-            Trace Mode
+            Step by step mode
           </a>
           <a className="rounded-full px-4 py-2 text-sm font-medium text-muted transition hover:bg-warm/60 hover:text-ink" href="#study-loop">
             Study loop
@@ -82,7 +82,7 @@ function LandingNav() {
             className="rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:bg-ink"
             to="/app/traces"
           >
-            Open app
+            Open step-by-step examples
           </Link>
         </div>
       </div>
@@ -96,12 +96,12 @@ function TraceHeroVisual() {
       <div className="absolute inset-8 -z-10 rounded-[2rem] bg-accent/15 blur-3xl" />
 
       <section
-        aria-label="Trace Mode preview"
+        aria-label="Step by step mode preview"
         className="landing-lens rounded-[1.75rem] border border-line/80 bg-white/90 p-5 shadow-[0_24px_80px_rgba(20,34,23,0.1)] backdrop-blur-xl sm:p-6"
       >
         <div className="flex items-center justify-between gap-4 border-b border-line/70 pb-4">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Trace Mode</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Step by step mode</p>
             <p className="mt-1 text-sm font-semibold text-ink">Pair Sum / Live frame</p>
           </div>
           <div className="flex gap-2">
@@ -200,7 +200,7 @@ function StudyLoopSection() {
           </h2>
           <p className="mt-5 text-base leading-7 text-muted">
             AlgoLens is intentionally anti-doom-scroll. Each session is designed to move from
-            concept, to trace, to saved progress, to a clear stopping point.
+            concept, to walkthrough, to saved progress, to a clear stopping point.
           </p>
         </div>
 
@@ -258,7 +258,7 @@ export function LandingPage() {
                   className="inline-flex justify-center rounded-full bg-accent px-6 py-3 text-sm font-semibold text-white shadow-[0_16px_40px_rgba(46,106,74,0.18)] transition hover:bg-ink"
                   to={`${getCanonicalLessonPath('pair-sum-trace')}?fresh=1`}
                 >
-                  Start a trace
+                  Run a walkthrough
                 </Link>
                 <Link
                   className="inline-flex justify-center rounded-full border border-line/80 bg-white/75 px-6 py-3 text-sm font-semibold text-ink transition hover:border-accent/45"

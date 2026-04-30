@@ -61,7 +61,7 @@ export function MentalModelMilestones({ snapshot, variant = 'dashboard' }) {
             Reward understanding, not streak pressure.
           </h2>
           <p className="mt-3 text-sm leading-7 text-muted">
-            AlgoLens marks conceptual breakthroughs as you complete Trace Mode lessons.
+            AlgoLens marks conceptual breakthroughs as you complete step-by-step lessons.
             The goal is confidence you can explain, not another feed to chase.
           </p>
 

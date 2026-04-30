@@ -171,7 +171,7 @@ Open the deployed frontend and test:
 - Login works.
 - Dashboard loads.
 - Topics load from MongoDB.
-- Trace Mode lesson opens.
+- Step-by-step lesson opens.
 - Lesson completion saves progress.
 - Quiz submits and shows explanations.
 - Practice problem submits and shows a safe result.

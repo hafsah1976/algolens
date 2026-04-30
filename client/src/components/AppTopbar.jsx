@@ -11,20 +11,20 @@ const titleMap = [
   { match: '/app/dashboard', title: 'Dashboard', detail: 'Start with one clear lesson.' },
   { match: '/app/topics/', title: 'Topic path', detail: 'Follow linked concepts, not isolated facts.' },
   { match: '/app/topics', title: 'Topics', detail: 'Choose a DSA path and inspect your progress.' },
-  { match: '/app/traces', title: 'Trace library', detail: 'Browse every visual algorithm walkthrough.' },
+  { match: '/app/traces', title: 'Step-by-step examples', detail: 'Browse visual algorithm walkthroughs.' },
   { match: '/app/sandbox', title: 'Algo-Sandbox', detail: 'Test a pattern with your own input.' },
   { match: '/app/practice/', title: 'Practice problem', detail: 'Write code after the concept clicks.' },
   { match: '/app/practice', title: 'Coding practice', detail: 'Browse beginner DSA problems.' },
   { match: '/app/completed', title: 'Lesson recap', detail: 'Close the loop with one clear takeaway.' },
   { match: '/app/quizzes/', title: 'Concept quiz', detail: 'Check understanding before coding practice.' },
   { match: '/app/topic/', title: 'Topic path', detail: 'Follow linked concepts, not isolated facts.' },
-  { match: '/app/lessons/', title: 'Trace Mode lesson', detail: 'Step through the algorithm and save your place.' },
-  { match: '/app/lesson/', title: 'Trace Mode lesson', detail: 'Step through the algorithm and save your place.' },
+  { match: '/app/lessons/', title: 'Step-by-step lesson', detail: 'Walk through the algorithm and save your place.' },
+  { match: '/app/lesson/', title: 'Step-by-step lesson', detail: 'Walk through the algorithm and save your place.' },
 ];
 
 const fallbackHeading = {
   title: 'AlgoLens',
-  detail: 'Choose a focused path, trace an algorithm, or continue your saved progress.',
+  detail: 'Choose a focused path, run a walkthrough, or continue your saved progress.',
 };
 
 function getHeading(pathname) {
@@ -106,7 +106,7 @@ export function AppTopbar({ focusMode, onOpenMenu, onToggleFocusMode }) {
             className="inline-flex items-center rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:bg-ink"
             to="/app/traces"
           >
-            Open trace library
+            Open step-by-step examples
           </Link>
         )}
       </div>

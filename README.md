@@ -8,10 +8,10 @@ This repository now contains the foundation for the MVP:
 
 - `client/` - React + Vite + Tailwind frontend with the AlgoLens learning platform UI
 - `server/` - Express API with MongoDB-backed auth and progress routes, deployable through Netlify Functions
-- `tests/` - Node test coverage for product content, progress logic, Trace Mode behavior, sandbox traces, and auth token safety
+- `tests/` - Node test coverage for product content, progress logic, step-by-step behavior, sandbox walkthroughs, and auth token safety
 
-Current standout learning features include authenticated progress, Trace Mode lessons, Challenge Mode, shareable trace steps, mental model milestones, Focus Mode, printable study sheets, and Algo-Sandbox.
-Seeded reading lessons can also render lightweight custom visualizations for binary search, stacks, queues, BFS, DFS, and bubble sort. Trace Mode remains the primary step-by-step visualization experience.
+Current standout learning features include authenticated progress, step-by-step lessons, Challenge Mode, shareable walkthrough steps, mental model milestones, Focus Mode, printable study sheets, and Algo-Sandbox.
+Seeded reading lessons can also render lightweight custom visualizations for binary search, stacks, queues, BFS, DFS, and bubble sort. Step by step mode remains the primary visualization experience.
 
 ## Run Locally
 
@@ -120,11 +120,11 @@ Useful student routes:
 - `/app/dashboard` - authenticated student hub
 - `/app/topics` - DSA topic catalog
 - `/app/topics/:topicSlug` - topic detail and ordered lessons
-- `/app/lessons/:lessonSlug` - working Trace Mode lesson route
+- `/app/lessons/:lessonSlug` - working step-by-step lesson route
 - `/app/quizzes/:quizId` - authenticated concept-check quiz
 - `/app/practice` - coding practice list
 - `/app/practice/:problemSlug` - coding problem detail and submission intake
-- `/app/traces` - Trace Mode library
+- `/app/traces` - step-by-step examples
 - `/admin/topics` - admin-only topic management
 - `/admin/lessons` - admin-only lesson management
 - `/admin/quizzes` - admin-only quiz creation

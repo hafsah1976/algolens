@@ -81,7 +81,7 @@ function TraceTutorPanel({ challengeMode }) {
     <details className="group rounded-[1.35rem] border border-accent/20 bg-accent/8 p-4">
       <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-3">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">How Trace Mode works</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">How step by step mode works</p>
           <p className="mt-2 text-sm leading-6 text-ink">
             Read, predict, then step. Open this if you want the full rhythm.
           </p>
@@ -114,7 +114,7 @@ function TraceToolsPanel({ onCopyStepLink, shareStatus }) {
       <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-3">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">Lesson tools</p>
-          <p className="mt-2 text-sm leading-6 text-muted">Secondary actions for sharing or changing traces.</p>
+          <p className="mt-2 text-sm leading-6 text-muted">Secondary actions for sharing or changing walkthroughs.</p>
         </div>
         <span className="rounded-full border border-line/70 bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-muted">
           Tools
@@ -133,7 +133,7 @@ function TraceToolsPanel({ onCopyStepLink, shareStatus }) {
           className="rounded-full border border-line/80 bg-white/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted transition hover:border-accent/40 hover:text-ink"
           to="/app/traces"
         >
-          Trace library
+          Step-by-step examples
         </Link>
       </div>
 
@@ -159,7 +159,7 @@ function PredictionPanel({ challengeMode, onSelect, prediction, selectedOptionId
   const isCorrect = selectedOption?.id === prediction.correctOptionId;
   const helperCopy = challengeMode
     ? 'Challenge Mode is on: choose the correct answer to unlock the next frame.'
-    : 'Choose one answer to unlock the next frame. This keeps the trace active instead of passive.';
+    : 'Choose one answer to unlock the next frame. This keeps the walkthrough active instead of passive.';
 
   return (
     <div className="rounded-[1.4rem] border border-accent/25 bg-white/80 p-4 shadow-[0_18px_50px_rgba(20,34,23,0.06)]">
@@ -526,7 +526,7 @@ export function TraceModePlayer({
       ? 'Correct answer needed'
       : 'Answer to continue'
     : isFirstFrame
-      ? 'Start trace mode'
+      ? 'Start step by step mode'
       : 'Next step';
   const saveStatusCopy = saveError
     ? saveError

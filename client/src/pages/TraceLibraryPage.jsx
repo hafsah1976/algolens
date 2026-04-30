@@ -83,7 +83,7 @@ function TraceLibraryCard({ item, lessonProgress }) {
         </div>
 
         <div className="app-panel-soft p-4">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">Trace depth</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">Walkthrough depth</p>
           <div className="mt-3 space-y-2 text-sm leading-6 text-ink">
             <p>{stats.predictions} prediction checkpoints</p>
             <p>{stats.mistakes} mistake lenses</p>
@@ -97,7 +97,7 @@ function TraceLibraryCard({ item, lessonProgress }) {
           className="inline-flex items-center rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:bg-ink"
           to={getCanonicalLessonPath(lesson.id)}
         >
-          Open trace
+          Open walkthrough
         </Link>
         <Link
           className="inline-flex items-center rounded-full border border-line/80 bg-white/70 px-4 py-2 text-sm font-medium text-ink transition hover:border-accent/40"
@@ -131,11 +131,11 @@ export function TraceLibraryPage() {
             className="inline-flex items-center whitespace-nowrap rounded-full bg-accent px-5 py-2 text-sm font-semibold text-white transition hover:bg-ink"
             to={`${getCanonicalLessonPath('container-window-preview')}?fresh=1`}
           >
-            Start featured trace
+            Start featured walkthrough
           </Link>
         }
-        description="A focused showcase of every interactive Trace Mode lesson: what it teaches, how long it takes, and which beginner supports are included."
-        eyebrow="Trace library"
+        description="A focused showcase of every interactive step-by-step lesson: what it teaches, how long it takes, and which beginner supports are included."
+        eyebrow="Step-by-step examples"
         title="The visual lesson shelf"
       />
 
@@ -143,7 +143,7 @@ export function TraceLibraryPage() {
         <div className="app-panel p-6">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Signature feature</p>
           <h3 className="mt-3 font-display text-3xl tracking-[-0.04em] text-ink">
-            Choose a trace by the pattern you want to understand.
+            Choose a walkthrough by the pattern you want to understand.
           </h3>
           <p className="mt-3 max-w-3xl text-sm leading-7 text-muted sm:text-base">
             Each lesson shows the algorithm state frame by frame, then adds predictions, synced
@@ -156,7 +156,7 @@ export function TraceLibraryPage() {
           <div className="mt-4 grid grid-cols-3 gap-3">
             <div className="rounded-[1rem] bg-white/75 px-3 py-4 text-center">
               <p className="text-2xl font-semibold tracking-[-0.04em] text-ink">{traceItems.length}</p>
-              <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted">Traces</p>
+              <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted">Examples</p>
             </div>
             <div className="rounded-[1rem] bg-white/75 px-3 py-4 text-center">
               <p className="text-2xl font-semibold tracking-[-0.04em] text-ink">{totalFrames}</p>
@@ -168,14 +168,14 @@ export function TraceLibraryPage() {
             </div>
           </div>
           <p className="mt-4 text-sm leading-6 text-muted">
-            Includes {totalMistakes} Mistake Lens callouts plus synchronized pseudocode for every trace.
+            Includes {totalMistakes} Mistake Lens callouts plus synchronized pseudocode for every walkthrough.
           </p>
         </div>
       </section>
 
       <section className="space-y-4">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">All Trace Mode lessons</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">All step-by-step examples</p>
           <h3 className="mt-2 font-display text-3xl tracking-[-0.04em] text-ink">Pick the algorithm state you want to see.</h3>
         </div>
 

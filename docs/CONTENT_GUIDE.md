@@ -1,6 +1,6 @@
 # AlgoLens Content Guide
 
-Use this guide when adding topics, lessons, quizzes, Trace Mode frames, or coding problems.
+Use this guide when adding topics, lessons, quizzes, step-by-step frames, or coding problems.
 
 ## Voice
 
@@ -20,7 +20,7 @@ Each lesson should answer:
 - Why is the next move allowed?
 - What beginner mistake should the learner avoid?
 
-## Trace Mode frame structure
+## Step by step frame structure
 
 Each frame should include:
 
@@ -37,7 +37,7 @@ Each frame should include:
 - Ask about concepts, not trivia.
 - Explain why the answer is correct after submission.
 - Keep wrong options plausible but not mean-spirited.
-- Prefer questions that reinforce Trace Mode mental models.
+- Prefer questions that reinforce step-by-step mental models.
 
 ## Coding problem rules
 
@@ -55,4 +55,3 @@ Before publishing content, ask:
 - Are key terms defined?
 - Is there a concrete example before the general rule?
 - Does the learner know when to stop and recap?
-

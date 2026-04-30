@@ -20,7 +20,7 @@ export function HeroVisualizer() {
       <div className="flex items-center justify-between gap-4">
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-muted">
-            Trace Mode preview
+            Step-by-step preview
           </p>
           <h2 className="mt-2 font-display text-3xl tracking-[-0.03em] text-ink">
             See the algorithm think.
@@ -71,7 +71,7 @@ export function HeroVisualizer() {
           </div>
           <div className="rounded-[1.25rem] bg-ink/6 px-4 py-3">
             <p className="font-semibold uppercase tracking-[0.18em] text-ink">right pointer</p>
-            <p className="mt-2">Index 3 stays fixed while the trace explains what changes next.</p>
+            <p className="mt-2">Index 3 stays fixed while the walkthrough explains what changes next.</p>
           </div>
         </div>
       </div>

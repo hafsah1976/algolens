@@ -232,7 +232,7 @@ export function AuthPage() {
           </Link>
           <p className="mt-16 text-xs font-semibold uppercase tracking-[0.24em] text-muted">AlgoLens accounts</p>
           <h1 className="mt-4 max-w-2xl font-display text-5xl leading-[0.98] tracking-[-0.04em] text-ink sm:text-6xl">
-            Keep your trace progress attached to you.
+            Keep your step-by-step progress attached to you.
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-8 text-muted">
             Sign in before a lesson and AlgoLens will load your saved frames, completed lessons,
@@ -316,7 +316,7 @@ export function AuthPage() {
           </form>
 
           <p className="mt-5 text-sm leading-6 text-muted">
-            Your account keeps lesson progress, Trace Mode checkpoints, quiz attempts, and coding
+            Your account keeps lesson progress, step-by-step checkpoints, quiz attempts, and coding
             practice activity connected to your learning profile.
           </p>
         </section>

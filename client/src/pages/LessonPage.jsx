@@ -289,7 +289,7 @@ export function LessonPage() {
             <div className="mt-6 app-panel-soft p-4">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">What comes next</p>
               <p className="mt-3 text-sm leading-6 text-ink">
-                Use the quiz to check the concept, then return to Trace Mode when the pattern needs a visual walkthrough.
+                Use the quiz to check the concept, then return to step by step mode when the pattern needs a visual walkthrough.
               </p>
             </div>
           </div>

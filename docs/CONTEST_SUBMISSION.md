@@ -6,11 +6,11 @@ AlgoLens is a calm visual DSA learning platform that helps beginners understand 
 
 ## Product thesis
 
-Many students do not fail DSA because they cannot memorize syntax. They struggle because algorithm state is invisible: pointers move, maps fill, stacks change, and recursion unfolds faster than text explanations can make clear. AlgoLens makes that invisible state visible through Trace Mode.
+Many students do not fail DSA because they cannot memorize syntax. They struggle because algorithm state is invisible: pointers move, maps fill, stacks change, and recursion unfolds faster than text explanations can make clear. AlgoLens makes that invisible state visible through step by step mode.
 
 ## What makes it stand out
 
-- Trace Mode turns algorithms into beginner-friendly frames with forward, back, restart, share-step, active-recall, and code-visual sync.
+- Step by step mode turns algorithms into beginner-friendly frames with forward, back, restart, share-step, active-recall, and code-visual sync.
 - The platform teaches patterns, not isolated tricks, across arrays/two pointers, hash maps, stacks/queues, binary search, and trees/traversals.
 - Progress, quizzes, coding practice, and admin content management are connected through a MERN foundation.
 - The experience is intentionally anti-doom-scroll: lessons end with recap and stopping cues instead of infinite feeds.
@@ -20,7 +20,7 @@ Many students do not fail DSA because they cannot memorize syntax. They struggle
 - Authenticated student accounts
 - Dashboard with real progress, quiz, and coding activity
 - Topic catalog and lesson pages
-- Trace Mode lessons
+- Step-by-step lessons
 - Algo-Sandbox for custom two-pointer input
 - Concept quizzes graded on the backend
 - Coding practice with backend-only Judge0 integration path
@@ -31,8 +31,8 @@ Many students do not fail DSA because they cannot memorize syntax. They struggle
 
 1. Open the landing page and introduce AlgoLens as "Learn smarter, not longer."
 2. Sign in and show the dashboard.
-3. Open the Trace Library.
-4. Run `Pair Sum with Two Pointers` in Trace Mode.
+3. Open the step-by-step examples.
+4. Run `Pair Sum with Two Pointers` as a walkthrough.
 5. Toggle Challenge Mode and answer a prediction.
 6. Show code-visual sync and variable changes.
 7. Open Algo-Sandbox and run custom input.
@@ -42,5 +42,4 @@ Many students do not fail DSA because they cannot memorize syntax. They struggle
 
 ## Suggested judging language
 
-AlgoLens focuses on one core learning problem: beginners need to see how algorithm state changes over time. Instead of trying to cover every DSA topic, it builds a polished path around Trace Mode, then supports learning with quizzes, practice, progress, and admin-managed content.
-
+AlgoLens focuses on one core learning problem: beginners need to see how algorithm state changes over time. Instead of trying to cover every DSA topic, it builds a polished path around step by step mode, then supports learning with quizzes, practice, progress, and admin-managed content.

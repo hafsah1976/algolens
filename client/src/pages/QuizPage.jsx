@@ -252,7 +252,7 @@ export function QuizPage() {
               {answeredCount} / {quiz.questions.length} answered
             </p>
             <p className="mt-3 text-sm leading-6 text-muted">
-              These questions reinforce the same beginner mental models used by Trace Mode.
+              These questions reinforce the same beginner mental models used by step by step mode.
             </p>
           </div>
 

@@ -132,7 +132,7 @@ test('Phase 5 catalog helpers keep topic and lesson pages browseable', () => {
   assert.ok(contentSections.every((section) => section.title && section.body));
 });
 
-test('lesson readiness labels match the available Trace Mode content', () => {
+test('lesson readiness labels match the available step-by-step content', () => {
   let interactiveCount = 0;
   let previewCount = 0;
 
@@ -141,7 +141,7 @@ test('lesson readiness labels match the available Trace Mode content', () => {
 
     if (mode.isInteractive) {
       interactiveCount += 1;
-      assert.equal(mode.stageLabel, 'Trace Mode');
+      assert.equal(mode.stageLabel, 'Step by step mode');
       assert.ok(findTraceLessonById(lesson.id), `${lesson.id} should have trace data`);
     } else {
       previewCount += 1;
@@ -154,7 +154,7 @@ test('lesson readiness labels match the available Trace Mode content', () => {
   assert.equal(previewCount, 0);
 });
 
-test('Trace Mode lessons have valid frame, code, prediction, and marker references', () => {
+test('step-by-step lessons have valid frame, code, prediction, and marker references', () => {
   for (const { lesson } of getAllLessons()) {
     const traceLesson = findTraceLessonById(lesson.id);
 
@@ -215,7 +215,7 @@ test('Trace Mode lessons have valid frame, code, prediction, and marker referenc
   }
 });
 
-test('Trace Mode step links and Challenge Mode rules stay predictable', () => {
+test('step links and Challenge Mode rules stay predictable', () => {
   const pairSumTrace = findTraceLessonById('pair-sum-trace');
   const firstPrediction = pairSumTrace.frames.find((frame) => frame.prediction).prediction;
   const wrongOption = firstPrediction.options.find((option) => option.id !== firstPrediction.correctOptionId);
@@ -430,7 +430,7 @@ test('auth routing returns learners to the protected page they requested', () =>
   );
 });
 
-test('two-pointer sandbox builds a safe custom Trace Mode lesson', () => {
+test('two-pointer sandbox builds a safe custom walkthrough lesson', () => {
   const parsedNumbers = parseSandboxNumbers('11, 2, 15, 4');
   const parsedTarget = parseSandboxTarget('13');
   const sandboxTrace = buildTwoPointerSandboxTrace({
