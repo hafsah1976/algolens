@@ -13,7 +13,7 @@ async function requestJson(path, options = {}) {
       },
     });
   } catch (_error) {
-    throw new Error('Could not reach the AlgoLens practice API.');
+    throw new Error('Could not load coding practice. Please try again.');
   }
 
   const payload = await response.json().catch(() => null);

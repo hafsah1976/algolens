@@ -3,9 +3,9 @@ import { getOverallProgressSnapshot, getTrackProgressSnapshot } from './progress
 export const milestoneDefinitions = [
   {
     id: 'first-trace',
-    title: 'First Trace Closed',
+    title: 'First Walkthrough Closed',
     label: 'Study loop',
-    description: 'Complete one visual trace and finish with a recap instead of drifting.',
+    description: 'Complete one visual walkthrough and finish with a recap instead of drifting.',
     requirement: 'Complete any lesson',
     tone: 'Quiet start',
     isUnlocked: ({ overallProgress }) => overallProgress.completed >= 1,
@@ -75,9 +75,9 @@ export const milestoneDefinitions = [
   },
   {
     id: 'trace-scholar',
-    title: 'Trace Scholar',
+    title: 'Walkthrough Scholar',
     label: 'Platform',
-    description: 'Complete the current AlgoLens trace curriculum end to end.',
+    description: 'Complete the current AlgoLens walkthrough curriculum end to end.',
     requirement: 'Complete all lessons',
     tone: 'Curriculum model',
     isUnlocked: ({ overallProgress }) =>

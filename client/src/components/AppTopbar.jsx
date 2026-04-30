@@ -6,7 +6,7 @@ import { getFocusModeStatus, getFocusModeToggleLabel } from '../lib/focusMode.js
 const titleMap = [
   { match: '/admin/topics', title: 'Admin topics', detail: 'Create, edit, publish, and unpublish DSA paths.' },
   { match: '/admin/lessons', title: 'Admin lessons', detail: 'Manage beginner lessons and visualization hooks.' },
-  { match: '/admin/quizzes', title: 'Admin quizzes', detail: 'Create server-graded concept checks.' },
+  { match: '/admin/quizzes', title: 'Admin quizzes', detail: 'Create automatically graded concept checks.' },
   { match: '/admin/problems', title: 'Admin problems', detail: 'Create coding practice prompts and tests.' },
   { match: '/app/dashboard', title: 'Dashboard', detail: 'Start with one clear lesson.' },
   { match: '/app/topics/', title: 'Topic path', detail: 'Follow linked concepts, not isolated facts.' },

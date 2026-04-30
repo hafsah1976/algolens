@@ -13,7 +13,7 @@ async function requestJson(path, options = {}) {
       },
     });
   } catch (_error) {
-    throw new Error('Could not reach the AlgoLens API. Make sure the backend is running.');
+    throw new Error('Could not connect to AlgoLens. Please refresh and try again.');
   }
 
   const payload = await response.json().catch(() => null);

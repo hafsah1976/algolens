@@ -24,7 +24,7 @@ export function parseSandboxNumbers(input) {
 
   if (values.length > MAX_SANDBOX_VALUES) {
     return {
-      error: `Keep the lab to ${MAX_SANDBOX_VALUES} numbers or fewer so the trace stays readable.`,
+      error: `Keep the lab to ${MAX_SANDBOX_VALUES} numbers or fewer so the walkthrough stays readable.`,
       values: [],
     };
   }
@@ -313,7 +313,7 @@ export function buildTwoPointerSandboxTrace({ target, values }) {
         'You practiced reading the current sum before deciding which pointer should move.',
       next:
         'Try a target that does not exist, then explain why the pointers eventually cross.',
-      pattern: 'Custom two-pointer trace',
+      pattern: 'Custom two-pointer walkthrough',
       remember:
         'On sorted data, too small moves left rightward; too large moves right leftward.',
       stop:
@@ -327,7 +327,7 @@ export function buildTwoPointerSandboxTrace({ target, values }) {
       targetLabel: 'Target',
     },
     summary: wasAlreadySorted
-      ? `Your sorted input ${formatArray(sortedValues)} is ready for a two-pointer trace.`
+      ? `Your sorted input ${formatArray(sortedValues)} is ready for a two-pointer walkthrough.`
       : `Your input was sorted into ${formatArray(sortedValues)} so the two-pointer rule is safe to use.`,
     title: 'Algo-Sandbox: Two Pointers Lab',
   };

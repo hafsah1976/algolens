@@ -176,7 +176,7 @@ export function PracticeProblemPage() {
             Back to practice
           </Link>
         }
-        description="Write a first attempt. AlgoLens sends it to the backend, runs Judge0 tests, and keeps hidden cases private."
+        description="Write a first attempt. AlgoLens checks public and hidden tests while keeping hidden cases private."
         eyebrow="Coding practice"
         title={problem.title}
       />
@@ -223,10 +223,12 @@ export function PracticeProblemPage() {
             <div className="flex flex-col gap-3 border-b border-line/70 bg-white/70 p-5 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Code editor</p>
-                <p className="mt-2 text-sm leading-6 text-muted">Simple textarea for Phase 9 intake.</p>
+                <p className="mt-2 text-sm leading-6 text-muted">Start with a simple editor. Keep the focus on the idea first.</p>
               </div>
               <select
-                className="rounded-full border border-line/80 bg-white/80 px-4 py-2 text-sm font-semibold text-ink outline-none"
+                aria-label="Programming language"
+                className="rounded-full border border-line/80 bg-white/80 px-4 py-2 text-sm font-semibold text-ink outline-none transition focus-visible:border-accent/50 focus-visible:ring-4 focus-visible:ring-accent/10"
+                name="language"
                 onChange={handleLanguageChange}
                 value={language}
               >
@@ -239,9 +241,11 @@ export function PracticeProblemPage() {
             </div>
 
             <textarea
-              className="min-h-[420px] w-full resize-y bg-[#111812] p-5 font-mono text-sm leading-7 text-[#eef5ee] outline-none"
+              aria-label="Code editor"
+              className="min-h-[420px] w-full resize-y bg-[#111812] p-5 font-mono text-sm leading-7 text-[#eef5ee] outline-none transition focus-visible:ring-4 focus-visible:ring-accent/20"
+              name="solutionCode"
               onChange={(event) => setCode(event.target.value)}
-              spellCheck="false"
+              spellCheck={false}
               value={code}
             />
 
@@ -304,12 +308,12 @@ export function PracticeProblemPage() {
                   </div>
                 ) : null}
                 <p className="mt-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted">
-                  Saved submission id: {submissionState.submission.id}
+                  Attempt saved to your account.
                 </p>
               </div>
             ) : (
               <p className="mt-3 text-sm leading-6 text-muted">
-                Submit your code to run public and hidden tests through the backend Judge0 integration.
+                Submit your code to run the public checks and private hidden checks.
               </p>
             )}
             {submissionState.error ? (

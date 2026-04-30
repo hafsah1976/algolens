@@ -1,17 +1,16 @@
 function getStorageMessage(storageMode) {
   if (storageMode === 'mongo') {
-    return 'Progress is syncing through MongoDB.';
+    return 'Progress is saved to your account.';
   }
 
   if (storageMode === 'file' || storageMode === 'file-fallback') {
-    return 'Progress is being saved locally while the fallback store is active.';
+    return 'Progress is saved on this device for the demo.';
   }
 
-  return 'Progress storage will appear here once the backend responds.';
+  return 'Checking saved progress.';
 }
 
 export function ProgressOverview({
-  database,
   error,
   isLoading,
   isSaving,
@@ -52,10 +51,7 @@ export function ProgressOverview({
             {isLoading ? 'Loading saved progress…' : getStorageMessage(storageMode)}
           </span>
           <span className="rounded-full border border-line/80 bg-white/70 px-3 py-2">
-            Database: {database?.state ?? 'unknown'}
-          </span>
-          <span className="rounded-full border border-line/80 bg-white/70 px-3 py-2">
-            {isSaving ? 'Saving now' : 'Synced'}
+            {isSaving ? 'Saving your place' : 'Ready to continue'}
           </span>
         </div>
 

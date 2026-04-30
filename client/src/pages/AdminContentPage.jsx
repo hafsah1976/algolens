@@ -815,7 +815,7 @@ export function AdminQuizzesPage() {
 
   return (
     <AdminPageFrame
-      description="Create server-graded concept checks. Correct answers stay hidden from students until submission."
+      description="Create automatically graded concept checks. Correct answers stay hidden until students submit."
       title="Manage quizzes"
     >
       <StatusMessage error={state.error || submitState.error} message={submitState.message} />
@@ -941,7 +941,7 @@ export function AdminProblemsPage() {
 
   return (
     <AdminPageFrame
-      description="Create practice problems with public and hidden test cases. Judge0 execution stays backend-only."
+      description="Create practice problems with public and hidden checks. Hidden cases stay private from students."
       title="Manage problems"
     >
       <StatusMessage error={state.error || submitState.error} message={submitState.message} />

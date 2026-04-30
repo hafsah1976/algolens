@@ -105,7 +105,7 @@ export function PracticeListPage() {
             Review topics
           </Link>
         }
-        description="Practice problems now submit through the backend Judge0 integration while hidden tests stay server-side."
+        description="Practice problems run through a secure code checker while hidden tests stay private."
         eyebrow="Practice"
         title="Write code after the concept clicks."
       />

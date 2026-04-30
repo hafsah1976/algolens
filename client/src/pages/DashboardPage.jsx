@@ -161,7 +161,7 @@ function ContinueLearningCard({ recommendedNextLesson }) {
         <h2 className="mt-3 font-display text-3xl tracking-[-0.04em] text-ink">No next lesson yet.</h2>
         <p className="mt-3 text-sm leading-6 text-muted">
           Once published lessons exist, AlgoLens will recommend the first incomplete lesson from the
-          backend curriculum.
+          learning catalog.
         </p>
         <Link
           className="mt-5 inline-flex rounded-full border border-line/80 bg-white/70 px-4 py-2 text-sm font-medium text-ink transition hover:border-accent/40"
@@ -298,7 +298,6 @@ function RecentSubmissions({ submissions }) {
 export function DashboardPage() {
   const { token } = useAuth();
   const {
-    database,
     error,
     isLoading,
     lessonProgress,
@@ -374,8 +373,8 @@ export function DashboardPage() {
   const statusMessage = isLoading
     ? 'Loading saved progress…'
     : storageMode === 'mongo'
-      ? `Progress syncing through MongoDB${database?.state ? ` (${database.state})` : ''}.`
-      : 'Progress is being saved locally while the fallback store is active.';
+      ? 'Your progress is saved to your account.'
+      : 'Your progress is saved on this device for the demo.';
   const dashboardStatus = dashboardState.isLoading
     ? 'Loading dashboard activity…'
     : dashboardState.error;
@@ -416,13 +415,13 @@ export function DashboardPage() {
               className="inline-flex items-center rounded-full border border-line/80 bg-white/70 px-4 py-2 text-sm font-medium text-ink transition hover:border-accent/40"
               to="/app/traces"
             >
-              Browse library
+              Open step-by-step examples
             </Link>
             <Link
               className="inline-flex items-center rounded-full border border-line/80 bg-white/70 px-4 py-2 text-sm font-medium text-ink transition hover:border-accent/40"
               to="/app/sandbox"
             >
-              Open sandbox
+              Run a walkthrough
             </Link>
             <Link
               className="inline-flex items-center rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:bg-ink"
@@ -446,7 +445,7 @@ export function DashboardPage() {
 
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <MetricCard
-          helper="Saved from completed lesson progress records."
+          helper="Saved whenever you finish a lesson."
           label="Completed lessons"
           value={metrics.completedLessons}
         />

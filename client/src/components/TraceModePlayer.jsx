@@ -461,7 +461,7 @@ function MemoryPanel({ memory }) {
 function ProgressStepper({ currentStep, totalSteps }) {
   return (
     <div
-      aria-label={`Trace progress: step ${currentStep + 1} of ${totalSteps}`}
+      aria-label={`Walkthrough progress: step ${currentStep + 1} of ${totalSteps}`}
       className="flex w-full max-w-xs items-center gap-2"
       role="progressbar"
       aria-valuemax={totalSteps}
@@ -535,8 +535,8 @@ export function TraceModePlayer({
       : isSaving
         ? 'Saving your place…'
         : savedStatus === 'completed'
-          ? `Lesson complete and saved ${storageMode === 'mongo' ? 'to MongoDB.' : 'locally.'}`
-          : `Your current step is saved ${storageMode === 'mongo' ? 'to MongoDB.' : 'locally.'}`;
+          ? `Lesson complete and saved ${storageMode === 'mongo' ? 'to your account.' : 'on this device.'}`
+          : `Your current step is saved ${storageMode === 'mongo' ? 'to your account.' : 'on this device.'}`;
 
   useEffect(() => {
     startTransition(() => {

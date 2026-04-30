@@ -40,14 +40,14 @@ function CatalogStatus({ error, isLoading, source }) {
   if (source === 'static') {
     return (
       <div className="app-panel-soft p-4 text-sm leading-6 text-muted">
-        MongoDB has no published topics yet, so this page is showing the reviewed in-app curriculum.
+        No published topic updates are available yet, so this page is showing the reviewed in-app curriculum.
       </div>
     );
   }
 
   return (
     <div className="app-panel-soft p-4 text-sm leading-6 text-muted">
-      Published topics are loading from the AlgoLens API.
+      Published topics are ready.
     </div>
   );
 }
@@ -94,7 +94,7 @@ export function TopicsListPage() {
         }
 
         setCatalogState({
-          error: error.message || 'Could not load topics from the API.',
+          error: error.message || 'Could not refresh the published topic catalog.',
           isLoading: false,
           source: 'static',
           topics: getStaticTopics(),
@@ -178,8 +178,8 @@ export function TopicsListPage() {
       ) : (
         <section className="app-panel p-6">
           <p className="text-sm leading-6 text-muted">
-            No published topics are available yet. Add topics in MongoDB or keep using the seeded
-            AlgoLens curriculum while the platform is being prepared.
+            No published topics are available yet. Keep using the seeded AlgoLens curriculum while
+            the platform is being prepared.
           </p>
         </section>
       )}

@@ -240,7 +240,7 @@ export function QuizPage() {
             Back to topics
           </Link>
         }
-        description="A short concept check. Answers and explanations appear only after the server grades your submission."
+        description="A short concept check. Answers and explanations appear only after AlgoLens checks your responses."
         eyebrow="Quiz"
         title={quiz.title}
       />

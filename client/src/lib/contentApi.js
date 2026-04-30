@@ -6,7 +6,7 @@ async function requestJson(path) {
   try {
     response = await fetch(buildApiUrl(path));
   } catch (_error) {
-    throw new Error('Could not reach the AlgoLens content API.');
+    throw new Error('Could not refresh the learning catalog. Please try again.');
   }
 
   const payload = await response.json().catch(() => null);

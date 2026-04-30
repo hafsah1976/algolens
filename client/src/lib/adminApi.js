@@ -17,7 +17,7 @@ async function requestJson(path, options = {}) {
       },
     });
   } catch (_error) {
-    throw new Error('Could not reach the AlgoLens admin API.');
+    throw new Error('Could not connect to the admin workspace. Please refresh and try again.');
   }
 
   const payload = await response.json().catch(() => null);
