@@ -4,12 +4,6 @@ import { BrowserRouter, Navigate, Route, Routes, useLocation, useParams } from '
 import { RequireAdmin } from './components/RequireAdmin.jsx';
 import { RequireAuth } from './components/RequireAuth.jsx';
 import { AppLayout } from './layouts/AppLayout.jsx';
-import {
-  AdminLessonsPage,
-  AdminProblemsPage,
-  AdminQuizzesPage,
-  AdminTopicsPage,
-} from './pages/AdminContentPage.jsx';
 import { AuthPage } from './pages/AuthPage.jsx';
 import { CompletionPage } from './pages/CompletionPage.jsx';
 import { DashboardPage } from './pages/DashboardPage.jsx';
@@ -26,6 +20,18 @@ import { TopicsListPage } from './pages/TopicsListPage.jsx';
 
 const GraphExplorerPage = lazy(() =>
   import('./pages/GraphExplorerPage.jsx').then((module) => ({ default: module.GraphExplorerPage })),
+);
+const AdminTopicsPage = lazy(() =>
+  import('./pages/AdminContentPage.jsx').then((module) => ({ default: module.AdminTopicsPage })),
+);
+const AdminLessonsPage = lazy(() =>
+  import('./pages/AdminContentPage.jsx').then((module) => ({ default: module.AdminLessonsPage })),
+);
+const AdminQuizzesPage = lazy(() =>
+  import('./pages/AdminContentPage.jsx').then((module) => ({ default: module.AdminQuizzesPage })),
+);
+const AdminProblemsPage = lazy(() =>
+  import('./pages/AdminContentPage.jsx').then((module) => ({ default: module.AdminProblemsPage })),
 );
 
 function ScrollToTop() {
@@ -70,6 +76,10 @@ function LazyPageFallback() {
   );
 }
 
+function LazyPage({ children }) {
+  return <Suspense fallback={<LazyPageFallback />}>{children}</Suspense>;
+}
+
 function Root() {
   return (
     <BrowserRouter>
@@ -101,9 +111,9 @@ function Root() {
           <Route element={<SandboxPage />} path="sandbox" />
           <Route
             element={
-              <Suspense fallback={<LazyPageFallback />}>
+              <LazyPage>
                 <GraphExplorerPage />
-              </Suspense>
+              </LazyPage>
             }
             path="graphs"
           />
@@ -126,10 +136,38 @@ function Root() {
           path="/admin"
         >
           <Route element={<Navigate replace to="topics" />} index />
-          <Route element={<AdminTopicsPage />} path="topics" />
-          <Route element={<AdminLessonsPage />} path="lessons" />
-          <Route element={<AdminQuizzesPage />} path="quizzes" />
-          <Route element={<AdminProblemsPage />} path="problems" />
+          <Route
+            element={
+              <LazyPage>
+                <AdminTopicsPage />
+              </LazyPage>
+            }
+            path="topics"
+          />
+          <Route
+            element={
+              <LazyPage>
+                <AdminLessonsPage />
+              </LazyPage>
+            }
+            path="lessons"
+          />
+          <Route
+            element={
+              <LazyPage>
+                <AdminQuizzesPage />
+              </LazyPage>
+            }
+            path="quizzes"
+          />
+          <Route
+            element={
+              <LazyPage>
+                <AdminProblemsPage />
+              </LazyPage>
+            }
+            path="problems"
+          />
           <Route
             element={
               <NotFoundPage
