@@ -11,7 +11,8 @@ npm.cmd install
 npm.cmd run check
 ```
 
-The check should pass tests and build. The current legacy-file and bundle-size warnings are non-blocking.
+The check should pass tests and build. If warnings appear, review them before submission, but the
+publish gate is a successful lint, test, and production build.
 
 ## 2. Confirm files that should not be uploaded
 
