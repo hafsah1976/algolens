@@ -35,13 +35,6 @@ const studyLoopSteps = [
   },
 ];
 
-const productProofs = [
-  'Authenticated student progress',
-  'MongoDB-backed dashboard data',
-  'Trace Mode, Challenge Mode, and Sandbox',
-  'Quizzes, practice problems, and admin content tools',
-];
-
 const previewCells = [
   { index: 0, label: 'left', value: 2, tone: 'primary' },
   { index: 1, value: 4 },
@@ -75,9 +68,6 @@ function LandingNav() {
           </a>
           <a className="rounded-full px-4 py-2 text-sm font-medium text-muted transition hover:bg-warm/60 hover:text-ink" href="#paths">
             Paths
-          </a>
-          <a className="rounded-full px-4 py-2 text-sm font-medium text-muted transition hover:bg-warm/60 hover:text-ink" href="#submission">
-            Demo
           </a>
         </nav>
 
@@ -290,9 +280,9 @@ export function LandingPage() {
               </dl>
             </div>
 
-          <div className="reveal-up reveal-up-delay-1">
-            <TraceHeroVisual />
-          </div>
+            <div className="reveal-up reveal-up-delay-1">
+              <TraceHeroVisual />
+            </div>
           </div>
         </section>
 
@@ -316,43 +306,6 @@ export function LandingPage() {
                 <PathCard key={track.slug} track={track} />
               ))}
             </div>
-          </div>
-        </section>
-
-        <section className="mx-auto grid w-full max-w-7xl gap-8 px-5 py-16 sm:px-8 lg:grid-cols-[minmax(0,0.85fr)_minmax(320px,0.45fr)] lg:items-center" id="submission">
-          <div className="reveal-up">
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted">Contest demo ready</p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-ink sm:text-4xl">
-              A working product with a clear signature feature.
-            </h2>
-            <p className="mt-4 max-w-2xl text-base leading-7 text-muted">
-              The deployed MVP includes real accounts, saved progress, seeded curriculum,
-              Trace Mode lessons, quizzes, practice submissions, and admin content tools.
-            </p>
-            <div className="mt-6 grid gap-3 sm:grid-cols-2">
-              {productProofs.map((proof) => (
-                <div className="flex items-center gap-3 text-sm font-medium text-ink" key={proof}>
-                  <span className="h-2 w-2 rounded-full bg-accent" />
-                  <span>{proof}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="reveal-up reveal-up-delay-1 rounded-[1.5rem] border border-line/80 bg-ink p-6 text-white shadow-[0_24px_70px_rgba(20,34,23,0.12)]">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/55">Best demo path</p>
-            <ol className="mt-5 space-y-3 text-sm leading-6 text-white/75">
-              <li>1. Create a student account.</li>
-              <li>2. Open a topic path.</li>
-              <li>3. Complete a Trace Mode lesson.</li>
-              <li>4. Show the dashboard update after refresh.</li>
-            </ol>
-            <Link
-              className="mt-6 inline-flex rounded-full bg-white px-5 py-3 text-sm font-semibold text-ink transition hover:bg-accent hover:text-white"
-              to="/app/traces"
-            >
-              Browse Trace Library
-            </Link>
           </div>
         </section>
       </main>
