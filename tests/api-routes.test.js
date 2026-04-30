@@ -70,6 +70,24 @@ test('serverless JSON body fallback parses saved raw bodies when adapters drop p
   assert.equal(request.body.name, 'Raw Body');
 });
 
+test('serverless JSON body fallback parses Buffer bodies created by adapters', () => {
+  const request = {
+    body: Buffer.from(
+      '{"email":"buffer@example.com","name":"Buffer Body","password":"12345678A"}',
+      'utf8',
+    ),
+  };
+  let continued = false;
+
+  normalizeJsonBody(request, null, () => {
+    continued = true;
+  });
+
+  assert.equal(continued, true);
+  assert.equal(request.body.email, 'buffer@example.com');
+  assert.equal(request.body.name, 'Buffer Body');
+});
+
 test('API root advertises topic, lesson, quiz, dashboard, problem, and protected progress routes', async () => {
   await withTestServer(async (baseUrl) => {
     const response = await fetch(`${baseUrl}/`);

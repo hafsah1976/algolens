@@ -48,11 +48,13 @@ function shouldParseTextBody(request) {
 }
 
 function parseJsonCandidate(candidate) {
-  if (typeof candidate !== 'string') {
+  const bodyText = Buffer.isBuffer(candidate) ? candidate.toString('utf8') : candidate;
+
+  if (typeof bodyText !== 'string') {
     return null;
   }
 
-  const trimmedBody = candidate.trim();
+  const trimmedBody = bodyText.trim();
 
   if (!trimmedBody || !['{', '['].includes(trimmedBody[0])) {
     return null;
