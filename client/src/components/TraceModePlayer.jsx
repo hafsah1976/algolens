@@ -226,8 +226,8 @@ function MistakeLens({ mistake }) {
   }
 
   return (
-    <div className="rounded-[1.4rem] border border-amber-200/80 bg-[#fff7e8] p-4">
-      <div className="flex flex-wrap items-start justify-between gap-3">
+    <details className="rounded-[1.4rem] border border-amber-200/80 bg-[#fff7e8] p-4">
+      <summary className="flex cursor-pointer list-none flex-wrap items-start justify-between gap-3">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-700">Mistake Lens</p>
           <p className="mt-2 text-sm font-semibold tracking-[-0.01em] text-ink">{mistake.title}</p>
@@ -235,12 +235,12 @@ function MistakeLens({ mistake }) {
         <span className="rounded-full bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-amber-700">
           Common trap
         </span>
-      </div>
+      </summary>
       <p className="mt-3 text-sm leading-7 text-ink">{mistake.body}</p>
       <p className="mt-3 rounded-2xl bg-white/75 px-4 py-3 text-sm leading-6 text-muted">
         <span className="font-semibold text-ink">Reset the idea:</span> {mistake.fix}
       </p>
-    </div>
+    </details>
   );
 }
 
@@ -264,8 +264,8 @@ function CodeSyncPanel({ activeLineIds, code }) {
   const activeLineSet = new Set(activeLineIds);
 
   return (
-    <div className="rounded-[1.35rem] border border-line/80 bg-warm/45 px-4 py-4">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+    <details className="rounded-[1.35rem] border border-line/80 bg-warm/45 px-4 py-4">
+      <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-3">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">Code + visual sync</p>
           <p className="mt-2 text-sm font-semibold tracking-[-0.01em] text-ink">{code.title}</p>
@@ -273,7 +273,7 @@ function CodeSyncPanel({ activeLineIds, code }) {
         <span className="rounded-full bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-muted">
           {code.language ?? 'pseudocode'}
         </span>
-      </div>
+      </summary>
 
       <div className="mt-4 space-y-1">
         {code.lines.map((line, index) => {
@@ -293,7 +293,7 @@ function CodeSyncPanel({ activeLineIds, code }) {
           );
         })}
       </div>
-    </div>
+    </details>
   );
 }
 
@@ -681,10 +681,6 @@ export function TraceModePlayer({
               <p className="mt-4 text-base leading-7 text-muted">{traceLesson.summary}</p>
             </div>
 
-            <TraceTutorPanel challengeMode={challengeMode} />
-
-            <TraceToolsPanel onCopyStepLink={handleCopyStepLink} shareStatus={shareStatus} />
-
             <div className="rounded-[1.35rem] border border-line/80 bg-warm/45 p-4">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">Current focus</p>
               <p className="mt-2 text-lg font-semibold tracking-[-0.02em] text-ink">{frame.title}</p>
@@ -693,6 +689,10 @@ export function TraceModePlayer({
                 {frame.decision}
               </p>
             </div>
+
+            <TraceTutorPanel challengeMode={challengeMode} />
+
+            <TraceToolsPanel onCopyStepLink={handleCopyStepLink} shareStatus={shareStatus} />
 
             <CodeSyncPanel activeLineIds={activeCodeLineIds} code={traceLesson.code} />
 

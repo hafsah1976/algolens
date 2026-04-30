@@ -7,6 +7,7 @@ Use this before recording a demo or submitting the project.
 - `npm.cmd install` completes.
 - MongoDB is running.
 - `server/.env` exists and includes `MONGODB_URI`, `AUTH_SECRET`, and optional `ADMIN_EMAILS`.
+- Commercial auth email testing includes `RESEND_API_KEY`, `EMAIL_FROM`, and `APP_BASE_URL`.
 - `npm.cmd run dev:server` starts the API.
 - `npm.cmd run dev:client` starts Vite.
 - `npm.cmd run check` passes.
@@ -16,6 +17,9 @@ Use this before recording a demo or submitting the project.
 - Landing page opens at `http://localhost:5173`.
 - Signup creates a new account.
 - Login works for an existing account.
+- Signup shows an email verification reminder on the dashboard.
+- Forgot password sends a generic success response and a reset email for known accounts.
+- Reset password changes the password and requires signing in again.
 - Logged-out users are redirected from `/app/dashboard` to `/auth`.
 - Dashboard loads without crashing.
 - Dashboard shows empty states for new users.
@@ -33,7 +37,9 @@ Use this before recording a demo or submitting the project.
 
 - Non-admin users cannot access `/admin/topics`.
 - Admin email is listed in `ADMIN_EMAILS`.
+- Admin account email is verified before testing admin pages.
 - Admin user can open `/admin/topics`.
+- Unverified admin-listed accounts are redirected away from `/admin/topics`.
 - Admin can create a draft topic.
 - Draft topic does not appear to students.
 - Publishing the topic makes it visible to students.

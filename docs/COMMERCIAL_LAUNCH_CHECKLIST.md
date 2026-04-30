@@ -9,8 +9,10 @@ Use this before publishing AlgoLens beyond a contest/demo audience.
 - `MONGODB_URI` points to MongoDB Atlas or another hosted production database.
 - `AUTH_SECRET` is at least 32 random characters and has not been committed.
 - `CLIENT_ORIGIN` matches the production site URL.
+- `APP_BASE_URL` matches the production site URL used in email links.
 - `PROGRESS_STORAGE_MODE=mongo`.
 - `ADMIN_EMAILS` contains only trusted maintainer emails.
+- `RESEND_API_KEY` and `EMAIL_FROM` are set for password reset and verification emails.
 - RapidAPI Judge0 uses `JUDGE0_API_KEY_HEADER=X-RapidAPI-Key`.
 - `server/.env` is ignored by Git and no secret values appear in committed files.
 
@@ -20,7 +22,7 @@ Use this before publishing AlgoLens beyond a contest/demo audience.
 - Public Terms page works at `/terms`.
 - Public Support page works at `/support`.
 - Legal/policy text is reviewed before paid or broad commercial launch.
-- Password reset and email verification are either implemented or clearly treated as a launch limitation.
+- Password reset and email verification are implemented and tested with a real inbox.
 
 ## Product QA
 
@@ -41,7 +43,8 @@ Use this before publishing AlgoLens beyond a contest/demo audience.
 - Secret scan reports no committed secret-like values.
 - Netlify response headers include CSP, frame protection, referrer policy, permissions policy, and HSTS.
 - Backend rejects state-changing requests from untrusted origins.
-- Admin endpoints require both authentication and configured admin email membership.
+- Admin endpoints require authentication, configured admin email membership, and verified email status.
+- Graph dependencies are covered by `docs/THIRD_PARTY_NOTICES.md`.
 
 ## Operational checks
 

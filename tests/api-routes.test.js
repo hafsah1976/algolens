@@ -99,6 +99,10 @@ test('API root advertises topic, lesson, quiz, dashboard, problem, and protected
     assert.equal(response.headers.get('referrer-policy'), 'strict-origin-when-cross-origin');
     assert.equal(response.headers.get('cache-control'), 'no-store');
     assert.ok(payload.routes.includes('/api/auth/logout'));
+    assert.ok(payload.routes.includes('/api/auth/forgot-password'));
+    assert.ok(payload.routes.includes('/api/auth/reset-password'));
+    assert.ok(payload.routes.includes('/api/auth/resend-verification'));
+    assert.ok(payload.routes.includes('/api/auth/verify-email'));
     assert.ok(payload.routes.includes('/api/dashboard/me'));
     assert.ok(payload.routes.includes('/api/admin/topics'));
     assert.ok(payload.routes.includes('/api/admin/lessons'));

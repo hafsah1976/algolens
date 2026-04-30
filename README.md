@@ -30,6 +30,9 @@ Production startup also requires a hosted `MONGODB_URI`, a configured `CLIENT_OR
 `CLIENT_ORIGINS`, and non-file progress storage.
 Set `ADMIN_EMAILS` to a comma-separated list of trusted account emails if you want those users
 to access the content admin panel after signup/login, for example `ADMIN_EMAILS=you@example.com`.
+Admin access is only granted after that account verifies its email.
+For commercial account recovery, set `RESEND_API_KEY`, `EMAIL_FROM`, and `APP_BASE_URL` so password
+reset and email verification links can be sent from the backend.
 For coding execution, set `JUDGE0_API_URL` on the backend. If your Judge0 instance requires a key, set
 `JUDGE0_API_KEY`; by default the backend sends it as `X-Auth-Token`, matching Judge0 CE. For RapidAPI,
 set `JUDGE0_API_KEY_HEADER=X-RapidAPI-Key` and `JUDGE0_RAPIDAPI_HOST` if your provider requires it.
@@ -91,8 +94,11 @@ Do not commit `server/.env`.
 
 - `MONGODB_URI` - MongoDB database URL. Required for auth, progress, quizzes, submissions, and admin content management.
 - `AUTH_SECRET` - session signing secret. Required when `NODE_ENV=production`; use at least 32 random characters.
-- `ADMIN_EMAILS` - comma-separated list of trusted emails that should receive the `admin` role on signup/login.
+- `ADMIN_EMAILS` - comma-separated list of trusted emails that can receive the effective `admin` role after email verification.
 - `CLIENT_ORIGIN` - deployed frontend origin allowed to call the backend, for example a Netlify URL. Use `CLIENT_ORIGINS` for a comma-separated allowlist.
+- `APP_BASE_URL` - public app URL used inside password reset and verification emails.
+- `RESEND_API_KEY` - server-only Resend API key used for account emails.
+- `EMAIL_FROM` - verified Resend sender, for example `AlgoLens <hello@yourdomain.com>`.
 - `DEMO_USER_EMAIL` and `DEMO_USER_NAME` - legacy file-fallback identity values for older progress testing.
 - `PROGRESS_STORAGE_MODE` - `auto`, `mongo`, or `file`; production should use MongoDB.
 - `JUDGE0_API_URL` - optional Judge0 endpoint. If empty, submissions save a safe `judge0_error` result instead of executing code.
@@ -143,9 +149,11 @@ The shorter routes from the phase plan (`/dashboard`, `/topics`, `/topics/:topic
 Phase 11 adds a small admin panel for content operations. To use it locally:
 
 1. Add your account email to `ADMIN_EMAILS` in `server/.env`.
-2. Restart the backend.
-3. Sign up or sign in with that email.
-4. Open `http://localhost:5173/admin/topics`.
+2. Set `RESEND_API_KEY`, `EMAIL_FROM`, and `APP_BASE_URL` if you want the verification email to send.
+3. Restart the backend.
+4. Sign up or sign in with that email.
+5. Verify the email from the link that was sent, or use the dashboard resend button.
+6. Open `http://localhost:5173/admin/topics`.
 
 Admin users can create/edit/publish topics and lessons, create quizzes, and create coding
 problems. Student-facing APIs still only return published content, so drafts remain hidden
@@ -163,6 +171,10 @@ until you publish them from the admin panel.
 - `POST /api/admin/quizzes`
 - `GET /api/admin/problems`
 - `POST /api/admin/problems`
+- `POST /api/auth/forgot-password`
+- `POST /api/auth/reset-password`
+- `POST /api/auth/resend-verification`
+- `POST /api/auth/verify-email`
 - `GET /api/dashboard/me`
 - `GET /api/topics`
 - `GET /api/topics/:slug`
@@ -211,10 +223,11 @@ There is no separate frontend unit-test framework installed yet; the current fro
 ## Production Readiness Notes
 
 - Student content APIs return published topics, lessons, quizzes, and problems only.
-- Admin content APIs require both authentication and the `admin` role.
+- Admin content APIs require authentication, configured admin email membership, and verified email status.
 - Unknown API routes return JSON errors; unknown frontend routes show a small not-found page.
 - External code execution is backend-only. The frontend never calls Judge0 directly, and hidden test cases are not sent to the browser.
 - Local `.env` files and file-fallback progress JSON are ignored by Git.
+- Graph and node visualization dependencies are documented in [Third-party notices](docs/THIRD_PARTY_NOTICES.md).
 
 ## Submission Materials
 

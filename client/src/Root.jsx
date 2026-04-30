@@ -4,6 +4,7 @@ import { BrowserRouter, Navigate, Route, Routes, useLocation, useParams } from '
 import { RequireAdmin } from './components/RequireAdmin.jsx';
 import { RequireAuth } from './components/RequireAuth.jsx';
 import { AppLayout } from './layouts/AppLayout.jsx';
+import { ForgotPasswordPage, ResetPasswordPage, VerifyEmailPage } from './pages/AccountActionPages.jsx';
 import { AuthPage } from './pages/AuthPage.jsx';
 import { CompletionPage } from './pages/CompletionPage.jsx';
 import { DashboardPage } from './pages/DashboardPage.jsx';
@@ -88,6 +89,9 @@ function Root() {
       <Routes>
         <Route element={<LandingPage />} path="/" />
         <Route element={<AuthPage />} path="/auth" />
+        <Route element={<ForgotPasswordPage />} path="/forgot-password" />
+        <Route element={<ResetPasswordPage />} path="/reset-password" />
+        <Route element={<VerifyEmailPage />} path="/verify-email" />
         <Route element={<PrivacyPage />} path="/privacy" />
         <Route element={<TermsPage />} path="/terms" />
         <Route element={<SupportPage />} path="/support" />

@@ -230,8 +230,7 @@ export function AuthPage() {
           <Link className="text-sm font-semibold text-accent" to="/">
             Back to landing
           </Link>
-          <p className="mt-16 text-xs font-semibold uppercase tracking-[0.24em] text-muted">AlgoLens accounts</p>
-          <h1 className="mt-4 max-w-2xl font-display text-5xl leading-[0.98] tracking-[-0.04em] text-ink sm:text-6xl">
+          <h1 className="mt-16 max-w-2xl font-display text-5xl leading-[0.98] tracking-[-0.04em] text-ink sm:text-6xl">
             Keep your step-by-step progress attached to you.
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-8 text-muted">
@@ -296,9 +295,9 @@ export function AuthPage() {
 
             {!isSignup ? (
               <p className="text-sm leading-6 text-muted">
-                Need account help? Password reset by email is not enabled yet. Visit{' '}
-                <Link className="font-semibold text-accent underline-offset-4 hover:underline" to="/support">
-                  support
+                Forgot your password?{' '}
+                <Link className="font-semibold text-accent underline-offset-4 hover:underline" to="/forgot-password">
+                  Send a secure reset link
                 </Link>
                 .
               </p>

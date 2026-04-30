@@ -105,6 +105,9 @@ AUTH_SECRET=a_long_random_secret
 PROGRESS_STORAGE_MODE=mongo
 ADMIN_EMAILS=your_email@example.com
 CLIENT_ORIGIN=https://your-netlify-site.netlify.app
+APP_BASE_URL=https://your-netlify-site.netlify.app
+RESEND_API_KEY=your_resend_api_key
+EMAIL_FROM=AlgoLens <hello@yourdomain.com>
 ```
 
 4. Optional Judge0 variables:
@@ -169,6 +172,8 @@ Open the deployed frontend and test:
 
 - Landing page loads.
 - Signup works.
+- Email verification sends and verifies.
+- Forgot password sends a generic response and resets the password through email.
 - Login works.
 - Dashboard loads.
 - Topics load from MongoDB.
@@ -177,7 +182,7 @@ Open the deployed frontend and test:
 - Quiz submits and shows explanations.
 - Practice problem submits and shows a safe result.
 - Non-admin users cannot open `/admin/topics`.
-- Admin email can open `/admin/topics`.
+- Admin email can open `/admin/topics` only after email verification.
 - Unknown routes show the not-found screen.
 
 Use the full QA checklist: [QA_CHECKLIST.md](QA_CHECKLIST.md).

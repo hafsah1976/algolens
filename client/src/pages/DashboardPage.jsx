@@ -10,6 +10,7 @@ import { getCanonicalLessonPath, getCanonicalTopicPath } from '../lib/contentCat
 import { fetchDashboardSummary } from '../lib/dashboardApi.js';
 import { getLessonMode, getTrackReadiness } from '../lib/lessonMeta.js';
 import { getMilestoneSnapshot } from '../lib/milestones.js';
+import { resendVerificationEmail } from '../lib/authApi.js';
 import {
   getLessonStageLabel,
   getOverallProgressSnapshot,
@@ -150,6 +151,57 @@ function EmptyState({ children }) {
     <div className="rounded-[1.15rem] border border-dashed border-line/80 bg-white/55 p-4 text-sm leading-6 text-muted">
       {children}
     </div>
+  );
+}
+
+function EmailVerificationNotice({ onRefreshUser, token }) {
+  const [state, setState] = useState({
+    error: null,
+    isSending: false,
+    message: null,
+  });
+
+  async function handleResendVerification() {
+    setState({ error: null, isSending: true, message: null });
+
+    try {
+      const payload = await resendVerificationEmail(token);
+      await onRefreshUser?.();
+      setState({
+        error: null,
+        isSending: false,
+        message: payload.message || 'Verification email sent. Check your inbox.',
+      });
+    } catch (error) {
+      setState({
+        error: error.message || 'Could not send a verification email.',
+        isSending: false,
+        message: null,
+      });
+    }
+  }
+
+  return (
+    <section className="rounded-xl border border-amber-300/50 bg-amber-50/80 p-5">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-800">Verify email</p>
+          <p className="mt-2 text-sm leading-6 text-ink">
+            Confirm your email to protect account recovery and unlock any admin access tied to your address.
+          </p>
+          {state.message ? <p className="mt-2 text-sm font-medium text-accent">{state.message}</p> : null}
+          {state.error ? <p className="mt-2 text-sm font-medium text-rose-700">{state.error}</p> : null}
+        </div>
+        <button
+          className="w-full rounded-full bg-accent px-5 py-3 text-sm font-semibold text-white transition hover:bg-ink disabled:cursor-not-allowed disabled:bg-muted lg:w-auto"
+          disabled={state.isSending}
+          onClick={handleResendVerification}
+          type="button"
+        >
+          {state.isSending ? 'Sending...' : 'Send verification email'}
+        </button>
+      </div>
+    </section>
   );
 }
 
@@ -296,7 +348,13 @@ function RecentSubmissions({ submissions }) {
 }
 
 export function DashboardPage() {
-  const { isAuthenticated, isLoading: authIsLoading, token } = useAuth();
+  const {
+    isAuthenticated,
+    isLoading: authIsLoading,
+    refreshCurrentUser,
+    token,
+    user: authUser,
+  } = useAuth();
   const {
     error,
     isLoading,
@@ -452,6 +510,10 @@ export function DashboardPage() {
         >
           {dashboardStatus}
         </div>
+      ) : null}
+
+      {authUser?.requiresEmailVerification ? (
+        <EmailVerificationNotice onRefreshUser={refreshCurrentUser} token={token} />
       ) : null}
 
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">

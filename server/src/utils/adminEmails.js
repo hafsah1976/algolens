@@ -19,8 +19,35 @@ export function resolveRoleForEmail(email, fallbackRole = 'student') {
   return isConfiguredAdminEmail(email) ? 'admin' : fallbackRole;
 }
 
+export function isVerifiedAdminUser(user) {
+  return Boolean(user?.emailVerifiedAt) && isConfiguredAdminEmail(user.email);
+}
+
+export function resolveRoleForUser(user, fallbackRole = 'student') {
+  if (!user) {
+    return fallbackRole;
+  }
+
+  return isVerifiedAdminUser(user) ? 'admin' : fallbackRole;
+}
+
 export async function promoteConfiguredAdmin(user) {
-  if (!user || user.role === 'admin' || !isConfiguredAdminEmail(user.email)) {
+  if (!user) {
+    return user;
+  }
+
+  if (!isConfiguredAdminEmail(user.email) || !user.emailVerifiedAt) {
+    if (user.role === 'admin' && !isConfiguredAdminEmail(user.email)) {
+      user.role = 'student';
+      if (typeof user.save === 'function') {
+        await user.save();
+      }
+    }
+
+    return user;
+  }
+
+  if (user.role === 'admin') {
     return user;
   }
 

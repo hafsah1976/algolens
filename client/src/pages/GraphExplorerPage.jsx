@@ -200,6 +200,41 @@ function StepButton({ active, children, onClick }) {
   );
 }
 
+function TraversalTextFallback({ frames, selectedMode }) {
+  return (
+    <details className="app-panel p-6" open>
+      <summary className="cursor-pointer list-none text-xs font-semibold uppercase tracking-[0.2em] text-muted">
+        Text walkthrough
+      </summary>
+      <p className="mt-3 text-sm leading-7 text-muted">
+        If the graph canvas is hard to read, follow the same {selectedMode.label} traversal as ordered steps.
+      </p>
+      <div className="mt-4 overflow-x-auto">
+        <table className="min-w-full text-left text-sm">
+          <thead className="text-xs uppercase tracking-[0.16em] text-muted">
+            <tr>
+              <th className="border-b border-line/70 px-3 py-2">Step</th>
+              <th className="border-b border-line/70 px-3 py-2">Visit</th>
+              <th className="border-b border-line/70 px-3 py-2">{selectedMode.structureLabel}</th>
+              <th className="border-b border-line/70 px-3 py-2">Order so far</th>
+            </tr>
+          </thead>
+          <tbody>
+            {frames.map((frame) => (
+              <tr className="border-b border-line/50 last:border-b-0" key={`${selectedMode.id}-${frame.step}`}>
+                <td className="px-3 py-3 font-semibold text-ink">{frame.step + 1}</td>
+                <td className="px-3 py-3 text-ink">{frame.currentNodeId}</td>
+                <td className="px-3 py-3 text-muted">{frame.structure.length ? frame.structure.join(' -> ') : 'empty'}</td>
+                <td className="px-3 py-3 text-muted">{frame.order.join(' -> ')}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </details>
+  );
+}
+
 export function GraphExplorerPage() {
   const [mode, setMode] = useState('bfs');
   const [startNodeId, setStartNodeId] = useState('A');
@@ -372,6 +407,8 @@ export function GraphExplorerPage() {
           </div>
         </aside>
       </section>
+
+      <TraversalTextFallback frames={frames} selectedMode={selectedMode} />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { ensureDatabaseConnection } from '../db/mongo.js';
 import { User } from '../models/User.js';
-import { isConfiguredAdminEmail, promoteConfiguredAdmin } from '../utils/adminEmails.js';
+import { isVerifiedAdminUser, promoteConfiguredAdmin } from '../utils/adminEmails.js';
 import { readSessionCookie } from '../utils/sessionCookie.js';
 import { verifySessionToken } from '../utils/sessionToken.js';
 
@@ -63,7 +63,7 @@ export async function requireAdmin(request, response, next) {
   const continueIfAdmin = async () => {
     await promoteConfiguredAdmin(request.authUser);
 
-    if (request.authUser.role !== 'admin' || !isConfiguredAdminEmail(request.authUser.email)) {
+    if (!isVerifiedAdminUser(request.authUser)) {
       response.status(403).json({ error: 'Admin access is required.' });
       return;
     }

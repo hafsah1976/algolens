@@ -49,3 +49,31 @@ export function signupUser({ email, name, password }) {
     method: 'POST',
   });
 }
+
+export function requestPasswordReset(email) {
+  return requestJson('/api/auth/forgot-password', {
+    body: JSON.stringify({ email }),
+    method: 'POST',
+  });
+}
+
+export function resetPassword({ password, token }) {
+  return requestJson('/api/auth/reset-password', {
+    body: JSON.stringify({ password, token }),
+    method: 'POST',
+  });
+}
+
+export function resendVerificationEmail(token) {
+  return requestJson('/api/auth/resend-verification', {
+    method: 'POST',
+    token,
+  });
+}
+
+export function verifyEmailToken(token) {
+  return requestJson('/api/auth/verify-email', {
+    body: JSON.stringify({ token }),
+    method: 'POST',
+  });
+}

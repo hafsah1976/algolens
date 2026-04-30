@@ -46,6 +46,51 @@ function PublicTestCase({ testCase, index }) {
   );
 }
 
+function ProblemLens({ problem }) {
+  const firstExample = problem.examples?.[0];
+  const firstCheck = problem.testCases?.[0];
+
+  return (
+    <section className="app-panel p-6">
+      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Problem lens</p>
+      <div className="mt-4 grid gap-4 lg:grid-cols-5">
+        <div className="rounded-[1.1rem] border border-line/70 bg-white/65 p-4 lg:col-span-2">
+          <p className="text-sm font-semibold text-ink">What is being asked?</p>
+          <p className="mt-2 text-sm leading-6 text-muted">{problem.statement}</p>
+        </div>
+        <div className="rounded-[1.1rem] border border-line/70 bg-white/65 p-4">
+          <p className="text-sm font-semibold text-ink">Input / output shape</p>
+          <p className="mt-2 text-sm leading-6 text-muted">
+            Read the input, then return exactly the value shown in the expected output.
+          </p>
+        </div>
+        <div className="rounded-[1.1rem] border border-line/70 bg-white/65 p-4">
+          <p className="text-sm font-semibold text-ink">Example walkthrough</p>
+          <p className="mt-2 text-sm leading-6 text-muted">
+            {firstExample?.explanation || `Input ${firstExample?.input ?? 'the sample'} should become ${firstExample?.output ?? 'the sample output'}.`}
+          </p>
+        </div>
+        <div className="rounded-[1.1rem] border border-line/70 bg-white/65 p-4">
+          <p className="text-sm font-semibold text-ink">First small test</p>
+          <p className="mt-2 break-words text-sm leading-6 text-muted">
+            {firstCheck
+              ? `${JSON.stringify(firstCheck.input)} -> ${JSON.stringify(firstCheck.expectedOutput)}`
+              : 'Try the smallest example before writing the full solution.'}
+          </p>
+        </div>
+      </div>
+      <details className="mt-4 rounded-[1.1rem] border border-amber-200/80 bg-amber-50/80 p-4">
+        <summary className="cursor-pointer list-none text-sm font-semibold text-amber-800">
+          Common trap to check before coding
+        </summary>
+        <p className="mt-2 text-sm leading-6 text-ink">
+          Do not solve only the sample by hand. Write logic that works for the public checks and hidden cases.
+        </p>
+      </details>
+    </section>
+  );
+}
+
 export function PracticeProblemPage() {
   const { problemSlug } = useParams();
   const { token } = useAuth();
@@ -180,6 +225,8 @@ export function PracticeProblemPage() {
         eyebrow="Coding practice"
         title={problem.title}
       />
+
+      <ProblemLens problem={problem} />
 
       <section className="grid gap-5 xl:grid-cols-[minmax(0,0.92fr)_minmax(360px,1.08fr)]">
         <div className="space-y-5">

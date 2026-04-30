@@ -44,12 +44,18 @@ Required environment variables:
 - `MONGODB_URI`
 - `AUTH_SECRET`
 - `CLIENT_ORIGIN`
+- `APP_BASE_URL`
 
 Recommended environment variables:
 
 - `NODE_ENV=production`
 - `ADMIN_EMAILS`
 - `PROGRESS_STORAGE_MODE=mongo`
+- `RESEND_API_KEY`
+- `EMAIL_FROM`
+
+`APP_BASE_URL` should be the public Netlify URL used in password reset and email
+verification links. `EMAIL_FROM` must be a sender verified in Resend before broad launch.
 
 Optional Judge0 variables:
 
@@ -102,7 +108,8 @@ After deployment, verify:
 - Frontend loads.
 - Backend `/api/health` returns JSON.
 - Signup/login works.
+- Forgot password and email verification send real emails through Resend.
 - Dashboard loads for a signed-in user.
 - Published topics and lessons appear.
-- Admin routes reject non-admins.
+- Admin routes reject non-admins and admin-listed users whose emails are not verified.
 - Judge0 failures are handled gracefully if Judge0 is not configured.

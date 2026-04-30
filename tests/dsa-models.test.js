@@ -36,8 +36,13 @@ test('DSA content models compile with expected names and slug indexes', () => {
   assert.equal(Lesson.schema.path('slug').options.unique, true);
   assert.equal(CodingProblem.schema.path('slug').options.unique, true);
   assert.equal(User.schema.path('role').options.default, 'student');
+  assert.ok(User.schema.path('emailVerifiedAt'));
+  assert.ok(User.schema.path('passwordResetTokenHash'));
+  assert.ok(User.schema.path('emailVerificationTokenHash'));
   assert.ok(hasIndex(Lesson, { topicId: 1, slug: 1 }, { unique: true }));
   assert.ok(hasIndex(UserProgress, { userId: 1, lessonId: 1 }, { unique: true }));
+  assert.ok(hasIndex(User, { passwordResetTokenHash: 1 }));
+  assert.ok(hasIndex(User, { emailVerificationTokenHash: 1 }));
 });
 
 test('User model supports student and admin roles only', () => {

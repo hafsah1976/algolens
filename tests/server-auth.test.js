@@ -2,7 +2,18 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import { requireAdmin } from '../server/src/middleware/authMiddleware.js';
-import { resolveRoleForEmail } from '../server/src/utils/adminEmails.js';
+import {
+  isVerifiedAdminUser,
+  resolveRoleForEmail,
+  resolveRoleForUser,
+} from '../server/src/utils/adminEmails.js';
+import {
+  createAccountToken,
+  hashAccountToken,
+  isSafeTokenMatch,
+  isTokenExpired,
+  PASSWORD_RESET_TOKEN_TTL_MS,
+} from '../server/src/utils/accountTokens.js';
 import { validateProductionConfig } from '../server/src/utils/productionConfig.js';
 import { readSessionCookie, SESSION_COOKIE_NAME } from '../server/src/utils/sessionCookie.js';
 import { createSessionToken, verifySessionToken } from '../server/src/utils/sessionToken.js';
@@ -141,6 +152,35 @@ test('configured admin emails resolve to admin role', () => {
   });
 });
 
+test('effective admin role requires a configured and verified email', () => {
+  withEnv({ ADMIN_EMAILS: 'teacher@example.com' }, () => {
+    assert.equal(
+      resolveRoleForUser({ email: 'teacher@example.com', emailVerifiedAt: null, role: 'admin' }),
+      'student',
+    );
+    assert.equal(
+      resolveRoleForUser({
+        email: 'teacher@example.com',
+        emailVerifiedAt: new Date(),
+        role: 'admin',
+      }),
+      'admin',
+    );
+    assert.equal(isVerifiedAdminUser({ email: 'learner@example.com', emailVerifiedAt: new Date() }), false);
+  });
+});
+
+test('account action tokens are hashed and can expire', () => {
+  const { expiresAt, token, tokenHash } = createAccountToken(PASSWORD_RESET_TOKEN_TTL_MS);
+
+  assert.notEqual(token, tokenHash);
+  assert.equal(hashAccountToken(token), tokenHash);
+  assert.equal(isSafeTokenMatch(token, tokenHash), true);
+  assert.equal(isSafeTokenMatch(`${token}x`, tokenHash), false);
+  assert.equal(isTokenExpired(expiresAt), false);
+  assert.equal(isTokenExpired(new Date(Date.now() - 1000)), true);
+});
+
 test('admin middleware rejects authenticated non-admin users', async () => {
   const previousAdminEmails = process.env.ADMIN_EMAILS;
   delete process.env.ADMIN_EMAILS;
@@ -199,6 +239,7 @@ test('admin middleware allows configured admin users', async () => {
       {
         authUser: {
           email: 'admin@example.com',
+          emailVerifiedAt: new Date(),
           role: 'admin',
         },
       },
@@ -216,6 +257,49 @@ test('admin middleware allows configured admin users', async () => {
   }
 
   assert.equal(nextCalled, true);
+});
+
+test('admin middleware rejects configured admin users until email is verified', async () => {
+  const previousAdminEmails = process.env.ADMIN_EMAILS;
+  process.env.ADMIN_EMAILS = 'admin@example.com';
+  let nextCalled = false;
+  const response = {
+    payload: null,
+    statusCode: null,
+    json(payload) {
+      this.payload = payload;
+    },
+    status(statusCode) {
+      this.statusCode = statusCode;
+      return this;
+    },
+  };
+
+  try {
+    await requireAdmin(
+      {
+        authUser: {
+          email: 'admin@example.com',
+          emailVerifiedAt: null,
+          role: 'admin',
+        },
+      },
+      response,
+      () => {
+        nextCalled = true;
+      },
+    );
+  } finally {
+    if (previousAdminEmails === undefined) {
+      delete process.env.ADMIN_EMAILS;
+    } else {
+      process.env.ADMIN_EMAILS = previousAdminEmails;
+    }
+  }
+
+  assert.equal(nextCalled, false);
+  assert.equal(response.statusCode, 403);
+  assert.equal(response.payload.error, 'Admin access is required.');
 });
 
 test('admin middleware rejects stored admin role when email is not configured', async () => {

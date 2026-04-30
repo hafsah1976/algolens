@@ -32,6 +32,15 @@ export function AuthProvider({ children }) {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  async function refreshCurrentUser() {
+    const payload = await getCurrentUser(token);
+
+    setUser(payload.user);
+    setError(null);
+
+    return payload.user;
+  }
+
   useEffect(() => {
     let ignore = false;
 
@@ -104,6 +113,7 @@ export function AuthProvider({ children }) {
         isLoading,
         login,
         logout,
+        refreshCurrentUser,
         signup,
         token,
         user,
