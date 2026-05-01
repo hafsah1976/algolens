@@ -2,6 +2,9 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import { requireAdmin } from '../server/src/middleware/authMiddleware.js';
+import { createRateLimit, resetRateLimitBucketsForTests } from '../server/src/middleware/rateLimit.js';
+import { getEmailReadiness } from '../server/src/services/emailService.js';
+import { sanitizeLogDetails } from '../server/src/utils/logger.js';
 import {
   isVerifiedAdminUser,
   resolveRoleForEmail,
@@ -142,6 +145,95 @@ test('production configuration rejects a Judge0 key sent as Content-Type', () =>
       assert.throws(() => validateProductionConfig(), /JUDGE0_API_KEY_HEADER must be an auth header/);
     },
   );
+});
+
+test('email readiness reports safe production metadata without leaking secrets', () => {
+  const readiness = getEmailReadiness({
+    APP_BASE_URL: 'https://algolens.example',
+    EMAIL_FROM: 'AlgoLens <hello@algolens.example>',
+    RESEND_API_KEY: 'secret-resend-key',
+  });
+  const serialized = JSON.stringify(readiness);
+
+  assert.equal(readiness.configured, true);
+  assert.equal(readiness.state, 'configured');
+  assert.equal(readiness.appBaseUrlHost, 'algolens.example');
+  assert.equal(readiness.fromDomain, 'algolens.example');
+  assert.equal(serialized.includes('secret-resend-key'), false);
+  assert.equal(serialized.includes('hello@algolens.example'), false);
+});
+
+test('email readiness identifies missing and invalid email configuration', () => {
+  const readiness = getEmailReadiness({
+    APP_BASE_URL: 'not-a-url',
+    EMAIL_FROM: 'AlgoLens Sender',
+    RESEND_API_KEY: '',
+  });
+
+  assert.equal(readiness.configured, false);
+  assert.deepEqual(readiness.missing, ['RESEND_API_KEY']);
+  assert.deepEqual(readiness.invalid, ['EMAIL_FROM', 'APP_BASE_URL']);
+});
+
+test('log details redact account and secret fields before writing', () => {
+  const sanitized = sanitizeLogDetails({
+    authorization: 'Bearer secret-token',
+    email: 'learner@example.com',
+    nested: {
+      password: 'secret-password',
+      safeCount: 3,
+    },
+    safePath: '/api/topics',
+  });
+
+  assert.equal(sanitized.authorization, '[redacted]');
+  assert.equal(sanitized.email, '[redacted]');
+  assert.equal(sanitized.nested.password, '[redacted]');
+  assert.equal(sanitized.nested.safeCount, 3);
+  assert.equal(sanitized.safePath, '/api/topics');
+});
+
+test('rate limiter returns 429 after the configured request budget is used', () => {
+  resetRateLimitBucketsForTests();
+  const limiter = createRateLimit({
+    keyPrefix: 'unit-test',
+    maxRequests: 1,
+    windowMs: 1000,
+  });
+  const request = {
+    get(header) {
+      return header === 'x-forwarded-for' ? '203.0.113.9' : '';
+    },
+  };
+  const response = {
+    headers: {},
+    payload: null,
+    statusCode: null,
+    json(payload) {
+      this.payload = payload;
+    },
+    setHeader(name, value) {
+      this.headers[name] = value;
+    },
+    status(statusCode) {
+      this.statusCode = statusCode;
+      return this;
+    },
+  };
+  let nextCount = 0;
+
+  limiter(request, response, () => {
+    nextCount += 1;
+  });
+  limiter(request, response, () => {
+    nextCount += 1;
+  });
+
+  assert.equal(nextCount, 1);
+  assert.equal(response.statusCode, 429);
+  assert.equal(response.payload.error, 'Too many requests. Please wait a moment and try again.');
+  assert.ok(Number(response.headers['Retry-After']) > 0);
+  resetRateLimitBucketsForTests();
 });
 
 test('configured admin emails resolve to admin role', () => {

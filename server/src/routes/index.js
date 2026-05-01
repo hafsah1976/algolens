@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import { adminRouter } from './adminRoutes.js';
+import { analyticsRouter } from './analyticsRoutes.js';
 import { authRouter } from './authRoutes.js';
 import { contentRouter } from './contentRoutes.js';
 import { dashboardRouter } from './dashboardRoutes.js';
@@ -12,6 +13,7 @@ import { quizRouter } from './quizRoutes.js';
 export const apiRouter = Router();
 
 apiRouter.use(adminRouter);
+apiRouter.use(analyticsRouter);
 apiRouter.use(authRouter);
 apiRouter.use(contentRouter);
 apiRouter.use(dashboardRouter);

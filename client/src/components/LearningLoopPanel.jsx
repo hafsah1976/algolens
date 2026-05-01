@@ -6,17 +6,14 @@ const loopSteps = [
   {
     label: 'Start with one idea',
     body: 'Read the short explanation at the top of the path.',
-    status: 'Start here',
   },
   {
     label: 'Run the walkthrough',
     body: 'Use next and previous until the visual change makes sense.',
-    status: 'Main step',
   },
   {
     label: 'Stop or check yourself',
     body: 'End with one takeaway, then use a quiz only if you want to confirm it.',
-    status: 'Finish',
   },
 ];
 
@@ -52,12 +49,7 @@ export function LearningLoopPanel({ actionLabel, launchLesson, progress, track }
                 {index + 1}
               </span>
               <div>
-                <div className="flex flex-wrap items-center gap-2">
-                  <p className="text-sm font-semibold text-ink">{step.label}</p>
-                  <span className="rounded-full border border-line/70 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-muted">
-                    {step.status}
-                  </span>
-                </div>
+                <p className="text-sm font-semibold text-ink">{step.label}</p>
                 <p className="mt-2 text-xs leading-5 text-muted">{step.body}</p>
               </div>
             </div>

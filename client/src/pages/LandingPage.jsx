@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import { learningTracks } from '../data/appShellData.js';
-import { getCanonicalLessonPath, getCanonicalTopicPath } from '../lib/contentCatalog.js';
+import { getCanonicalTopicPath } from '../lib/contentCatalog.js';
 
 const traceSteps = [
   'Read the current values.',
@@ -13,7 +13,7 @@ const traceSteps = [
 const landingStats = [
   { value: '5', label: 'Core paths' },
   { value: '15', label: 'Walkthroughs' },
-  { value: '20', label: 'Seeded lessons' },
+  { value: '20', label: 'Beginner lessons' },
 ];
 
 const studyLoopSteps = [
@@ -83,9 +83,9 @@ function LandingNav() {
           </Link>
           <Link
             className="rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:bg-ink"
-            to="/app/traces"
+            to="/auth?mode=signup"
           >
-            Open step-by-step examples
+            Create account
           </Link>
         </div>
       </div>
@@ -126,7 +126,7 @@ function TraceHeroVisual() {
         <div className="flex items-center justify-between gap-4 border-b border-line/70 pb-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Step by step mode</p>
-            <p className="mt-1 text-sm font-semibold text-ink">Pair Sum / Live frame</p>
+            <p className="mt-1 text-sm font-semibold text-ink">Pair Sum walkthrough</p>
           </div>
           <div className="flex gap-2">
             <span className="h-8 w-8 rounded-xl border border-line/80 bg-warm/50" />
@@ -273,23 +273,23 @@ export function LandingPage() {
                 Learn smarter, not longer.
               </h1>
               <p className="mt-6 max-w-xl text-lg leading-8 text-muted sm:text-xl">
-                A calm learning workspace where beginners watch algorithms change state one
-                step at a time, then save progress under their own account.
+                A calm place to learn DSA visually. Create an account, pick one path,
+                and watch each algorithm change step by step.
               </p>
 
               <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
                 <Link
                   className="inline-flex justify-center rounded-full bg-accent px-6 py-3 text-sm font-semibold text-white shadow-[0_16px_40px_rgba(46,106,74,0.18)] transition hover:bg-ink"
-                  to={`${getCanonicalLessonPath('pair-sum-trace')}?fresh=1`}
-                >
-                  Run a walkthrough
-                </Link>
-                <Link
-                  className="inline-flex justify-center rounded-full border border-line/80 bg-white/75 px-6 py-3 text-sm font-semibold text-ink transition hover:border-accent/45"
-                  to="/auth"
+                  to="/auth?mode=signup"
                 >
                   Create account
                 </Link>
+                <a
+                  className="inline-flex justify-center rounded-full border border-line/80 bg-white/75 px-6 py-3 text-sm font-semibold text-ink transition hover:border-accent/45"
+                  href="#study-loop"
+                >
+                  See how it works
+                </a>
               </div>
 
               <dl className="mt-10 grid max-w-xl grid-cols-3 gap-4 border-t border-line/70 pt-6">

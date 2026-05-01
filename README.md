@@ -33,6 +33,8 @@ to access the content admin panel after signup/login, for example `ADMIN_EMAILS=
 Admin access is only granted after that account verifies its email.
 For commercial account recovery, set `RESEND_API_KEY`, `EMAIL_FROM`, and `APP_BASE_URL` so password
 reset and email verification links can be sent from the backend.
+The `/api/health` endpoint reports safe email readiness metadata, and the production QA steps are
+documented in [Production email QA](docs/EMAIL_PRODUCTION_QA.md).
 For coding execution, set `JUDGE0_API_URL` on the backend. If your Judge0 instance requires a key, set
 `JUDGE0_API_KEY`; by default the backend sends it as `X-Auth-Token`, matching Judge0 CE. For RapidAPI,
 set `JUDGE0_API_KEY_HEADER=X-RapidAPI-Key` and `JUDGE0_RAPIDAPI_HOST` if your provider requires it.
@@ -104,6 +106,8 @@ Do not commit `server/.env`.
 - `JUDGE0_API_URL` - optional Judge0 endpoint. If empty, submissions save a safe `judge0_error` result instead of executing code.
 - `JUDGE0_API_KEY`, `JUDGE0_API_KEY_HEADER`, and `JUDGE0_RAPIDAPI_HOST` - optional Judge0 provider credentials and headers.
 - `JUDGE0_LANGUAGE_JAVASCRIPT_ID` and `JUDGE0_LANGUAGE_PYTHON_ID` - Judge0 language ids for the supported starter languages.
+- `REQUEST_LOG_THRESHOLD_MS` - optional slow-request logging threshold for backend logs; defaults to `1200`.
+- `ENABLE_REQUEST_LOGS` - optional local debugging flag. Set to `true` only when you want every backend request logged.
 
 Student sessions use an HttpOnly session cookie in normal browser flows. The backend
 still accepts bearer tokens as a backward-compatible fallback for older local sessions
@@ -137,6 +141,7 @@ Useful student routes:
 - `/app/practice` - coding practice list
 - `/app/practice/:problemSlug` - coding problem detail and submission intake
 - `/app/traces` - step-by-step examples
+- `/admin/overview` - admin-only content readiness audit
 - `/admin/topics` - admin-only topic management
 - `/admin/lessons` - admin-only lesson management
 - `/admin/quizzes` - admin-only quiz creation
@@ -167,6 +172,7 @@ until you publish them from the admin panel.
 - `GET /api/admin/lessons`
 - `POST /api/admin/lessons`
 - `PUT /api/admin/lessons/:lessonId`
+- `GET /api/admin/content-audit`
 - `GET /api/admin/quizzes`
 - `POST /api/admin/quizzes`
 - `GET /api/admin/problems`
@@ -175,6 +181,7 @@ until you publish them from the admin panel.
 - `POST /api/auth/reset-password`
 - `POST /api/auth/resend-verification`
 - `POST /api/auth/verify-email`
+- `POST /api/analytics/events`
 - `GET /api/dashboard/me`
 - `GET /api/topics`
 - `GET /api/topics/:slug`
@@ -198,6 +205,10 @@ Practice problem detail APIs expose only public test cases. Practice submissions
 protected, sent from the backend to Judge0, run against public and hidden tests, and saved as
 `Submission` records with pass/fail totals, runtime, memory, and safe error output. If Judge0
 is unavailable or not configured, the backend saves a `judge0_error` result instead of crashing.
+First-party learner analytics are protected, route-level only, and stored without query strings
+or account emails so drop-off can be reviewed without adding third-party trackers.
+Write-heavy endpoints for auth, progress, quiz submission, coding submission, analytics, and
+admin content changes are rate-limited.
 You can control storage with `PROGRESS_STORAGE_MODE=auto|mongo|file`.
 
 ## Validation
@@ -218,13 +229,14 @@ npm.cmd run build
 
 `npm.cmd run lint` runs a lightweight repo-health check. It may warn about legacy workspace note files, but warnings do not fail the check.
 Backend and shared logic tests use Node's built-in test runner through `npm.cmd test`.
-There is no separate frontend unit-test framework installed yet; the current frontend validation is the production Vite build plus shared React data/helper tests. If the project grows further, add a minimal Vitest + Testing Library setup rather than a large test stack.
+There is no separate frontend unit-test framework installed yet; the current frontend validation is the production Vite build plus shared React data/helper tests and lightweight source-level frontend smoke tests. If the project grows further, add a minimal Vitest + Testing Library setup and Playwright browser checks rather than a large test stack.
 
 ## Production Readiness Notes
 
 - Student content APIs return published topics, lessons, quizzes, and problems only.
 - Admin content APIs require authentication, configured admin email membership, and verified email status.
 - Unknown API routes return JSON errors; unknown frontend routes show a small not-found page.
+- Backend responses include `X-Request-Id`; production logs redact sensitive fields and log failed or slow requests.
 - External code execution is backend-only. The frontend never calls Judge0 directly, and hidden test cases are not sent to the browser.
 - Local `.env` files and file-fallback progress JSON are ignored by Git.
 - Graph and node visualization dependencies are documented in [Third-party notices](docs/THIRD_PARTY_NOTICES.md).
@@ -235,8 +247,10 @@ There is no separate frontend unit-test framework installed yet; the current fro
 - [Deploy and submit guide](docs/DEPLOY_AND_SUBMIT.md)
 - [Demo script](docs/DEMO_SCRIPT.md)
 - [QA checklist](docs/QA_CHECKLIST.md)
+- [Accessibility and mobile QA](docs/ACCESSIBILITY_MOBILE_QA.md)
 - [Commercial launch checklist](docs/COMMERCIAL_LAUNCH_CHECKLIST.md)
 - [Deployment guide](docs/DEPLOYMENT.md)
+- [Production email QA](docs/EMAIL_PRODUCTION_QA.md)
 - [Content guide](docs/CONTENT_GUIDE.md)
 
 ## Repo Notes

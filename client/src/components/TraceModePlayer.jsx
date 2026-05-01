@@ -76,19 +76,6 @@ function TeachingNote({ body, label }) {
   );
 }
 
-function GuidedViewingPanel() {
-  return (
-    <div className="rounded-[1.35rem] border border-accent/20 bg-accent/8 p-4">
-      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Look here first</p>
-      <ol className="mt-3 space-y-2 text-sm leading-6 text-ink">
-        <li>1. Read the current focus.</li>
-        <li>2. Look for the highlighted values in the visual.</li>
-        <li>3. Try the prediction before moving on.</li>
-      </ol>
-    </div>
-  );
-}
-
 function TraceTutorPanel({ challengeMode }) {
   return (
     <details className="group rounded-[1.35rem] border border-accent/20 bg-accent/8 p-4">
@@ -159,6 +146,58 @@ function TraceToolsPanel({ onCopyStepLink, shareStatus }) {
               : 'Step link unavailable.'}
         </p>
       ) : null}
+    </details>
+  );
+}
+
+function OptionalTraceDetails({
+  activeCodeLineIds,
+  activeStepId,
+  challengeMode,
+  lesson,
+  onCopyStepLink,
+  shareStatus,
+  traceLesson,
+}) {
+  return (
+    <details className="rounded-[1.35rem] border border-line/80 bg-white/65 p-4">
+      <summary className="cursor-pointer list-none text-xs font-semibold uppercase tracking-[0.18em] text-muted">
+        Optional lesson details
+      </summary>
+
+      <div className="mt-4 space-y-3">
+        <TraceTutorPanel challengeMode={challengeMode} />
+        <TraceToolsPanel onCopyStepLink={onCopyStepLink} shareStatus={shareStatus} />
+        <CodeSyncPanel activeLineIds={activeCodeLineIds} code={traceLesson.code} />
+
+        <details className="rounded-[1.35rem] border border-line/80 bg-white/65 p-4">
+          <summary className="cursor-pointer list-none text-xs font-semibold uppercase tracking-[0.18em] text-muted">
+            Full algorithm path
+          </summary>
+          <div className="mt-4 space-y-3">
+            {traceLesson.algorithmSteps.map((step, index) => (
+              <TraceStep
+                key={step.id}
+                active={step.id === activeStepId}
+                detail={step.detail}
+                index={index + 1}
+                label={step.label}
+              />
+            ))}
+          </div>
+        </details>
+
+        <details className="rounded-[1.35rem] border border-line/80 bg-white/70 p-4">
+          <summary className="cursor-pointer list-none text-xs font-semibold uppercase tracking-[0.18em] text-muted">
+            Learning goals
+          </summary>
+          <ul className="mt-3 space-y-2 text-sm leading-6 text-ink">
+            {lesson.goals.map((goal) => (
+              <li key={goal}>{goal}</li>
+            ))}
+          </ul>
+        </details>
+      </div>
     </details>
   );
 }
@@ -546,7 +585,7 @@ export function TraceModePlayer({
     : storageMode === 'sandbox'
       ? 'Sandbox practice stays on this page and does not change saved progress.'
       : isSaving
-        ? 'Saving your place…'
+        ? 'Saving your place...'
         : savedStatus === 'completed'
           ? `Lesson complete and saved ${storageMode === 'mongo' ? 'to your account.' : 'on this device.'}`
           : `Your current step is saved ${storageMode === 'mongo' ? 'to your account.' : 'on this device.'}`;
@@ -694,8 +733,6 @@ export function TraceModePlayer({
               <p className="mt-4 text-base leading-7 text-muted">{traceLesson.summary}</p>
             </div>
 
-            <GuidedViewingPanel />
-
             <div className="rounded-[1.35rem] border border-line/80 bg-warm/45 p-4">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">Current focus</p>
               <p className="mt-2 text-lg font-semibold tracking-[-0.02em] text-ink">{frame.title}</p>
@@ -705,39 +742,15 @@ export function TraceModePlayer({
               </p>
             </div>
 
-            <TraceTutorPanel challengeMode={challengeMode} />
-
-            <TraceToolsPanel onCopyStepLink={handleCopyStepLink} shareStatus={shareStatus} />
-
-            <CodeSyncPanel activeLineIds={activeCodeLineIds} code={traceLesson.code} />
-
-            <details className="rounded-[1.35rem] border border-line/80 bg-white/65 p-4">
-              <summary className="cursor-pointer list-none text-xs font-semibold uppercase tracking-[0.18em] text-muted">
-                Show full algorithm path
-              </summary>
-              <div className="mt-4 space-y-3">
-                {traceLesson.algorithmSteps.map((step, index) => (
-                  <TraceStep
-                    key={step.id}
-                    active={step.id === frame.activeStepId}
-                    detail={step.detail}
-                    index={index + 1}
-                    label={step.label}
-                  />
-                ))}
-              </div>
-            </details>
-
-            <details className="rounded-[1.35rem] border border-line/80 bg-white/70 p-4">
-              <summary className="cursor-pointer list-none text-xs font-semibold uppercase tracking-[0.18em] text-muted">
-                Show learning goals
-              </summary>
-              <ul className="mt-3 space-y-2 text-sm leading-6 text-ink">
-                {lesson.goals.map((goal) => (
-                  <li key={goal}>{goal}</li>
-                ))}
-              </ul>
-            </details>
+            <OptionalTraceDetails
+              activeCodeLineIds={activeCodeLineIds}
+              activeStepId={frame.activeStepId}
+              challengeMode={challengeMode}
+              lesson={lesson}
+              onCopyStepLink={handleCopyStepLink}
+              shareStatus={shareStatus}
+              traceLesson={traceLesson}
+            />
           </div>
 
           <div className="border-t border-line/70 bg-white/80 p-5 backdrop-blur-xl lg:p-6">
@@ -761,7 +774,7 @@ export function TraceModePlayer({
                 onClick={handlePrimaryAction}
                 type="button"
               >
-                {isLastFrame ? (isSaving ? 'Saving…' : 'Finish lesson') : primaryLabel}
+                {isLastFrame ? (isSaving ? 'Saving...' : 'Finish lesson') : primaryLabel}
               </button>
             </div>
 

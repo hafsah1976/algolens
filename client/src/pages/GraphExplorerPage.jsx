@@ -279,7 +279,7 @@ export function GraphExplorerPage() {
             </Link>
             <Link
               className="inline-flex items-center rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:bg-ink"
-              to="/app/lessons/bfs-layers-preview?fresh=1"
+              to="/app/lessons/bfs-layers-preview"
             >
               Run BFS walkthrough
             </Link>

@@ -30,6 +30,10 @@ export function listAdminTopics(token) {
   return requestJson('/api/admin/topics', { token });
 }
 
+export function getAdminContentAudit(token) {
+  return requestJson('/api/admin/content-audit', { token });
+}
+
 export function createAdminTopic(payload, token) {
   return requestJson('/api/admin/topics', {
     body: JSON.stringify(payload),

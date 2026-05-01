@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import { createApp, normalizeJsonBody } from '../server/src/app.js';
+import { handleUnhandledError } from '../server/src/middleware/observability.js';
 
 async function withTestServer(callback) {
   const previousStorageMode = process.env.PROGRESS_STORAGE_MODE;
@@ -94,6 +95,7 @@ test('API root advertises topic, lesson, quiz, dashboard, problem, and protected
     const payload = await readJson(response);
 
     assert.equal(response.status, 200);
+    assert.ok(response.headers.get('x-request-id'));
     assert.equal(response.headers.get('x-content-type-options'), 'nosniff');
     assert.equal(response.headers.get('x-frame-options'), 'DENY');
     assert.equal(response.headers.get('referrer-policy'), 'strict-origin-when-cross-origin');
@@ -108,6 +110,8 @@ test('API root advertises topic, lesson, quiz, dashboard, problem, and protected
     assert.ok(payload.routes.includes('/api/admin/lessons'));
     assert.ok(payload.routes.includes('/api/admin/quizzes'));
     assert.ok(payload.routes.includes('/api/admin/problems'));
+    assert.ok(payload.routes.includes('/api/admin/content-audit'));
+    assert.ok(payload.routes.includes('/api/analytics/events'));
     assert.ok(payload.routes.includes('/api/topics'));
     assert.ok(payload.routes.includes('/api/topics/:slug/lessons'));
     assert.ok(payload.routes.includes('/api/lessons/:slug'));
@@ -163,6 +167,44 @@ test('unknown API routes return a consistent JSON 404', async () => {
     assert.equal(response.status, 404);
     assert.equal(payload.error, 'API route not found.');
   });
+});
+
+test('unhandled API errors return a safe request id for support', async () => {
+  const previousConsoleError = console.error;
+  const request = {
+    method: 'GET',
+    originalUrl: '/api/test-error',
+    requestId: 'test-request-123',
+    url: '/api/test-error',
+  };
+  const response = {
+    headersSent: false,
+    payload: null,
+    statusCode: null,
+    json(payload) {
+      this.payload = payload;
+    },
+    status(statusCode) {
+      this.statusCode = statusCode;
+      return this;
+    },
+  };
+  let nextCalled = false;
+
+  try {
+    console.error = () => {};
+    handleUnhandledError(new Error('Sensitive database failure'), request, response, () => {
+      nextCalled = true;
+    });
+
+    assert.equal(response.statusCode, 500);
+    assert.equal(response.payload.error, 'Something went wrong. Please try again in a moment.');
+    assert.equal(response.payload.requestId, 'test-request-123');
+    assert.equal(JSON.stringify(response.payload).includes('Sensitive database failure'), false);
+    assert.equal(nextCalled, false);
+  } finally {
+    console.error = previousConsoleError;
+  }
 });
 
 test('API responds to allowed CORS preflight requests', async () => {
@@ -242,6 +284,15 @@ test('progress mutation and current-user progress routes require auth', async ()
       method: 'POST',
     });
     const problemPayload = await readJson(problemResponse);
+    const analyticsResponse = await fetch(`${baseUrl}/api/analytics/events`, {
+      body: JSON.stringify({
+        eventType: 'lesson_opened',
+        path: '/app/lessons/pair-sum-trace',
+      }),
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+    });
+    const analyticsPayload = await readJson(analyticsResponse);
 
     assert.equal(meResponse.status, 401);
     assert.equal(mePayload.error, 'Please sign in to continue.');
@@ -251,6 +302,8 @@ test('progress mutation and current-user progress routes require auth', async ()
     assert.equal(quizPayload.error, 'Please sign in to continue.');
     assert.equal(problemResponse.status, 401);
     assert.equal(problemPayload.error, 'Please sign in to continue.');
+    assert.equal(analyticsResponse.status, 401);
+    assert.equal(analyticsPayload.error, 'Please sign in to continue.');
   });
 });
 

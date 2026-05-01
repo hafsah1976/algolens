@@ -39,7 +39,7 @@ function ProblemRow({ problem }) {
             <span className="font-semibold text-ink">{problem.exampleCount}</span> examples
           </p>
           <p className="mt-2">
-            <span className="font-semibold text-ink">{problem.publicTestCaseCount}</span> public checks
+            <span className="font-semibold text-ink">{problem.publicTestCaseCount}</span> sample tests
           </p>
         </div>
       </div>
@@ -105,7 +105,7 @@ export function PracticeListPage() {
             Review topics
           </Link>
         }
-        description="Practice problems run through a secure code checker while hidden tests stay private."
+        description="Practice problems run through a secure code checker while private tests stay hidden."
         eyebrow="Practice"
         title="Write code after the concept clicks."
       />

@@ -8,6 +8,7 @@ import {
   createAdminProblem,
   createAdminQuiz,
   createAdminTopic,
+  getAdminContentAudit,
   listAdminLessons,
   listAdminProblems,
   listAdminQuizzes,
@@ -227,6 +228,7 @@ function StatusMessage({ error, message }) {
 
 function AdminNav() {
   const links = [
+    { label: 'Audit', to: '/admin/overview' },
     { label: 'Topics', to: '/admin/topics' },
     { label: 'Lessons', to: '/admin/lessons' },
     { label: 'Quizzes', to: '/admin/quizzes' },
@@ -244,6 +246,15 @@ function AdminNav() {
           {link.label}
         </Link>
       ))}
+    </div>
+  );
+}
+
+function AuditMetric({ label, value }) {
+  return (
+    <div className="rounded-[1.25rem] border border-line/70 bg-white/70 p-4">
+      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">{label}</p>
+      <p className="mt-2 text-2xl font-semibold tracking-[-0.04em] text-ink">{value}</p>
     </div>
   );
 }
@@ -363,6 +374,85 @@ function AdminPageFrame({ children, description, title }) {
       />
       {children}
     </div>
+  );
+}
+
+export function AdminOverviewPage() {
+  const { token } = useAuth();
+  const state = useAdminLoader(getAdminContentAudit, token, 0);
+  const summary = state.data?.summary;
+  const topics = state.data?.topics ?? [];
+  const readyCount = topics.filter((topic) => topic.status === 'ready').length;
+
+  return (
+    <AdminPageFrame
+      description="Check publication readiness before students see new curriculum."
+      title="Content audit"
+    >
+      <StatusMessage error={state.error} />
+
+      {state.isLoading ? <p className="text-sm text-muted">Loading content audit...</p> : null}
+
+      {summary ? (
+        <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+          <AuditMetric label="Ready topics" value={`${readyCount} / ${topics.length}`} />
+          <AuditMetric label="Published topics" value={`${summary.topics.published} / ${summary.topics.total}`} />
+          <AuditMetric label="Published lessons" value={`${summary.lessons.published} / ${summary.lessons.total}`} />
+          <AuditMetric label="Published quizzes" value={`${summary.quizzes.published} / ${summary.quizzes.total}`} />
+          <AuditMetric label="Published problems" value={`${summary.problems.published} / ${summary.problems.total}`} />
+        </section>
+      ) : null}
+
+      <section className="app-panel p-6">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Path readiness</p>
+            <h2 className="mt-2 font-display text-3xl tracking-[-0.04em] text-ink">
+              Publish with a complete loop.
+            </h2>
+          </div>
+          <p className="max-w-md text-sm leading-6 text-muted">
+            A ready path has a published topic, lesson, quiz, and practice problem.
+          </p>
+        </div>
+
+        <div className="mt-5 space-y-3">
+          {topics.map((topic) => (
+            <article className="rounded-[1.25rem] border border-line/70 bg-white/70 p-4" key={topic.slug}>
+              <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                <div>
+                  <span
+                    className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] ${
+                      topic.status === 'ready'
+                        ? 'bg-accent/10 text-accent'
+                        : 'bg-amber-100 text-amber-800'
+                    }`}
+                  >
+                    {topic.status === 'ready' ? 'Ready' : 'Needs review'}
+                  </span>
+                  <h3 className="mt-3 text-lg font-semibold tracking-[-0.02em] text-ink">{topic.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-muted">
+                    {topic.publishedLessonCount} lessons, {topic.publishedQuizCount} quizzes,{' '}
+                    {topic.publishedProblemCount} problems published.
+                  </p>
+                </div>
+                {topic.checks.length ? (
+                  <ul className="max-w-lg space-y-2 text-sm leading-6 text-muted">
+                    {topic.checks.map((check) => (
+                      <li key={check}>{check}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="max-w-lg text-sm leading-6 text-muted">
+                    This path has the minimum learning loop ready for students.
+                  </p>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+    </AdminPageFrame>
   );
 }
 

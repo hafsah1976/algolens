@@ -8,12 +8,20 @@ import {
   upsertStoredTopicProgress,
 } from '../db/progressStore.js';
 import { optionalAuth, requireAuth } from '../middleware/authMiddleware.js';
+import { createRateLimit } from '../middleware/rateLimit.js';
 import { LessonProgress } from '../models/LessonProgress.js';
 import { TopicProgress } from '../models/TopicProgress.js';
 import { resolveDemoUser } from '../utils/demoUser.js';
 import { getProgressStorageMode, getProgressStoragePreference } from '../utils/storageMode.js';
 
 export const progressRouter = Router();
+
+const progressWriteRateLimit = createRateLimit({
+  keyPrefix: 'progress',
+  maxRequests: 180,
+  message: 'Too many progress saves. Please pause for a moment and try again.',
+  windowMs: 10 * 60 * 1000,
+});
 
 function toLessonProgressPayload(document) {
   return {
@@ -231,7 +239,7 @@ progressRouter.get('/progress/me', requireAuth, async (request, response) => {
   });
 });
 
-progressRouter.post('/progress/lesson', requireAuth, async (request, response) => {
+progressRouter.post('/progress/lesson', progressWriteRateLimit, requireAuth, async (request, response) => {
   const payload = validateLessonProgressPayload(request.body);
 
   if (payload.error) {
@@ -255,7 +263,7 @@ progressRouter.post('/progress/lesson', requireAuth, async (request, response) =
   });
 });
 
-progressRouter.put('/progress/lesson', requireAuth, async (request, response) => {
+progressRouter.put('/progress/lesson', progressWriteRateLimit, requireAuth, async (request, response) => {
   const payload = validateLessonProgressPayload(request.body);
 
   if (payload.error) {
@@ -279,7 +287,7 @@ progressRouter.put('/progress/lesson', requireAuth, async (request, response) =>
   });
 });
 
-progressRouter.put('/progress/topic', requireAuth, async (request, response) => {
+progressRouter.put('/progress/topic', progressWriteRateLimit, requireAuth, async (request, response) => {
   const {
     topicSlug,
     completedLessons = 0,

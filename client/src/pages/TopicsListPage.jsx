@@ -1,188 +1,120 @@
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { SectionHeading } from '../components/SectionHeading.jsx';
-import { TopicCard } from '../components/TopicCard.jsx';
 import { useProgress } from '../context/ProgressContext.jsx';
-import { fetchTopicLessons, fetchTopics } from '../lib/contentApi.js';
 import {
-  getCanonicalLessonPath,
   getCanonicalTopicPath,
   getStaticTopics,
-  mergeApiTopicsWithStatic,
 } from '../lib/contentCatalog.js';
 import { getLessonStageLabel, getTrackProgressSnapshot } from '../lib/progressSummary.js';
 
-const initialCatalogState = {
-  error: null,
-  isLoading: true,
-  source: 'static',
-  topics: getStaticTopics(),
-};
-
-function CatalogStatus({ error, isLoading, source }) {
-  if (isLoading) {
-    return (
-      <div className="app-panel-soft p-4 text-sm leading-6 text-muted">
-        Loading the published topic catalog…
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="app-panel-soft border-amber-400/35 bg-amber-50/60 p-4 text-sm leading-6 text-amber-800">
-        {error} The student view is using the in-app curriculum fallback so topics remain browseable.
-      </div>
-    );
-  }
-
-  if (source === 'static') {
-    return (
-      <div className="app-panel-soft p-4 text-sm leading-6 text-muted">
-        No published topic updates are available yet, so this page is showing the reviewed in-app curriculum.
-      </div>
-    );
-  }
-
-  return (
-    <div className="app-panel-soft p-4 text-sm leading-6 text-muted">
-      Published topics are ready.
-    </div>
-  );
-}
+const curatedStudentTopics = getStaticTopics();
 
 export function TopicsListPage() {
   const { lessonProgress } = useProgress();
-  const [catalogState, setCatalogState] = useState(initialCatalogState);
-
-  useEffect(() => {
-    let ignore = false;
-
-    fetchTopics()
-      .then(async (payload) => {
-        if (ignore) {
-          return;
-        }
-
-        const apiTopics = payload.topics ?? [];
-        const topicsWithLessons = await Promise.all(
-          apiTopics.map(async (topic) => {
-            const lessonPayload = await fetchTopicLessons(topic.slug);
-
-            return {
-              ...topic,
-              lessons: lessonPayload.lessons ?? [],
-            };
-          }),
-        );
-
-        if (ignore) {
-          return;
-        }
-
-        setCatalogState({
-          error: null,
-          isLoading: false,
-          source: apiTopics.length ? 'api' : 'static',
-          topics: mergeApiTopicsWithStatic(topicsWithLessons),
-        });
-      })
-      .catch((error) => {
-        if (ignore) {
-          return;
-        }
-
-        setCatalogState({
-          error: error.message || 'Could not refresh the published topic catalog.',
-          isLoading: false,
-          source: 'static',
-          topics: getStaticTopics(),
-        });
-      });
-
-    return () => {
-      ignore = true;
-    };
-  }, []);
-
-  const visibleTopics = catalogState.topics.filter((topic) => topic.lessons?.length);
+  const visibleTopics = curatedStudentTopics.filter((topic) => topic.lessons?.length);
   const totalLessons = visibleTopics.reduce((sum, topic) => sum + topic.lessons.length, 0);
   const completedLessons = visibleTopics.reduce(
     (sum, topic) => sum + getTrackProgressSnapshot(topic, lessonProgress).completed,
     0,
   );
+  const firstOpenTopic = visibleTopics.find(
+    (topic) => getTrackProgressSnapshot(topic, lessonProgress).percent < 100,
+  ) ?? visibleTopics[0];
+  const firstOpenProgress = firstOpenTopic
+    ? getTrackProgressSnapshot(firstOpenTopic, lessonProgress)
+    : null;
+  const firstOpenLesson = firstOpenProgress?.activeLesson ?? firstOpenProgress?.nextLesson ?? firstOpenTopic?.lessons[0];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <SectionHeading
-        actions={
-          <Link
-            className="inline-flex items-center rounded-full bg-accent px-5 py-2 text-sm font-semibold text-white transition hover:bg-ink"
-            to="/app/traces"
-          >
-            Open step-by-step examples
-          </Link>
-        }
-        description="Browse the five core DSA paths, see your saved progress, and choose the next beginner-friendly visual lesson."
+        description="Five focused paths. Choose one, learn the idea in cards, then run a visual walkthrough."
         eyebrow="Topics"
-        title="Pick one path, then go deep."
+        title="Choose one learning path."
       />
 
-      <CatalogStatus
-        error={catalogState.error}
-        isLoading={catalogState.isLoading}
-        source={catalogState.source}
-      />
+      <section className="app-panel overflow-hidden">
+        <div className="grid gap-0 lg:grid-cols-[minmax(0,1fr)_320px]">
+          <div className="p-6 sm:p-7">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Start small</p>
+            <h2 className="mt-3 font-display text-3xl tracking-[-0.04em] text-ink">
+              One path is enough for today.
+            </h2>
+            <p className="mt-3 max-w-3xl text-sm leading-7 text-muted sm:text-base">
+              The catalog stays intentionally small so the next step is obvious: open a path, read the
+              first card, then start one walkthrough.
+            </p>
+          </div>
 
-      <section className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
-        <div className="app-panel p-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Student hub</p>
-          <h2 className="mt-3 font-display text-3xl tracking-[-0.04em] text-ink">
-            Five paths, one calm curriculum.
-          </h2>
-          <p className="mt-3 max-w-3xl text-sm leading-7 text-muted sm:text-base">
-            AlgoLens groups lessons by concepts and patterns, then lets step by step mode show how the
-            data changes one step at a time.
-          </p>
-        </div>
-
-        <div className="app-panel p-5">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Your DSA progress</p>
-          <p className="mt-3 text-4xl font-semibold tracking-[-0.04em] text-ink">
-            {completedLessons} / {totalLessons}
-          </p>
-          <p className="mt-2 text-sm leading-6 text-muted">Complete lessons across the current topic catalog.</p>
+          <div className="border-t border-line/70 p-6 sm:p-7 lg:border-l lg:border-t-0">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Progress</p>
+            <p className="mt-3 text-4xl font-semibold tracking-[-0.04em] text-ink">
+              {completedLessons} / {totalLessons}
+            </p>
+            <p className="mt-2 text-sm leading-6 text-muted">Lessons complete across the five core paths.</p>
+            {firstOpenTopic && firstOpenLesson ? (
+              <Link
+                className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:bg-ink"
+                to={getCanonicalTopicPath(firstOpenTopic.slug)}
+              >
+                Continue with {firstOpenTopic.navLabel}
+              </Link>
+            ) : null}
+          </div>
         </div>
       </section>
 
-      {visibleTopics.length ? (
-        <section className="space-y-4">
-          {visibleTopics.map((topic) => {
+      <section className="grid gap-4 lg:grid-cols-2">
+        {visibleTopics.map((topic, index) => {
             const progress = getTrackProgressSnapshot(topic, lessonProgress);
             const nextLesson = progress.activeLesson ?? progress.nextLesson ?? topic.lessons[0];
+            const lessonLabel = getLessonStageLabel(nextLesson, undefined);
 
-            return (
-              <TopicCard
-                key={topic.slug}
-                nextLesson={nextLesson}
-                nextLessonPath={getCanonicalLessonPath(nextLesson.id)}
-                nextLessonStageLabel={getLessonStageLabel(nextLesson, undefined)}
-                progress={progress}
-                topicPath={getCanonicalTopicPath(topic.slug)}
-                track={topic}
-              />
-            );
-          })}
-        </section>
-      ) : (
-        <section className="app-panel p-6">
-          <p className="text-sm leading-6 text-muted">
-            No published topics are available yet. Keep using the seeded AlgoLens curriculum while
-            the platform is being prepared.
-          </p>
-        </section>
-      )}
+          return (
+            <article className="app-panel p-5 sm:p-6" key={topic.slug}>
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">
+                    Path {index + 1}
+                  </p>
+                  <h2 className="mt-3 font-display text-3xl tracking-[-0.04em] text-ink">{topic.title}</h2>
+                </div>
+                <div className="rounded-2xl border border-line/80 bg-white/70 px-4 py-3 text-right">
+                  <p className="text-2xl font-semibold tracking-[-0.04em] text-ink">{progress.percent}%</p>
+                  <p className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-muted">
+                    {progress.completed}/{progress.total}
+                  </p>
+                </div>
+              </div>
+
+              <p className="mt-4 text-sm leading-7 text-muted">{topic.description}</p>
+
+              <div className="mt-5 h-2 overflow-hidden rounded-full bg-warm">
+                <div className="h-full rounded-full bg-accent" style={{ width: `${progress.percent}%` }} />
+              </div>
+
+              <div className="mt-5 rounded-3xl border border-line/70 bg-white/70 p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">Next lesson</p>
+                <p className="mt-2 text-base font-semibold text-ink">{nextLesson.title}</p>
+                <p className="mt-1 text-sm leading-6 text-muted">
+                  {nextLesson.duration} / {lessonLabel}
+                </p>
+              </div>
+
+              <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
+                <p className="text-sm text-muted">{topic.lessons.length} guided lessons</p>
+                <Link
+                  className="inline-flex items-center rounded-full bg-accent px-5 py-2 text-sm font-semibold text-white transition hover:bg-ink"
+                  to={getCanonicalTopicPath(topic.slug)}
+                >
+                  Open path
+                </Link>
+              </div>
+            </article>
+          );
+        })}
+      </section>
     </div>
   );
 }

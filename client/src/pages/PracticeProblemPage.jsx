@@ -34,7 +34,7 @@ function PublicTestCase({ testCase, index }) {
   return (
     <div className="rounded-[1rem] border border-line/70 bg-white/60 p-4">
       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted">
-        Public check {index + 1}
+        Sample test {index + 1}
       </p>
       <p className="mt-2 break-words text-sm leading-6 text-muted">
         Input: <span className="font-mono text-ink">{JSON.stringify(testCase.input)}</span>
@@ -84,7 +84,7 @@ function ProblemLens({ problem }) {
           Common trap to check before coding
         </summary>
         <p className="mt-2 text-sm leading-6 text-ink">
-          Do not solve only the sample by hand. Write logic that works for the public checks and hidden cases.
+          Do not solve only the sample by hand. Write logic that works for the sample tests and private tests.
         </p>
       </details>
     </section>
@@ -221,7 +221,7 @@ export function PracticeProblemPage() {
             Back to practice
           </Link>
         }
-        description="Write a first attempt. AlgoLens checks public and hidden tests while keeping hidden cases private."
+        description="Write a first attempt. AlgoLens checks sample tests and private tests while keeping private cases hidden."
         eyebrow="Coding practice"
         title={problem.title}
       />
@@ -345,7 +345,7 @@ export function PracticeProblemPage() {
                         key={`${testResult.testNumber}-${testResult.isHidden}`}
                       >
                         <span className="text-muted">
-                          {testResult.isHidden ? 'Hidden' : 'Public'} test {testResult.testNumber}
+                          {testResult.isHidden ? 'Private' : 'Sample'} test {testResult.testNumber}
                         </span>
                         <span className={testResult.passed ? 'font-semibold text-accent' : 'font-semibold text-amber-800'}>
                           {testResult.passed ? 'Passed' : testResult.status.description}
@@ -360,7 +360,7 @@ export function PracticeProblemPage() {
               </div>
             ) : (
               <p className="mt-3 text-sm leading-6 text-muted">
-                Submit your code to run the public checks and private hidden checks.
+                Submit your code to run the sample tests and private tests.
               </p>
             )}
             {submissionState.error ? (
@@ -369,7 +369,7 @@ export function PracticeProblemPage() {
           </div>
 
           <div className="app-panel p-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Public checks</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Sample tests</p>
             <div className="mt-4 space-y-3">
               {problem.testCases.map((testCase, index) => (
                 <PublicTestCase index={index} key={JSON.stringify(testCase.input)} testCase={testCase} />

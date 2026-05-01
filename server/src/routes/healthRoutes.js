@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import { connectToDatabase, getDatabaseStatus } from '../db/mongo.js';
+import { getEmailReadiness } from '../services/emailService.js';
 import { getProgressStorageMode, getProgressStoragePreference } from '../utils/storageMode.js';
 
 export const healthRouter = Router();
@@ -13,6 +14,7 @@ healthRouter.get('/health', async (_request, response) => {
     status: 'ok',
     service: 'algolens-server',
     database,
+    email: getEmailReadiness(),
     progressStorage: {
       preference: getProgressStoragePreference(),
       mode: getProgressStorageMode(database.state === 'connected'),

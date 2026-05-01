@@ -1,5 +1,10 @@
 import express from 'express';
 
+import {
+  attachRequestContext,
+  handleUnhandledError,
+  logRequestOutcome,
+} from './middleware/observability.js';
 import { apiRouter } from './routes/index.js';
 
 export function getAllowedOrigins() {
@@ -136,6 +141,8 @@ export function createApp() {
   const app = express();
 
   app.disable('x-powered-by');
+  app.use(attachRequestContext);
+  app.use(logRequestOutcome);
   app.use(applySecurityHeaders);
   app.use(applyCorsHeaders);
   app.use(validateStateChangingOrigin);
@@ -164,6 +171,8 @@ export function createApp() {
         '/api/admin/lessons',
         '/api/admin/quizzes',
         '/api/admin/problems',
+        '/api/admin/content-audit',
+        '/api/analytics/events',
         '/api/topics',
         '/api/topics/:slug',
         '/api/topics/:slug/lessons',
@@ -187,6 +196,8 @@ export function createApp() {
   app.use('/api', (_request, response) => {
     response.status(404).json({ error: 'API route not found.' });
   });
+
+  app.use(handleUnhandledError);
 
   app.use((_request, response) => {
     response.status(404).json({ error: 'Route not found.' });

@@ -3,6 +3,7 @@ import test from 'node:test';
 
 import mongoose from 'mongoose';
 
+import { AnalyticsEvent } from '../server/src/models/AnalyticsEvent.js';
 import { CodingProblem } from '../server/src/models/CodingProblem.js';
 import { Lesson } from '../server/src/models/Lesson.js';
 import { Quiz } from '../server/src/models/Quiz.js';
@@ -31,6 +32,7 @@ test('DSA content models compile with expected names and slug indexes', () => {
   assert.equal(UserProgress.modelName, 'UserProgress');
   assert.equal(CodingProblem.modelName, 'CodingProblem');
   assert.equal(Submission.modelName, 'Submission');
+  assert.equal(AnalyticsEvent.modelName, 'AnalyticsEvent');
 
   assert.equal(Topic.schema.path('slug').options.unique, true);
   assert.equal(Lesson.schema.path('slug').options.unique, true);

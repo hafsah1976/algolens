@@ -1,13 +1,13 @@
 function getStorageMessage(storageMode) {
   if (storageMode === 'mongo') {
-    return 'Progress is saved to your account.';
+    return 'Progress is ready.';
   }
 
   if (storageMode === 'file' || storageMode === 'file-fallback') {
-    return 'Progress is saved locally until account storage reconnects.';
+    return 'Progress is ready for this session.';
   }
 
-  return 'Checking saved progress.';
+  return 'Checking progress.';
 }
 
 export function ProgressOverview({
@@ -48,7 +48,7 @@ export function ProgressOverview({
 
         <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-muted">
           <span className="rounded-full border border-line/80 bg-white/70 px-3 py-2">
-            {isLoading ? 'Loading saved progress…' : getStorageMessage(storageMode)}
+            {isLoading ? 'Loading progress…' : getStorageMessage(storageMode)}
           </span>
           <span className="rounded-full border border-line/80 bg-white/70 px-3 py-2">
             {isSaving ? 'Saving your place' : 'Ready to continue'}

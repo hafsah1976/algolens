@@ -3,12 +3,20 @@ import { Router } from 'express';
 
 import { ensureDatabaseConnection, getDatabaseStatus } from '../db/mongo.js';
 import { requireAdmin } from '../middleware/authMiddleware.js';
+import { createRateLimit } from '../middleware/rateLimit.js';
 import { CodingProblem } from '../models/CodingProblem.js';
 import { Lesson } from '../models/Lesson.js';
 import { Quiz } from '../models/Quiz.js';
 import { Topic } from '../models/Topic.js';
 
 export const adminRouter = Router();
+
+const adminWriteRateLimit = createRateLimit({
+  keyPrefix: 'admin-write',
+  maxRequests: 80,
+  message: 'Too many admin content changes. Please pause for a moment and try again.',
+  windowMs: 15 * 60 * 1000,
+});
 
 const difficultyValues = new Set(['beginner', 'intermediate', 'advanced']);
 const questionTypes = new Set(['mcq', 'true_false', 'fill_blank', 'code_output', 'complexity']);
@@ -405,7 +413,82 @@ async function getTopicMap(topicIds) {
   return new Map(topics.map((topic) => [topic.id, topic]));
 }
 
+function summarizePublication(items) {
+  const published = items.filter((item) => item.isPublished).length;
+
+  return {
+    draft: items.length - published,
+    published,
+    total: items.length,
+  };
+}
+
+function buildContentAuditRows({ lessons, problems, quizzes, topics }) {
+  return topics.map((topic) => {
+    const topicId = topic.id;
+    const topicLessons = lessons.filter((lesson) => lesson.topicId.toString() === topicId);
+    const topicQuizzes = quizzes.filter((quiz) => quiz.topicId.toString() === topicId);
+    const topicProblems = problems.filter((problem) => problem.topicId.toString() === topicId);
+    const publishedLessons = topicLessons.filter((lesson) => lesson.isPublished).length;
+    const publishedQuizzes = topicQuizzes.filter((quiz) => quiz.isPublished).length;
+    const publishedProblems = topicProblems.filter((problem) => problem.isPublished).length;
+    const checks = [];
+
+    if (!topic.isPublished) {
+      checks.push('Topic is still a draft.');
+    }
+
+    if (publishedLessons === 0) {
+      checks.push('Add at least one published lesson.');
+    }
+
+    if (publishedQuizzes === 0) {
+      checks.push('Add a published concept quiz.');
+    }
+
+    if (publishedProblems === 0) {
+      checks.push('Add a published practice problem.');
+    }
+
+    return {
+      checks,
+      lessonCount: topicLessons.length,
+      problemCount: topicProblems.length,
+      publishedLessonCount: publishedLessons,
+      publishedProblemCount: publishedProblems,
+      publishedQuizCount: publishedQuizzes,
+      quizCount: topicQuizzes.length,
+      slug: topic.slug,
+      status: checks.length === 0 ? 'ready' : 'needs_review',
+      title: topic.title,
+    };
+  });
+}
+
 adminRouter.use('/admin', requireAdmin);
+
+adminRouter.get('/admin/content-audit', async (_request, response) => {
+  if (!(await requireDatabase(response))) {
+    return;
+  }
+
+  const [topics, lessons, quizzes, problems] = await Promise.all([
+    Topic.find({}).sort({ order: 1, title: 1 }),
+    Lesson.find({}),
+    Quiz.find({}),
+    CodingProblem.find({}),
+  ]);
+
+  response.json({
+    summary: {
+      lessons: summarizePublication(lessons),
+      problems: summarizePublication(problems),
+      quizzes: summarizePublication(quizzes),
+      topics: summarizePublication(topics),
+    },
+    topics: buildContentAuditRows({ lessons, problems, quizzes, topics }),
+  });
+});
 
 adminRouter.get('/admin/topics', async (_request, response) => {
   if (!(await requireDatabase(response))) {
@@ -419,7 +502,7 @@ adminRouter.get('/admin/topics', async (_request, response) => {
   });
 });
 
-adminRouter.post('/admin/topics', async (request, response) => {
+adminRouter.post('/admin/topics', adminWriteRateLimit, async (request, response) => {
   if (!(await requireDatabase(response))) {
     return;
   }
@@ -440,7 +523,7 @@ adminRouter.post('/admin/topics', async (request, response) => {
   }
 });
 
-adminRouter.put('/admin/topics/:topicId', async (request, response) => {
+adminRouter.put('/admin/topics/:topicId', adminWriteRateLimit, async (request, response) => {
   if (!(await requireDatabase(response))) {
     return;
   }
@@ -487,7 +570,7 @@ adminRouter.get('/admin/lessons', async (_request, response) => {
   });
 });
 
-adminRouter.post('/admin/lessons', async (request, response) => {
+adminRouter.post('/admin/lessons', adminWriteRateLimit, async (request, response) => {
   if (!(await requireDatabase(response))) {
     return;
   }
@@ -513,7 +596,7 @@ adminRouter.post('/admin/lessons', async (request, response) => {
   }
 });
 
-adminRouter.put('/admin/lessons/:lessonId', async (request, response) => {
+adminRouter.put('/admin/lessons/:lessonId', adminWriteRateLimit, async (request, response) => {
   if (!(await requireDatabase(response))) {
     return;
   }
@@ -575,7 +658,7 @@ adminRouter.get('/admin/quizzes', async (_request, response) => {
   });
 });
 
-adminRouter.post('/admin/quizzes', async (request, response) => {
+adminRouter.post('/admin/quizzes', adminWriteRateLimit, async (request, response) => {
   if (!(await requireDatabase(response))) {
     return;
   }
@@ -619,7 +702,7 @@ adminRouter.get('/admin/problems', async (_request, response) => {
   });
 });
 
-adminRouter.post('/admin/problems', async (request, response) => {
+adminRouter.post('/admin/problems', adminWriteRateLimit, async (request, response) => {
   if (!(await requireDatabase(response))) {
     return;
   }

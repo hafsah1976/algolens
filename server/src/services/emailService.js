@@ -1,19 +1,77 @@
 import { Resend } from 'resend';
 
-function getAppBaseUrl() {
-  return (process.env.APP_BASE_URL || process.env.CLIENT_ORIGIN || 'http://localhost:5173').replace(/\/+$/, '');
+function getAppBaseUrl(env = process.env) {
+  return (env.APP_BASE_URL || env.CLIENT_ORIGIN || 'http://localhost:5173').replace(/\/+$/, '');
 }
 
-function getEmailFrom() {
-  return process.env.EMAIL_FROM || '';
+function getEmailFrom(env = process.env) {
+  return env.EMAIL_FROM || '';
 }
 
-function getResendClient() {
-  if (!process.env.RESEND_API_KEY) {
+function getResendClient(env = process.env) {
+  if (!env.RESEND_API_KEY) {
     return null;
   }
 
-  return new Resend(process.env.RESEND_API_KEY);
+  return new Resend(env.RESEND_API_KEY);
+}
+
+function getUrlHost(value) {
+  try {
+    return new URL(value).host;
+  } catch (_error) {
+    return null;
+  }
+}
+
+function getSenderDomain(value) {
+  const trimmed = String(value || '').trim();
+  const bracketMatch = trimmed.match(/<[^@<>]+@([^<>]+)>/);
+  const plainMatch = trimmed.match(/^[^@\s<>]+@([^@\s<>]+)$/);
+  const domain = bracketMatch?.[1] || plainMatch?.[1] || null;
+
+  return domain ? domain.toLowerCase() : null;
+}
+
+export function getEmailReadiness(env = process.env) {
+  const appBaseUrl = getAppBaseUrl(env);
+  const from = getEmailFrom(env);
+  const appBaseUrlHost = getUrlHost(appBaseUrl);
+  const fromDomain = getSenderDomain(from);
+  const missing = [];
+  const invalid = [];
+
+  if (!env.RESEND_API_KEY) {
+    missing.push('RESEND_API_KEY');
+  }
+
+  if (!env.EMAIL_FROM) {
+    missing.push('EMAIL_FROM');
+  }
+
+  if (!env.APP_BASE_URL) {
+    missing.push('APP_BASE_URL');
+  }
+
+  if (env.EMAIL_FROM && !fromDomain) {
+    invalid.push('EMAIL_FROM');
+  }
+
+  if ((env.APP_BASE_URL || env.CLIENT_ORIGIN) && !appBaseUrlHost) {
+    invalid.push('APP_BASE_URL');
+  }
+
+  const configured = missing.length === 0 && invalid.length === 0;
+
+  return {
+    appBaseUrlHost,
+    configured,
+    fromDomain,
+    invalid,
+    missing,
+    provider: 'resend',
+    state: configured ? 'configured' : 'missing_configuration',
+  };
 }
 
 function escapeHtml(value) {

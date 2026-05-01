@@ -120,14 +120,15 @@ export function TermsPage() {
 export function SupportPage() {
   return (
     <LegalShell
-      eyebrow="Support"
+      eyebrow="Help"
       summary="Use this page when you need account help, want to report a bug, or want to suggest a learning improvement."
-      title="Support"
+      title="Get help with AlgoLens"
     >
       <LegalSection title="Account help">
         <p>
-          Password reset by email is not enabled yet. If you lose access during this launch phase,
-          contact the maintainer through the project repository or submission channel.
+          If you lose access, use the password reset link on the sign-in page. If an email does
+          not arrive during the beta, contact the maintainer through the project repository or
+          submission channel.
         </p>
       </LegalSection>
 

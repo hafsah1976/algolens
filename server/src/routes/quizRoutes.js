@@ -3,11 +3,19 @@ import { Router } from 'express';
 
 import { ensureDatabaseConnection, getDatabaseStatus } from '../db/mongo.js';
 import { requireAuth } from '../middleware/authMiddleware.js';
+import { createRateLimit } from '../middleware/rateLimit.js';
 import { Quiz } from '../models/Quiz.js';
 import { QuizAttempt } from '../models/QuizAttempt.js';
 import { gradeQuizSubmission, sanitizeQuizPayload } from '../utils/quizGrading.js';
 
 export const quizRouter = Router();
+
+const quizSubmitRateLimit = createRateLimit({
+  keyPrefix: 'quiz-submit',
+  maxRequests: 60,
+  message: 'Too many quiz submissions. Please pause for a moment and try again.',
+  windowMs: 15 * 60 * 1000,
+});
 
 function sendDatabaseUnavailable(response) {
   response.status(503).json({
@@ -76,7 +84,7 @@ quizRouter.get('/quizzes/:quizId', async (request, response) => {
   });
 });
 
-quizRouter.post('/quizzes/:quizId/submit', requireAuth, async (request, response) => {
+quizRouter.post('/quizzes/:quizId/submit', quizSubmitRateLimit, requireAuth, async (request, response) => {
   if (!isValidObjectId(request.params.quizId)) {
     response.status(400).json({ error: 'A valid quizId is required.' });
     return;

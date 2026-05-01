@@ -26,6 +26,9 @@ const GraphExplorerPage = lazy(() =>
 const AdminTopicsPage = lazy(() =>
   import('./pages/AdminContentPage.jsx').then((module) => ({ default: module.AdminTopicsPage })),
 );
+const AdminOverviewPage = lazy(() =>
+  import('./pages/AdminContentPage.jsx').then((module) => ({ default: module.AdminOverviewPage })),
+);
 const AdminLessonsPage = lazy(() =>
   import('./pages/AdminContentPage.jsx').then((module) => ({ default: module.AdminLessonsPage })),
 );
@@ -143,7 +146,15 @@ function Root() {
           }
           path="/admin"
         >
-          <Route element={<Navigate replace to="topics" />} index />
+          <Route element={<Navigate replace to="overview" />} index />
+          <Route
+            element={
+              <LazyPage>
+                <AdminOverviewPage />
+              </LazyPage>
+            }
+            path="overview"
+          />
           <Route
             element={
               <LazyPage>

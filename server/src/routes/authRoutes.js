@@ -174,12 +174,13 @@ authRouter.post('/auth/signup', authRateLimit, async (request, response) => {
   const verificationToken = await assignVerificationToken(user);
 
   await user.save();
-  await sendVerificationEmail({ email: user.email, token: verificationToken });
+  const verificationEmail = await sendVerificationEmail({ email: user.email, token: verificationToken });
 
   const token = createSessionToken(user);
   setSessionCookie(response, token);
 
   response.status(201).json({
+    emailSent: verificationEmail.sent,
     token,
     user: toAuthUser(user),
   });
@@ -299,14 +300,17 @@ authRouter.post('/auth/resend-verification', authRateLimit, requireAuth, async (
   const verificationToken = await assignVerificationToken(request.authUser);
 
   await request.authUser.save();
-  await sendVerificationEmail({
+  const verificationEmail = await sendVerificationEmail({
     email: request.authUser.email,
     token: verificationToken,
   });
 
   response.json({
+    emailSent: verificationEmail.sent,
     ok: true,
-    message: 'Verification email sent. Check your inbox for the latest link.',
+    message: verificationEmail.sent
+      ? 'Verification email sent. Check your inbox for the latest link.'
+      : 'Verification email could not be sent yet. Check email setup, then try again.',
   });
 });
 

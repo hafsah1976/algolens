@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { AuthLoadingScreen } from '../components/RequireAuth.jsx';
@@ -10,6 +10,10 @@ const emptyForm = {
   name: '',
   password: '',
 };
+
+function getRequestedAuthMode(search) {
+  return new URLSearchParams(search).get('mode') === 'signup' ? 'signup' : 'login';
+}
 
 function validateEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
@@ -118,7 +122,7 @@ export function AuthPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const { error: sessionError, isAuthenticated, isLoading, login, logout, signup, user } = useAuth();
-  const [mode, setMode] = useState('login');
+  const [mode, setMode] = useState(() => getRequestedAuthMode(location.search));
   const [form, setForm] = useState(emptyForm);
   const [error, setError] = useState(null);
   const [fieldErrors, setFieldErrors] = useState({});
@@ -126,6 +130,10 @@ export function AuthPage() {
   const [showPassword, setShowPassword] = useState(false);
   const isSignup = mode === 'signup';
   const returnTo = getAuthReturnPath(location.state?.from);
+
+  useEffect(() => {
+    setMode(getRequestedAuthMode(location.search));
+  }, [location.search]);
 
   function handleModeChange(nextMode) {
     setMode(nextMode);

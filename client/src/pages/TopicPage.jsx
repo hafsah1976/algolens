@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import { GuidedCardDeck } from '../components/GuidedCardDeck.jsx';
-import { LearningLoopPanel } from '../components/LearningLoopPanel.jsx';
 import { QuizLinksPanel } from '../components/QuizLinksPanel.jsx';
 import { SectionHeading } from '../components/SectionHeading.jsx';
 import { useProgress } from '../context/ProgressContext.jsx';
@@ -47,14 +46,6 @@ function LessonRow({ lesson, stageLabel }) {
         </div>
 
         <div className="flex flex-wrap gap-3 lg:justify-end">
-          {mode.isInteractive ? (
-            <Link
-              className="inline-flex items-center rounded-full border border-line/80 bg-white/80 px-4 py-2 text-sm font-medium text-ink transition hover:border-accent/40"
-              to={`${getCanonicalLessonPath(lesson.id)}?fresh=1`}
-            >
-              Start fresh
-            </Link>
-          ) : null}
           <Link
             className="inline-flex items-center rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:bg-ink"
             to={getCanonicalLessonPath(lesson.id)}
@@ -115,6 +106,93 @@ function buildTopicGuideCards(track) {
   ].filter(Boolean);
 }
 
+function TopicDepthPanel({ track }) {
+  const primer = track.conceptPrimer;
+  const examples = track.miniExamples ?? [];
+  const selfCheck = primer?.selfCheck ?? [];
+  const vocabulary = primer?.vocabulary ?? [];
+
+  if (!primer && !examples.length && !selfCheck.length && !vocabulary.length) {
+    return null;
+  }
+
+  return (
+    <section className="app-panel p-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Topic depth</p>
+          <h2 className="mt-2 font-display text-3xl tracking-[-0.04em] text-ink">
+            Understand when and why to use it.
+          </h2>
+        </div>
+        <p className="text-sm leading-6 text-muted">Use this before jumping into code.</p>
+      </div>
+
+      <div className="mt-5 grid gap-4 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
+        {primer?.useItWhen ? (
+          <div className="rounded-3xl border border-line/70 bg-white/70 p-5">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">Use it when</p>
+            <p className="mt-3 text-sm leading-7 text-ink">{primer.useItWhen}</p>
+          </div>
+        ) : null}
+
+        {examples.length ? (
+          <div className="rounded-3xl border border-line/70 bg-white/70 p-5">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">Practice ladder</p>
+            <div className="mt-3 space-y-3">
+              {examples.map((example, index) => (
+                <div className="grid gap-3 rounded-2xl bg-surface-strong/80 p-3 sm:grid-cols-[2rem_1fr]" key={example.title}>
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-accent/10 text-xs font-semibold text-accent">
+                    {index + 1}
+                  </span>
+                  <div>
+                    <p className="text-sm font-semibold text-ink">{example.title}</p>
+                    <p className="mt-1 text-sm leading-6 text-muted">{example.whatChanges}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : null}
+      </div>
+
+      <details className="mt-4 rounded-3xl border border-line/70 bg-white/55 p-5">
+        <summary className="cursor-pointer list-none text-sm font-semibold text-ink">
+          Show vocabulary and self-check questions
+        </summary>
+        <div className="mt-4 grid gap-4 lg:grid-cols-2">
+          {vocabulary.length ? (
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">Beginner vocabulary</p>
+              <div className="mt-3 space-y-2">
+                {vocabulary.map((item) => (
+                  <div className="rounded-2xl border border-line/70 bg-white/75 p-3" key={item.term}>
+                    <p className="text-sm font-semibold text-ink">{item.term}</p>
+                    <p className="mt-1 text-sm leading-6 text-muted">{item.meaning}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
+
+          {selfCheck.length ? (
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">Check yourself</p>
+              <div className="mt-3 space-y-2">
+                {selfCheck.map((question) => (
+                  <p className="rounded-2xl border border-line/70 bg-white/75 p-3 text-sm leading-6 text-ink" key={question}>
+                    {question}
+                  </p>
+                ))}
+              </div>
+            </div>
+          ) : null}
+        </div>
+      </details>
+    </section>
+  );
+}
+
 export function TopicPage() {
   const { slug, topicSlug } = useParams();
   const currentSlug = slug ?? topicSlug;
@@ -157,7 +235,7 @@ export function TopicPage() {
         }
 
         setCatalogState({
-          error: error.message || 'Could not load the published topic.',
+          error: error.message || 'Could not load this topic.',
           isLoading: false,
           topic: staticTrack,
         });
@@ -185,7 +263,7 @@ export function TopicPage() {
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Topic path</p>
           <h1 className="mt-3 font-display text-4xl tracking-[-0.04em] text-ink">{track.title}</h1>
           <p className="mt-3 text-sm leading-7 text-muted">
-            This topic exists, but it does not have published lessons yet.
+            This topic exists, but lessons are not ready yet.
           </p>
         </div>
         {catalogState.error ? (
@@ -207,53 +285,46 @@ export function TopicPage() {
     ? 'Review this path'
     : progress.activeLesson
       ? 'Continue where you left off'
-      : 'Start here';
+      : 'Open first lesson';
 
   return (
     <div className="space-y-6">
       <SectionHeading
-        actions={
-          <Link
-            className="inline-flex items-center rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:bg-ink"
-            to={getCanonicalLessonPath(launchLesson.id)}
-          >
-            {launchActionLabel}
-          </Link>
-        }
         description={track.trackGoal}
         eyebrow="Topic path"
         title={track.title}
       />
 
-      <section className="rounded-xl border border-accent/20 bg-accent/8 p-5">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+      <section className="rounded-xl border border-accent/20 bg-accent/8 p-5 sm:p-6">
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_220px] lg:items-center">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">How to use this page</p>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-ink">
-              This is a learning path, not a feed. Start with the highlighted lesson, finish one idea,
-              then decide whether to stop or continue.
-            </p>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Start this path</p>
+            <h2 className="mt-3 text-xl font-semibold tracking-[-0.03em] text-ink">
+              Learn the idea first, then open one lesson.
+            </h2>
+            <ol className="mt-4 grid gap-3 text-sm leading-6 text-muted md:grid-cols-3">
+              <li className="rounded-2xl border border-line/70 bg-white/60 p-4">
+                <span className="block text-xs font-semibold uppercase tracking-[0.16em] text-accent">1</span>
+                Read the cards below.
+              </li>
+              <li className="rounded-2xl border border-line/70 bg-white/60 p-4">
+                <span className="block text-xs font-semibold uppercase tracking-[0.16em] text-accent">2</span>
+                Open the next lesson.
+              </li>
+              <li className="rounded-2xl border border-line/70 bg-white/60 p-4">
+                <span className="block text-xs font-semibold uppercase tracking-[0.16em] text-accent">3</span>
+                Stop after one clear takeaway.
+              </li>
+            </ol>
           </div>
           <Link
-            className="inline-flex w-full items-center justify-center rounded-full bg-accent px-5 py-3 text-sm font-semibold text-white transition hover:bg-ink lg:w-auto"
+            className="inline-flex w-full items-center justify-center rounded-full bg-accent px-5 py-3 text-sm font-semibold text-white transition hover:bg-ink"
             to={getCanonicalLessonPath(launchLesson.id)}
           >
             {launchActionLabel}
           </Link>
         </div>
       </section>
-
-      {catalogState.isLoading ? (
-        <div className="app-panel-soft p-4 text-sm leading-6 text-muted">
-          Checking the published topic catalog…
-        </div>
-      ) : null}
-
-      {catalogState.error ? (
-        <div className="app-panel-soft border-amber-400/35 bg-amber-50/60 p-4 text-sm leading-6 text-amber-800">
-          {catalogState.error} Showing the reviewed in-app version of this topic.
-        </div>
-      ) : null}
 
       {guideCards.length ? (
         <GuidedCardDeck
@@ -264,60 +335,57 @@ export function TopicPage() {
         />
       ) : null}
 
-      <section className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">
-        <div className="app-panel p-6">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Lesson sequence</p>
-              <h2 className="mt-2 font-display text-3xl tracking-[-0.04em] text-ink">
-                Learn one pattern at a time.
-              </h2>
-            </div>
-            <p className="text-sm leading-6 text-muted">
-              {readiness.interactive} guided lessons ready
-            </p>
+      <TopicDepthPanel track={track} />
+
+      <section className="app-panel p-6">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Lesson sequence</p>
+            <h2 className="mt-2 font-display text-3xl tracking-[-0.04em] text-ink">
+              Learn one pattern at a time.
+            </h2>
           </div>
-          <div className="mt-5 space-y-3">
-            {track.lessons.map((lesson) => (
-              <LessonRow
-                key={lesson.id}
-                lesson={lesson}
-                stageLabel={getLessonStageLabel(lesson, lessonProgressById[lesson.id])}
-              />
-            ))}
-          </div>
+          <p className="text-sm leading-6 text-muted">
+            {readiness.interactive} guided lessons ready
+          </p>
+        </div>
+        <div className="mt-5 space-y-3">
+          {track.lessons.map((lesson) => (
+            <LessonRow
+              key={lesson.id}
+              lesson={lesson}
+              stageLabel={getLessonStageLabel(lesson, lessonProgressById[lesson.id])}
+            />
+          ))}
         </div>
 
-        <div className="space-y-4">
-          <LearningLoopPanel
-            actionLabel={launchActionLabel}
-            launchLesson={launchLesson}
-            progress={progress}
-            track={track}
-          />
-
-          <QuizLinksPanel topicId={track.id} topicTitle={track.title} />
-
-          <div className="app-panel p-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Linked concepts</p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {concepts.map((concept) => (
-                <span
-                  key={concept}
-                  className="rounded-full border border-line/80 bg-white/75 px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted"
-                >
-                  {concept}
-                </span>
-              ))}
+        <details className="mt-5 rounded-[1.2rem] border border-line/70 bg-white/45 p-4">
+          <summary className="cursor-pointer list-none text-sm font-semibold text-ink">
+            Show concepts and visual focus
+          </summary>
+          <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">Linked concepts</p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {concepts.map((concept) => (
+                  <span
+                    key={concept}
+                    className="rounded-full border border-line/80 bg-white/75 px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted"
+                  >
+                    {concept}
+                  </span>
+                ))}
+              </div>
             </div>
-
-            <div className="mt-6 app-panel-soft p-4">
+            <div>
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">Visual focus</p>
               <p className="mt-3 text-sm leading-6 text-ink">{track.visualFocus}</p>
             </div>
           </div>
-        </div>
+        </details>
       </section>
+
+      <QuizLinksPanel topicId={track.id} topicTitle={track.title} />
     </div>
   );
 }

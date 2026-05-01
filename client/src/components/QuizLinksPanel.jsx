@@ -59,7 +59,11 @@ export function QuizLinksPanel({ topicId, topicTitle }) {
     };
   }, [topicId]);
 
-  if (quizState.isLoading) {
+  if (quizState.isLoading || quizState.error || !quizState.quizzes.length) {
+    return null;
+  }
+
+  if (false) {
     return (
       <div className="app-panel p-6">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Concept quiz</p>
@@ -68,7 +72,7 @@ export function QuizLinksPanel({ topicId, topicTitle }) {
     );
   }
 
-  if (quizState.error) {
+  if (false) {
     return (
       <div className="app-panel p-6">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Concept quiz</p>
@@ -77,7 +81,7 @@ export function QuizLinksPanel({ topicId, topicTitle }) {
     );
   }
 
-  if (!quizState.quizzes.length) {
+  if (false) {
     return (
       <div className="app-panel p-6">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Concept quiz</p>

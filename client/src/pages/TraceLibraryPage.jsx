@@ -37,74 +37,60 @@ function getTraceLessonItems() {
   );
 }
 
-function TraceLibraryCard({ item, lessonProgress }) {
-  const { difficulty, lesson, traceLesson, track } = item;
-  const stats = getLessonStats(lesson);
-  const statusLabel = getLessonStageLabel(lesson, lessonProgress);
+function TracePathGroup({ group, lessonProgressById }) {
+  const { items, track } = group;
 
   return (
     <article className="app-panel p-5 sm:p-6">
-      <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
-        <div className="max-w-2xl">
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="rounded-full border border-line/80 bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-muted">
-              {track.navLabel}
-            </span>
-            <span className="rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
-              {statusLabel}
-            </span>
-            <span className="rounded-full border border-line/80 bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-muted">
-              {difficulty}
-            </span>
-          </div>
-
-          <h3 className="mt-4 font-display text-3xl tracking-[-0.04em] text-ink">{traceLesson.title}</h3>
-          <p className="mt-3 text-sm leading-7 text-muted sm:text-base">{traceLesson.summary}</p>
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">{track.navLabel}</p>
+          <h2 className="mt-3 font-display text-3xl tracking-[-0.04em] text-ink">{track.title}</h2>
+          <p className="mt-2 text-sm leading-6 text-muted">{track.trackGoal}</p>
         </div>
-
-        <div className="grid min-w-[220px] grid-cols-2 gap-3 text-sm">
-          <div className="rounded-[1.1rem] border border-line/70 bg-white/70 px-4 py-3">
-            <p className="text-2xl font-semibold tracking-[-0.04em] text-ink">{stats.frames}</p>
-            <p className="mt-1 text-xs font-semibold uppercase tracking-[0.16em] text-muted">Frames</p>
-          </div>
-          <div className="rounded-[1.1rem] border border-line/70 bg-white/70 px-4 py-3">
-            <p className="text-2xl font-semibold tracking-[-0.04em] text-ink">{lesson.duration}</p>
-            <p className="mt-1 text-xs font-semibold uppercase tracking-[0.16em] text-muted">Time</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,1fr)_260px]">
-        <div className="app-panel-soft p-4">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">Pattern focus</p>
-          <p className="mt-3 text-sm leading-6 text-ink">{track.patterns.join(' / ')}</p>
-          <p className="mt-4 text-xs font-semibold uppercase tracking-[0.18em] text-muted">Visual skill</p>
-          <p className="mt-3 text-sm leading-6 text-ink">{track.visualFocus}</p>
-        </div>
-
-        <div className="app-panel-soft p-4">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">Walkthrough depth</p>
-          <div className="mt-3 space-y-2 text-sm leading-6 text-ink">
-            <p>{stats.predictions} prediction checkpoints</p>
-            <p>{stats.mistakes} mistake lenses</p>
-            <p>{stats.codeLines} synced code lines</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-6 flex flex-wrap gap-3">
         <Link
-          className="inline-flex items-center rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:bg-ink"
-          to={getCanonicalLessonPath(lesson.id)}
-        >
-          Open walkthrough
-        </Link>
-        <Link
-          className="inline-flex items-center rounded-full border border-line/80 bg-white/70 px-4 py-2 text-sm font-medium text-ink transition hover:border-accent/40"
+          className="inline-flex items-center rounded-full border border-line/80 bg-white/70 px-4 py-2 text-sm font-semibold text-ink transition hover:border-accent/40"
           to={getCanonicalTopicPath(track.slug)}
         >
-          View topic
+          Open path
         </Link>
+      </div>
+
+      <div className="mt-5 space-y-3">
+        {items.map(({ difficulty, lesson, traceLesson }) => {
+          const lessonStats = getLessonStats(lesson);
+          const statusLabel = getLessonStageLabel(lesson, lessonProgressById[lesson.id]);
+
+          return (
+            <Link
+              className="group block rounded-3xl border border-line/80 bg-white/75 p-4 transition hover:border-accent/40 hover:bg-white"
+              key={lesson.id}
+              to={getCanonicalLessonPath(lesson.id)}
+            >
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="rounded-full bg-accent/10 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-accent">
+                      {statusLabel}
+                    </span>
+                    <span className="rounded-full border border-line/70 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-muted">
+                      {difficulty}
+                    </span>
+                  </div>
+                  <h3 className="mt-3 text-lg font-semibold text-ink transition group-hover:text-accent">
+                    {traceLesson.title}
+                  </h3>
+                  <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">{traceLesson.summary}</p>
+                </div>
+
+                <div className="shrink-0 rounded-2xl border border-line/70 bg-cream px-4 py-3 text-sm text-ink">
+                  <p className="font-semibold">{lesson.duration}</p>
+                  <p className="mt-1 text-xs text-muted">{lessonStats.frames} frames</p>
+                </div>
+              </div>
+            </Link>
+          );
+        })}
       </div>
     </article>
   );
@@ -113,47 +99,48 @@ function TraceLibraryCard({ item, lessonProgress }) {
 export function TraceLibraryPage() {
   const { lessonProgressById } = useProgress();
   const traceItems = getTraceLessonItems();
+  const traceGroups = learningTracks
+    .map((track) => ({
+      items: traceItems.filter((item) => item.track.slug === track.slug),
+      track,
+    }))
+    .filter((group) => group.items.length);
   const totalFrames = traceItems.reduce((sum, item) => sum + item.traceLesson.frames.length, 0);
-  const totalPredictions = traceItems.reduce(
-    (sum, item) => sum + item.traceLesson.frames.filter((frame) => frame.prediction).length,
-    0,
-  );
-  const totalMistakes = traceItems.reduce(
-    (sum, item) => sum + item.traceLesson.frames.filter((frame) => frame.mistake).length,
-    0,
-  );
+  const featuredLesson = traceItems[0]?.lesson;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <SectionHeading
         actions={
-          <Link
-            className="inline-flex items-center whitespace-nowrap rounded-full bg-accent px-5 py-2 text-sm font-semibold text-white transition hover:bg-ink"
-            to={`${getCanonicalLessonPath('container-window-preview')}?fresh=1`}
-          >
-            Start featured walkthrough
-          </Link>
+          featuredLesson ? (
+            <Link
+              className="inline-flex items-center whitespace-nowrap rounded-full bg-accent px-5 py-2 text-sm font-semibold text-white transition hover:bg-ink"
+              to={getCanonicalLessonPath(featuredLesson.id)}
+            >
+              Start first walkthrough
+            </Link>
+          ) : null
         }
-        description="A focused showcase of every interactive step-by-step lesson: what it teaches, how long it takes, and which beginner supports are included."
+        description="Choose a topic first, then open one visual walkthrough. The library is grouped so you do not have to scan every lesson at once."
         eyebrow="Step-by-step examples"
-        title="The visual lesson shelf"
+        title="Pick a walkthrough by path."
       />
 
       <section className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_340px]">
         <div className="app-panel p-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Signature feature</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">How to use this shelf</p>
           <h3 className="mt-3 font-display text-3xl tracking-[-0.04em] text-ink">
-            Choose a walkthrough by the pattern you want to understand.
+            Start with the path you are studying.
           </h3>
           <p className="mt-3 max-w-3xl text-sm leading-7 text-muted sm:text-base">
-            Each lesson shows the algorithm state frame by frame, then adds predictions, synced
-            pseudocode, mistake callouts, Challenge Mode, and shareable step links when they help.
+            Each row opens a guided visual walkthrough. Use this page when you already know the topic
+            you want to practice and just need the matching example.
           </p>
         </div>
 
         <div className="app-panel p-5">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Library snapshot</p>
-          <div className="mt-4 grid grid-cols-3 gap-3">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Library size</p>
+          <div className="mt-4 grid grid-cols-2 gap-3">
             <div className="rounded-[1rem] bg-white/75 px-3 py-4 text-center">
               <p className="text-2xl font-semibold tracking-[-0.04em] text-ink">{traceItems.length}</p>
               <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted">Examples</p>
@@ -162,32 +149,18 @@ export function TraceLibraryPage() {
               <p className="text-2xl font-semibold tracking-[-0.04em] text-ink">{totalFrames}</p>
               <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted">Frames</p>
             </div>
-            <div className="rounded-[1rem] bg-white/75 px-3 py-4 text-center">
-              <p className="text-2xl font-semibold tracking-[-0.04em] text-ink">{totalPredictions}</p>
-              <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted">Predict</p>
-            </div>
           </div>
-          <p className="mt-4 text-sm leading-6 text-muted">
-            Includes {totalMistakes} Mistake Lens callouts plus synchronized pseudocode for every walkthrough.
-          </p>
         </div>
       </section>
 
-      <section className="space-y-4">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">All step-by-step examples</p>
-          <h3 className="mt-2 font-display text-3xl tracking-[-0.04em] text-ink">Pick the algorithm state you want to see.</h3>
-        </div>
-
-        <div className="space-y-4">
-          {traceItems.map((item) => (
-            <TraceLibraryCard
-              item={item}
-              key={item.lesson.id}
-              lessonProgress={lessonProgressById[item.lesson.id]}
-            />
-          ))}
-        </div>
+      <section className="grid gap-4 xl:grid-cols-2">
+        {traceGroups.map((group) => (
+          <TracePathGroup
+            group={group}
+            key={group.track.slug}
+            lessonProgressById={lessonProgressById}
+          />
+        ))}
       </section>
     </div>
   );
